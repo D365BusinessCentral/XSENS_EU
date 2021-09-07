@@ -2,6 +2,10 @@ tableextension 50009 Item extends Item
 {
     fields
     {
+        field(50100; "Copy Production BOM"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
         field(50200; "Estimated Sales Price"; Decimal)
         {
             AutoFormatType = 2;

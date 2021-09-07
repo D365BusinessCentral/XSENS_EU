@@ -38,6 +38,15 @@ pageextension 50003 "Item Card" extends "Item Card"
             }
 
         }
+        addafter("Production BOM No.")
+        {
+            field("Copy Production BOM"; Rec."Copy Production BOM")
+            {
+                ApplicationArea = All;
+                Caption = 'Copy Production BOM';
+                ToolTip = 'Copy Production BOM Components to Service Item';
+            }
+        }
         /* addlast(InventoryGrp)
          {
              field("On Hold"; Rec."On Hold")

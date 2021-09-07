@@ -11,10 +11,6 @@ pageextension 50006 "Sales Order" extends "Sales Order"
 
     layout
     {
-        addlast(General)
-        {
-            field(sell-to IC)
-        }
         addlast(content)
         {
             group("Chinese Localization")
