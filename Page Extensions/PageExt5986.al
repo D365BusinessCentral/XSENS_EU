@@ -32,9 +32,9 @@ pageextension 50022 "Service Item Component List" extends "Service Item Componen
     {
         addafter("&Copy from BOM")
         {
-            action("Copy From Prduction BOM")
+            action("Copy Prduction BOM")
             {
-                Caption = 'Copy From Prduction BOM', comment = 'NLB="Copy From Prduction BOM"';
+                Caption = 'Copy Prduction BOM', comment = 'NLB="Copy Prduction BOM"';
                 ApplicationArea = Service;
                 Image = CopyBOM;
                 trigger OnAction()
