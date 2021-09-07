@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="lblRMA">
+          <DataField>lblRMA</DataField>
+        </Field>
+        <Field Name="lblRegisteredBy">
+          <DataField>lblRegisteredBy</DataField>
+        </Field>
+        <Field Name="lblContactNr">
+          <DataField>lblContactNr</DataField>
+        </Field>
+        <Field Name="lblContactName">
+          <DataField>lblContactName</DataField>
+        </Field>
+        <Field Name="lblCompany">
+          <DataField>lblCompany</DataField>
+        </Field>
+        <Field Name="lblHandler">
+          <DataField>lblHandler</DataField>
+        </Field>
+        <Field Name="lblDate">
+          <DataField>lblDate</DataField>
+        </Field>
+        <Field Name="lblComplaintType">
+          <DataField>lblComplaintType</DataField>
+        </Field>
+        <Field Name="lblArticleNo">
+          <DataField>lblArticleNo</DataField>
+        </Field>
+        <Field Name="lblSerieNo">
+          <DataField>lblSerieNo</DataField>
+        </Field>
+        <Field Name="lblGuarantee">
+          <DataField>lblGuarantee</DataField>
+        </Field>
+        <Field Name="lblState">
+          <DataField>lblState</DataField>
+        </Field>
+        <Field Name="lbDescrTitle">
+          <DataField>lbDescrTitle</DataField>
+        </Field>
+        <Field Name="lbCorrectiveActionTitle">
+          <DataField>lbCorrectiveActionTitle</DataField>
+        </Field>
+        <Field Name="lbRootCauseTitle">
+          <DataField>lbRootCauseTitle</DataField>
+        </Field>
+        <Field Name="lbPreventionTitle">
+          <DataField>lbPreventionTitle</DataField>
+        </Field>
+        <Field Name="lbDiagnoseTitle">
+          <DataField>lbDiagnoseTitle</DataField>
+        </Field>
+        <Field Name="lbFaultTitle">
+          <DataField>lbFaultTitle</DataField>
+        </Field>
+        <Field Name="lbFaultDescTitle">
+          <DataField>lbFaultDescTitle</DataField>
+        </Field>
+        <Field Name="lbHandlerTitle">
+          <DataField>lbHandlerTitle</DataField>
+        </Field>
+        <Field Name="lbReperationTitle">
+          <DataField>lbReperationTitle</DataField>
+        </Field>
+        <Field Name="lbSolutionTitle">
+          <DataField>lbSolutionTitle</DataField>
+        </Field>
+        <Field Name="lbSolutionDescTitle">
+          <DataField>lbSolutionDescTitle</DataField>
+        </Field>
+        <Field Name="lbRepairTimeTitle">
+          <DataField>lbRepairTimeTitle</DataField>
+        </Field>
+        <Field Name="lbRepairValueTitle">
+          <DataField>lbRepairValueTitle</DataField>
+        </Field>
+        <Field Name="lbStateViewTitle">
+          <DataField>lbStateViewTitle</DataField>
+        </Field>
+        <Field Name="lbComplaintDesc">
+          <DataField>lbComplaintDesc</DataField>
+        </Field>
+        <Field Name="gTxtNaamReport">
+          <DataField>gTxtNaamReport</DataField>
+        </Field>
+        <Field Name="TypeReport">
+          <DataField>TypeReport</DataField>
+        </Field>
+        <Field Name="CompanyPicture">
+          <DataField>CompanyPicture</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="HeadRMANo">
+          <DataField>HeadRMANo</DataField>
+        </Field>
+        <Field Name="HeadRegBy">
+          <DataField>HeadRegBy</DataField>
+        </Field>
+        <Field Name="HeadContactNo">
+          <DataField>HeadContactNo</DataField>
+        </Field>
+        <Field Name="HeadContName">
+          <DataField>HeadContName</DataField>
+        </Field>
+        <Field Name="HeadCompName">
+          <DataField>HeadCompName</DataField>
+        </Field>
+        <Field Name="HeadHandler">
+          <DataField>HeadHandler</DataField>
+        </Field>
+        <Field Name="HeadDate">
+          <DataField>HeadDate</DataField>
+        </Field>
+        <Field Name="HeadType">
+          <DataField>HeadType</DataField>
+        </Field>
+        <Field Name="HeadArticleNo">
+          <DataField>HeadArticleNo</DataField>
+        </Field>
+        <Field Name="HeadSerialNo">
+          <DataField>HeadSerialNo</DataField>
+        </Field>
+        <Field Name="HeadWarranty">
+          <DataField>HeadWarranty</DataField>
+        </Field>
+        <Field Name="HeadStatus">
+          <DataField>HeadStatus</DataField>
+        </Field>
+        <Field Name="DateOpCom">
+          <DataField>DateOpCom</DataField>
+        </Field>
+        <Field Name="Commentaar">
+          <DataField>Commentaar</DataField>
+        </Field>
+        <Field Name="DateCorAc">
+          <DataField>DateCorAc</DataField>
+        </Field>
+        <Field Name="OmsCorAc">
+          <DataField>OmsCorAc</DataField>
+        </Field>
+        <Field Name="DateRootCause">
+          <DataField>DateRootCause</DataField>
+        </Field>
+        <Field Name="OmsRootCause">
+          <DataField>OmsRootCause</DataField>
+        </Field>
+        <Field Name="DatePreventiveAction">
+          <DataField>DatePreventiveAction</DataField>
+        </Field>
+        <Field Name="OmsPreventiveAction">
+          <DataField>OmsPreventiveAction</DataField>
+        </Field>
+        <Field Name="DateDiag">
+          <DataField>DateDiag</DataField>
+        </Field>
+        <Field Name="FaultCodeDiag">
+          <DataField>FaultCodeDiag</DataField>
+        </Field>
+        <Field Name="CodeNameDiag">
+          <DataField>CodeNameDiag</DataField>
+        </Field>
+        <Field Name="HandledNameDiag">
+          <DataField>HandledNameDiag</DataField>
+        </Field>
+        <Field Name="OmsDiag">
+          <DataField>OmsDiag</DataField>
+        </Field>
+        <Field Name="DateRep">
+          <DataField>DateRep</DataField>
+        </Field>
+        <Field Name="SolvedCodeRep">
+          <DataField>SolvedCodeRep</DataField>
+        </Field>
+        <Field Name="SolvedCodeFuncRep">
+          <DataField>SolvedCodeFuncRep</DataField>
+        </Field>
+        <Field Name="HandledRep">
+          <DataField>HandledRep</DataField>
+        </Field>
+        <Field Name="RepValueRep">
+          <DataField>RepValueRep</DataField>
+        </Field>
+        <Field Name="RepTimeRep">
+          <DataField>RepTimeRep</DataField>
+        </Field>
+        <Field Name="OmsRep">
+          <DataField>OmsRep</DataField>
+        </Field>
+        <Field Name="DateStat">
+          <DataField>DateStat</DataField>
+        </Field>
+        <Field Name="StateStat">
+          <DataField>StateStat</DataField>
+        </Field>
+        <Field Name="ComplaintOmsStat">
+          <DataField>ComplaintOmsStat</DataField>
+        </Field>
+        <Field Name="HandledStat">
+          <DataField>HandledStat</DataField>
+        </Field>
+        <Field Name="OmsStat">
+          <DataField>OmsStat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

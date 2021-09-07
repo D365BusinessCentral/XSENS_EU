@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="lblWorkdate">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>lblWorkdate</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>lblWorkdate</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="lblDate">
+          <DataField>lblDate</DataField>
+        </Field>
+        <Field Name="lblOrderNumber">
+          <DataField>lblOrderNumber</DataField>
+        </Field>
+        <Field Name="lblReferenceText">
+          <DataField>lblReferenceText</DataField>
+        </Field>
+        <Field Name="lblRegards">
+          <DataField>lblRegards</DataField>
+        </Field>
+        <Field Name="lblName">
+          <DataField>lblName</DataField>
+        </Field>
+        <Field Name="lblFunction">
+          <DataField>lblFunction</DataField>
+        </Field>
+        <Field Name="lblQuantity">
+          <DataField>lblQuantity</DataField>
+        </Field>
+        <Field Name="lblModelName">
+          <DataField>lblModelName</DataField>
+        </Field>
+        <Field Name="lblDescription">
+          <DataField>lblDescription</DataField>
+        </Field>
+        <Field Name="lblSerialNo">
+          <DataField>lblSerialNo</DataField>
+        </Field>
+        <Field Name="lblLotNo">
+          <DataField>lblLotNo</DataField>
+        </Field>
+        <Field Name="lblConformanceTitle">
+          <DataField>lblConformanceTitle</DataField>
+        </Field>
+        <Field Name="OrderNo">
+          <DataField>OrderNo</DataField>
+        </Field>
+        <Field Name="YourReference">
+          <DataField>YourReference</DataField>
+        </Field>
+        <Field Name="Name">
+          <DataField>Name</DataField>
+        </Field>
+        <Field Name="Function">
+          <DataField>Function</DataField>
+        </Field>
+        <Field Name="Workdate">
+          <DataField>Workdate</DataField>
+        </Field>
+        <Field Name="Text">
+          <DataField>Text</DataField>
+        </Field>
+        <Field Name="Quantity1">
+          <DataField>Quantity1</DataField>
+        </Field>
+        <Field Name="Quantity1Format">
+          <DataField>Quantity1Format</DataField>
+        </Field>
+        <Field Name="Item1">
+          <DataField>Item1</DataField>
+        </Field>
+        <Field Name="Description1">
+          <DataField>Description1</DataField>
+        </Field>
+        <Field Name="SerialNo1">
+          <DataField>SerialNo1</DataField>
+        </Field>
+        <Field Name="Quantity2">
+          <DataField>Quantity2</DataField>
+        </Field>
+        <Field Name="Quantity2Format">
+          <DataField>Quantity2Format</DataField>
+        </Field>
+        <Field Name="Item2">
+          <DataField>Item2</DataField>
+        </Field>
+        <Field Name="Description2">
+          <DataField>Description2</DataField>
+        </Field>
+        <Field Name="SerialNo2">
+          <DataField>SerialNo2</DataField>
+        </Field>
+        <Field Name="LotNo1">
+          <DataField>LotNo1</DataField>
+        </Field>
+        <Field Name="Quantity3">
+          <DataField>Quantity3</DataField>
+        </Field>
+        <Field Name="Quantity3Format">
+          <DataField>Quantity3Format</DataField>
+        </Field>
+        <Field Name="Item3">
+          <DataField>Item3</DataField>
+        </Field>
+        <Field Name="Description3">
+          <DataField>Description3</DataField>
+        </Field>
+        <Field Name="SerialNo3">
+          <DataField>SerialNo3</DataField>
+        </Field>
+        <Field Name="LotNo2">
+          <DataField>LotNo2</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

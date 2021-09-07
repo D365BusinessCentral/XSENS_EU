@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="lblPage">
+          <DataField>lblPage</DataField>
+        </Field>
+        <Field Name="lblNo">
+          <DataField>lblNo</DataField>
+        </Field>
+        <Field Name="lblComplaintDate">
+          <DataField>lblComplaintDate</DataField>
+        </Field>
+        <Field Name="lblComplaintType">
+          <DataField>lblComplaintType</DataField>
+        </Field>
+        <Field Name="lblAnnouncedBy">
+          <DataField>lblAnnouncedBy</DataField>
+        </Field>
+        <Field Name="lblAppliesTo">
+          <DataField>lblAppliesTo</DataField>
+        </Field>
+        <Field Name="lblRegisteredBy">
+          <DataField>lblRegisteredBy</DataField>
+        </Field>
+        <Field Name="lblTreatmentBy">
+          <DataField>lblTreatmentBy</DataField>
+        </Field>
+        <Field Name="lblComplaintDescription">
+          <DataField>lblComplaintDescription</DataField>
+        </Field>
+        <Field Name="lblComplaintActivities">
+          <DataField>lblComplaintActivities</DataField>
+        </Field>
+        <Field Name="lblStatus">
+          <DataField>lblStatus</DataField>
+        </Field>
+        <Field Name="lblComplaintAttachedTo">
+          <DataField>lblComplaintAttachedTo</DataField>
+        </Field>
+        <Field Name="lblDocumentType">
+          <DataField>lblDocumentType</DataField>
+        </Field>
+        <Field Name="lblDocumentNo">
+          <DataField>lblDocumentNo</DataField>
+        </Field>
+        <Field Name="lblLineNo">
+          <DataField>lblLineNo</DataField>
+        </Field>
+        <Field Name="HeaderText1">
+          <DataField>HeaderText1</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="WorkdateTime">
+          <DataField>WorkdateTime</DataField>
+        </Field>
+        <Field Name="ComplaintTypeDescription">
+          <DataField>ComplaintTypeDescription</DataField>
+        </Field>
+        <Field Name="AnnouncedBy">
+          <DataField>AnnouncedBy</DataField>
+        </Field>
+        <Field Name="SubAnnouncedBy">
+          <DataField>SubAnnouncedBy</DataField>
+        </Field>
+        <Field Name="AppliesTo">
+          <DataField>AppliesTo</DataField>
+        </Field>
+        <Field Name="ComplaintType">
+          <DataField>ComplaintType</DataField>
+        </Field>
+        <Field Name="RegisteredBy">
+          <DataField>RegisteredBy</DataField>
+        </Field>
+        <Field Name="TreatmentBy">
+          <DataField>TreatmentBy</DataField>
+        </Field>
+        <Field Name="No">
+          <DataField>No</DataField>
+        </Field>
+        <Field Name="DateHeader">
+          <DataField>DateHeader</DataField>
+        </Field>
+        <Field Name="DateComments">
+          <DataField>DateComments</DataField>
+        </Field>
+        <Field Name="Comment">
+          <DataField>Comment</DataField>
+        </Field>
+        <Field Name="DateLine">
+          <DataField>DateLine</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+        </Field>
+        <Field Name="ComplaintStatus">
+          <DataField>ComplaintStatus</DataField>
+        </Field>
+        <Field Name="ComplaintRelation">
+          <DataField>ComplaintRelation</DataField>
+        </Field>
+        <Field Name="DocumentNo">
+          <DataField>DocumentNo</DataField>
+        </Field>
+        <Field Name="DocumentLineNo">
+          <DataField>DocumentLineNo</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

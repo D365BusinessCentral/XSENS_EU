@@ -1,0 +1,410 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>d8738462-6f94-46b3-ae9a-66f4c77be500</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Tablix Name="Tablix1">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>5.73958in</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>1.39583in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="ProdOrderNoEAN8">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value EvaluationMode="Auto">=Fields!ProdOrderNoEAN8.Value</Value>
+                                  <Style>
+                                    <FontFamily>Code128bWinLarge</FontFamily>
+                                    <FontSize>24pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>ProdOrderNoEAN8</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>2.09375in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Image Name="EAN128Barcode">
+                          <Source>Database</Source>
+                          <Value>=First(Fields!BarcodeProdOrderNo.Value)</Value>
+                          <MIMEType>image/bmp</MIMEType>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Image>
+                        <rd:Selected>true</rd:Selected>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details" />
+                  <TablixMembers>
+                    <TablixMember />
+                    <TablixMember />
+                  </TablixMembers>
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>DataSet_Result</DataSetName>
+            <Top>1.30083in</Top>
+            <Left>0.36333in</Left>
+            <Height>3.48958in</Height>
+            <Width>5.73958in</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+        </ReportItems>
+        <Height>6.0625in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="SourceNoCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>SourceNoCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>SourceNoCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="QtyCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>QtyCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>QtyCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ItemNoCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ItemNoCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ItemNoCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="DescriptionCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>DescriptionCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>DescriptionCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="QtyperCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>QtyperCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>QtyperCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="UOMCodeCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>UOMCodeCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>UOMCodeCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="RemainingQtyCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>RemainingQtyCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>RemainingQtyCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ScrapCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ScrapCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ScrapCaption</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>1</NumberOfColumns>
+      <NumberOfRows>8</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>SourceNoCaption</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>QtyCaption</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ItemNoCaption</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>DescriptionCaption</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>4</RowIndex>
+          <ParameterName>QtyperCaption</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>5</RowIndex>
+          <ParameterName>UOMCodeCaption</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>6</RowIndex>
+          <ParameterName>RemainingQtyCaption</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>7</RowIndex>
+          <ParameterName>ScrapCaption</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="lblProdOrder">
+          <DataField>lblProdOrder</DataField>
+        </Field>
+        <Field Name="lblSalesOrder">
+          <DataField>lblSalesOrder</DataField>
+        </Field>
+        <Field Name="lblOperator">
+          <DataField>lblOperator</DataField>
+        </Field>
+        <Field Name="lblDescription">
+          <DataField>lblDescription</DataField>
+        </Field>
+        <Field Name="lblDate">
+          <DataField>lblDate</DataField>
+        </Field>
+        <Field Name="lblDueDate">
+          <DataField>lblDueDate</DataField>
+        </Field>
+        <Field Name="lblQuantity">
+          <DataField>lblQuantity</DataField>
+        </Field>
+        <Field Name="lblPage">
+          <DataField>lblPage</DataField>
+        </Field>
+        <Field Name="lblUser">
+          <DataField>lblUser</DataField>
+        </Field>
+        <Field Name="lblCompletionDT">
+          <DataField>lblCompletionDT</DataField>
+        </Field>
+        <Field Name="lblUoM">
+          <DataField>lblUoM</DataField>
+        </Field>
+        <Field Name="lblScrap">
+          <DataField>lblScrap</DataField>
+        </Field>
+        <Field Name="CompanyPicture">
+          <DataField>CompanyPicture</DataField>
+        </Field>
+        <Field Name="TodayFormatted">
+          <DataField>TodayFormatted</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="No">
+          <DataField>No</DataField>
+        </Field>
+        <Field Name="SourceNo">
+          <DataField>SourceNo</DataField>
+        </Field>
+        <Field Name="ProdOrderQuantity">
+          <DataField>ProdOrderQuantity</DataField>
+        </Field>
+        <Field Name="ProdOrderQuantityFormat">
+          <DataField>ProdOrderQuantityFormat</DataField>
+        </Field>
+        <Field Name="BC_PO_No_Formatted">
+          <DataField>BC_PO_No_Formatted</DataField>
+        </Field>
+        <Field Name="BC_PO_SourceNo_Formatted">
+          <DataField>BC_PO_SourceNo_Formatted</DataField>
+        </Field>
+        <Field Name="BC_PO_Quantity">
+          <DataField>BC_PO_Quantity</DataField>
+        </Field>
+        <Field Name="ProdOrderNoEAN8">
+          <DataField>ProdOrderNoEAN8</DataField>
+        </Field>
+        <Field Name="BarcodeProdOrderNo">
+          <DataField>BarcodeProdOrderNo</DataField>
+        </Field>
+        <Field Name="BarcodeSourceNo">
+          <DataField>BarcodeSourceNo</DataField>
+        </Field>
+        <Field Name="BarcodeQuantity">
+          <DataField>BarcodeQuantity</DataField>
+        </Field>
+        <Field Name="Qty">
+          <DataField>Qty</DataField>
+        </Field>
+        <Field Name="QtyFormat">
+          <DataField>QtyFormat</DataField>
+        </Field>
+        <Field Name="DueDate">
+          <DataField>DueDate</DataField>
+        </Field>
+        <Field Name="SalesOrder">
+          <DataField>SalesOrder</DataField>
+        </Field>
+        <Field Name="ItemNo">
+          <DataField>ItemNo</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+        </Field>
+        <Field Name="Qtyper">
+          <DataField>Qtyper</DataField>
+        </Field>
+        <Field Name="QtyperFormat">
+          <DataField>QtyperFormat</DataField>
+        </Field>
+        <Field Name="UOMCode">
+          <DataField>UOMCode</DataField>
+        </Field>
+        <Field Name="RemainingQty">
+          <DataField>RemainingQty</DataField>
+        </Field>
+        <Field Name="RemainingQtyFormat">
+          <DataField>RemainingQtyFormat</DataField>
+        </Field>
+        <Field Name="Scrap">
+          <DataField>Scrap</DataField>
+        </Field>
+        <Field Name="ScrapFormat">
+          <DataField>ScrapFormat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>
