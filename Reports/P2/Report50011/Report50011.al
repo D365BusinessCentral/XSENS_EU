@@ -244,7 +244,7 @@ report 50011 "XSS Certificate of Conformance"
                             SalesLine.SETRANGE("Line No.", 0, SalesLine."Line No.");
                             SalesLine.SETRANGE(COC, true);
                             SETRANGE(Number, 1, SalesLine.COUNT);
-                            SalesLine.SETCURRENTKEY("Document Type", "Document No.", Sorting, "Line No.");
+                            SalesLine.SETCURRENTKEY("Document Type", "Document No.", "Sorting No.", "Line No.");
                         end;
                     }
                 }

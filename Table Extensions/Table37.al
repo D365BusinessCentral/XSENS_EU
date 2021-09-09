@@ -129,10 +129,11 @@ tableextension 50012 "Sales Line" extends "Sales Line"
             TableRelation = IF ("Drop Shipment" = CONST(true)) "Sales Line"."Line No." WHERE("Document Type" = CONST(Order),
                                                                                             "Document No." = FIELD("Sales Order No."));
         }
-        field(50450; Sorting; Integer)
+        field(50450; "Sorting No."; Integer)
         {
             CaptionML = ENU = 'Sorting',
                         NLD = 'Sortering';
+            MaxValue = 999;
         }
         field(50451; ExternalID; Text[30])
         {

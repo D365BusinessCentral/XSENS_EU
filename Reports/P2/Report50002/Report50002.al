@@ -688,7 +688,7 @@ report 50002 "Proforma Invoice XSS DCR"
                             CurrReport.BREAK;
                         SalesLine.SETRANGE("Line No.", 0, SalesLine."Line No.");
 
-                        SETCURRENTKEY("Document No.", Sorting, "Line No.");
+                        SETCURRENTKEY("Document No.", "Sorting No.", "Line No.");
                     end;
                 }
                 dataitem(VATAmtLine; "VAT Amount Line")

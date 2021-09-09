@@ -11,6 +11,24 @@ pageextension 50006 "Sales Order" extends "Sales Order"
 
     layout
     {
+        addlast(General)
+        {
+            field("Comment Internal"; Rec."Comment Internal")
+            {
+                ApplicationArea = All;
+            }
+            field("Comment External"; Rec."Comment External")
+            {
+                ApplicationArea = All;
+            }
+        }
+        addafter("Shipment Method Code")
+        {
+            field("Shipment Method Description"; Rec."Shipment Method Description")
+            {
+                ApplicationArea = All;
+            }
+        }
         addlast(content)
         {
             group("Chinese Localization")

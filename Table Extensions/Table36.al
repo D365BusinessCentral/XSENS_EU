@@ -25,6 +25,20 @@ tableextension 50011 "Sales Header" extends "Sales Header"
         {
             DataClassification = ToBeClassified;
         }
+        field(50016; "Comment Internal"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+            Description = 'Internal Comment';
+        }
+        field(50017; "Comment External"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+            Description = 'External Comment';
+        }
+        field(50018; "Shipment Method Description"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
         field(50100; "VAT Customer Name"; Text[50])
         {
             DataClassification = ToBeClassified;

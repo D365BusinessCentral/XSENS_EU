@@ -75,6 +75,9 @@ codeunit 50101 "Events"
         if PurchOrderHeader."Buy-from Vendor No." <> '' then begin
             Clear(RecVendor);
             if RecVendor.GET(PurchOrderHeader."Buy-from Vendor No.") then begin
+                //updating Tax Area Code in Purchase Header
+                PurchOrderHeader.Validate("Tax Area Code", RecVendor."Tax Area Code");
+                PurchOrderHeader.Modify();
                 if RecVendor."Price Basis" = RecVendor."Price Basis"::Absolute then
                     exit
                 else begin
