@@ -125,7 +125,7 @@ codeunit 50010 "XSS Check Sales Force Order"
         pRecSalesLine.MODIFY(true);
     end;
 
-    [EventSubscriber(ObjectType::Table, 37, 'OnAfterValidateEvent', 'Sorting', false, false)]
+    [EventSubscriber(ObjectType::Table, 37, 'OnAfterValidateEvent', 'Sorting No.', false, false)]
     local procedure ValidateSortingNo(var Rec: Record "Sales Line"; var xRec: Record "Sales Line"; CurrFieldNo: Integer);
     var
         lCtxSorting: TextConst ENU = 'Sorting number %1 is already in use.', NLD = 'Sorteringsnummer %1 is reedsl in gebruik.';
