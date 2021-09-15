@@ -372,7 +372,7 @@ report 50000 "Sales - Invoice XSS DCR"
             column(OrderNo; "Order No.")
             {
             }
-            column(PaymentTermsDesc; "Payment Terms Code")// "Payment Terms Code")//wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl("Payment Terms Code")//Krishna)
+            column(PaymentTermsDesc; PaymentTermsG.Description) //"Payment Terms Code")// "Payment Terms Code")//wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl("Payment Terms Code")//Krishna)
             {
             }
             column(PostingDate; "Posting Date")
@@ -1081,6 +1081,9 @@ report 50000 "Sales - Invoice XSS DCR"
                 Clear(TotalSubTotal);
                 Clear(TotalAmountInclVAT);
                 TotalAmountInclVAT := VATAmtLine.GetTotalAmountInclVAT;
+                //09.09.2021
+                Clear(PaymentTermsG);
+                if PaymentTermsG.Get("Payment Terms Code") then;
             end;
         }
     }
@@ -1242,6 +1245,7 @@ report 50000 "Sales - Invoice XSS DCR"
         //31.082021
         TotalAmountInclVAT: Decimal;
         TotalSubTotal: Decimal;
+        PaymentTermsG: Record "Payment Terms";
 
     local procedure Trl(pLblName: Text): Text;
     begin

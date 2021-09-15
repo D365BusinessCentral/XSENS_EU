@@ -415,6 +415,8 @@ report 50003 "Sales - Shipment XSS DCR"
                     column(PrintItemDescription2; gRecItem."Print Item Description 2")
                     {
                     }
+                    //13.09.2021
+                    column(wgShowLotSN; wgShowLotSN) { }
                     dataitem(LineComment; "Sales Comment Line")
                     {
                         DataItemLink = "No." = FIELD("Document No."), "Document Line No." = FIELD("Line No.");
@@ -537,7 +539,6 @@ report 50003 "Sales - Shipment XSS DCR"
                             //NM_END
                         end else
                             gRecItem.INIT;
-
                     end;
 
                     trigger OnPreDataItem();
@@ -705,6 +706,7 @@ report 50003 "Sales - Shipment XSS DCR"
             wlFncInitLogInteraction;
             wgNoOfCopies := 0;
         end;
+        wgShowLotSN := true;//13.09.2021
     end;
 
     var

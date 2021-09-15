@@ -356,7 +356,7 @@ report 50001 "Sales - Order Confirm XSS DCR"
             column(LanguageCode; "Language Code")
             {
             }
-            column(PaymentTermsDesc; "Payment Terms Code")//wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl("Payment Terms Code")//Krishna)
+            column(PaymentTermsDesc; PaymentTermsG.Description) //"Payment Terms Code")//wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl("Payment Terms Code")//Krishna)
             {
             }
             column(PostingDate; "Posting Date")
@@ -377,7 +377,7 @@ report 50001 "Sales - Order Confirm XSS DCR"
             column(SelltoCustNo; "Sell-to Customer No.")
             {
             }
-            column(ShipmentMethodDesc; "Shipment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetShipmMethodTrl("Shipment Method Code"))//Krishna)
+            column(ShipmentMethodDesc; ShipmentMethodG.Description) //"Shipment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetShipmMethodTrl("Shipment Method Code"))//Krishna)
             {
             }
             column(ShipToAddr1; wgShipToAddr[1])
@@ -407,6 +407,30 @@ report 50001 "Sales - Order Confirm XSS DCR"
             column(ShipToAddrSet; wgShowShippingAddr)
             {
             }
+            column(BillToAddr1; wgCustAddr[1])
+            {
+            }
+            column(BillToAddr2; wgCustAddr[2])
+            {
+            }
+            column(BillToAddr3; wgCustAddr[3])
+            {
+            }
+            column(BillToAddr4; wgCustAddr[4])
+            {
+            }
+            column(BillToAddr5; wgCustAddr[5])
+            {
+            }
+            column(BillToAddr6; wgCustAddr[6])
+            {
+            }
+            column(BillToAddr7; wgCustAddr[7])
+            {
+            }
+            column(BillToAddr8; wgCustAddr[8])
+            {
+            }
             column(TotalText; wgTotalText)
             {
             }
@@ -426,7 +450,7 @@ report 50001 "Sales - Order Confirm XSS DCR"
             {
                 AutoFormatType = 1;
             }
-            column(VATRegNo; "VAT Registration No.")
+            column(VATRegNo; CustomerG."VAT Registration No.") //"VAT Registration No.")
             {
             }
             column(YourReference; "Your Reference")
@@ -463,6 +487,18 @@ report 50001 "Sales - Order Confirm XSS DCR"
             column(Sell_to_E_Mail; "Sell-to E-Mail") { }
             //01.09.2021
             column(TotLineAmount; wgTotLineAmount)
+            {
+            }
+            column(ShipmentDate; FORMAT(SalesHdr."Shipment Date", 0, '<Day> <Month Text> <Year4>'))
+            {
+            }
+            column(PaymentMethodDesc; PaymentMethodG.Description) //SalesHdr."Payment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl(SalesHdr."Payment Method Code"))//Krishna)
+            {
+            }
+            column(ShipmentMethodExternal; "Shipment Method Description")
+            {
+            }
+            column(Comment_External; "Comment External")
             {
             }
             dataitem(CopyLoop; "Integer")
@@ -566,6 +602,10 @@ report 50001 "Sales - Order Confirm XSS DCR"
                     {
                     }
                     column(LineNo; "Line No.")
+                    {
+                    }
+                    //09.09.2021
+                    column(Sorting_No_; "Sorting No.")
                     {
                     }
                     column(Description2; SalesLine."Description 2")
@@ -796,15 +836,15 @@ report 50001 "Sales - Order Confirm XSS DCR"
                 dataitem(TermsAndConditions; "Integer")
                 {
                     DataItemTableView = SORTING(Number) ORDER(Ascending) WHERE(Number = CONST(1));
-                    column(PaymentMethodDesc; SalesHdr."Payment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl(SalesHdr."Payment Method Code"))//Krishna)
-                    {
-                    }
+                    // column(PaymentMethodDesc; SalesHdr."Payment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl(SalesHdr."Payment Method Code"))//Krishna)
+                    // {
+                    // }
                     column(SalesForceComment; SalesHdr."SalesForce Comment")
                     {
                     }
-                    column(ShipmentDate; FORMAT(SalesHdr."Shipment Date", 0, '<Day> <Month Text> <Year4>'))
-                    {
-                    }
+                    // column(ShipmentDate; FORMAT(SalesHdr."Shipment Date", 0, '<Day> <Month Text> <Year4>'))
+                    // {
+                    // }
                 }
                 dataitem(Total; "Integer")
                 {
@@ -982,6 +1022,15 @@ report 50001 "Sales - Order Confirm XSS DCR"
                 ////wgHideLineDiscount := wgCduDocCreatorReportFunctions.wgFncHideLineDiscount(wlRecRef);//Krishna
 
                 fUpdateDateOrderConfimation(SalesHdr);
+                //09.09.2021
+                Clear(ShipmentMethodG);
+                if ShipmentMethodG.Get("Shipment Method Code") then;
+                Clear(PaymentMethodG);
+                if PaymentMethodG.Get("Payment Method Code") then;
+                Clear(PaymentTermsG);
+                if PaymentTermsG.Get("Payment Terms Code") then;
+                Clear(CustomerG);
+                if CustomerG.Get("Bill-to Customer No.") then;
             end;
         }
     }
@@ -1159,6 +1208,12 @@ report 50001 "Sales - Order Confirm XSS DCR"
         gIntCompanyLocation: Integer;
         //31.08.2021
         TotalSubTotal: Decimal;
+        //09.09.2021
+        PaymentMethodG: Record "Payment Method";
+        ShipmentMethodG: Record "Shipment Method";
+        PaymentTermsG: Record "Payment Terms";
+        Serial: Page "Posted Sales Shipment";
+        CustomerG: Record Customer;
 
     local procedure Trl(pLblName: Text): Text;
     begin

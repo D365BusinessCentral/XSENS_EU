@@ -202,7 +202,7 @@ report 50005 "Purchase - Order XSS DCR"
             column(lblVATPerc; Trl('VATPerc'))
             {
             }
-            column(lblVATRegistrationNo; Trl('VATRegistrationNo'))
+            column(lblVATRegistrationNo; Trl('VAT Registration No.'))
             {
             }
             column(lblYourReference; Trl('Your Reference'))
@@ -458,7 +458,7 @@ report 50005 "Purchase - Order XSS DCR"
             {
                 AutoFormatType = 1;
             }
-            column(VATRegNo; "VAT Registration No.")
+            column(VATRegNo; VendorG."VAT Registration No.") //"VAT Registration No.")
             {
             }
             column(YourReference; "Your Reference")
@@ -607,6 +607,7 @@ report 50005 "Purchase - Order XSS DCR"
                     }
                     //01.09.2021
                     column(Unit_Cost; "Unit Cost") { }
+
                     dataitem(LineComment; "Sales Comment Line")
                     {
                         DataItemLink = "Document Type" = FIELD("Document Type"), "No." = FIELD("Document No."), "Document Line No." = FIELD("Line No.");
@@ -1054,6 +1055,8 @@ report 50005 "Purchase - Order XSS DCR"
                 //01.09.2021
                 Clear(TotalAmountInclVAT);
                 TotalAmountInclVAT := VATAmtLine.GetTotalAmountInclVAT;
+                Clear(VendorG);
+                if VendorG.Get("Buy-from Vendor No.") then;
             end;
         }
     }
@@ -1214,6 +1217,7 @@ report 50005 "Purchase - Order XSS DCR"
         gCduFinancieel: Codeunit Financieel;
         //01.09.2021
         TotalAmountInclVAT: Decimal;
+        VendorG: Record Vendor;
 
     local procedure Trl(pLblName: Text): Text;
     begin

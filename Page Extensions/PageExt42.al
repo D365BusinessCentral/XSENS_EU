@@ -16,10 +16,35 @@ pageextension 50006 "Sales Order" extends "Sales Order"
             field("Comment Internal"; Rec."Comment Internal")
             {
                 ApplicationArea = All;
+                Visible = false;
             }
             field("Comment External"; Rec."Comment External")
             {
                 ApplicationArea = All;
+                Visible = false;
+            }
+            group(SalesForce)
+            {
+                CaptionML = ENU = 'SalesForce',
+                                  NLD = 'SalesForce';
+                field("SalesForce Comment"; Rec."SalesForce Comment")
+                {
+                    CaptionML = ENU = 'Comment',
+                                      NLD = 'Opmerking';
+                    ApplicationArea = All;
+                }
+                field("Comment 2"; Rec."Comment 2")
+                {
+                    ApplicationArea = All;
+                }
+                field("US Payment Terms"; Rec."US Payment Terms")
+                {
+                    ApplicationArea = All;
+                }
+                field("US Sales Order No."; Rec."US Sales Order No.")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
         addafter("Shipment Method Code")
@@ -108,32 +133,32 @@ pageextension 50006 "Sales Order" extends "Sales Order"
                 ApplicationArea = Basic, Suite;
             }
         }
-        addlast(content)
-        {
-            group(SalesForce)
-            {
-                CaptionML = ENU = 'SalesForce',
-                                  NLD = 'SalesForce';
-                field("SalesForce Comment"; Rec."SalesForce Comment")
-                {
-                    CaptionML = ENU = 'Comment',
-                                      NLD = 'Opmerking';
-                    ApplicationArea = All;
-                }
-                field("Comment 2"; Rec."Comment 2")
-                {
-                    ApplicationArea = All;
-                }
-                field("US Payment Terms"; Rec."US Payment Terms")
-                {
-                    ApplicationArea = All;
-                }
-                field("US Sales Order No."; Rec."US Sales Order No.")
-                {
-                    ApplicationArea = All;
-                }
-            }
-        }
+        // addlast(content)
+        // {
+        //     group(SalesForce)
+        //     {
+        //         CaptionML = ENU = 'SalesForce',
+        //                           NLD = 'SalesForce';
+        //         field("SalesForce Comment"; Rec."SalesForce Comment")
+        //         {
+        //             CaptionML = ENU = 'Comment',
+        //                               NLD = 'Opmerking';
+        //             ApplicationArea = All;
+        //         }
+        //         field("Comment 2"; Rec."Comment 2")
+        //         {
+        //             ApplicationArea = All;
+        //         }
+        //         field("US Payment Terms"; Rec."US Payment Terms")
+        //         {
+        //             ApplicationArea = All;
+        //         }
+        //         field("US Sales Order No."; Rec."US Sales Order No.")
+        //         {
+        //             ApplicationArea = All;
+        //         }
+        //     }
+        // }
         addafter("Ship-to Contact")
         {
             field("Sell-to IC Customer No."; Rec."Sell-to IC Customer No.")

@@ -164,6 +164,7 @@ codeunit 50101 "Events"
         //LT-28JULY2021 -->
         SalesHeader."Application area" := SellToCustomer."Application area";
         //LT-28JULY2021 <--
+        SalesHeader."Bill-to Email" := SellToCustomer."Bill-to Email";
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnShowDocDimOnBeforeUpdateSalesLines', '', false, false)]
