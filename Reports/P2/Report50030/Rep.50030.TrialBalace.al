@@ -5,7 +5,7 @@ report 50030 "IT Trial Balance"
     // ease of conversion, the 4 Percent To Total columns are still within the array,
     // even though the user can NEVER select them. These are columns 2, 4, 6 & 8.
     DefaultLayout = RDLC;
-    RDLCLayout = 'Reports\P2\Report50011\TrialBalance.rdl';
+    RDLCLayout = 'Reports\P2\Report50030\TrialBalance.rdl';
 
     ApplicationArea = Basic, Suite;
     Caption = 'IT Trial Balance';

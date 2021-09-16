@@ -545,10 +545,11 @@ codeunit 50020 ProcessChargebee
         HttpClient.SetBaseAddress(sURL);
         HttpContent.GetHeaders(HttpHeaders);
         HttpHeaders.Remove('Content-Type');
-        HttpHeaders.Add('Content-Type', 'Application/json');
-        HttpHeaders.Add('Accept', 'Application/json');
+        //HttpHeaders.Add('Content-Type', 'Application/json');
+        // HttpHeaders.Add('Accept', 'Application/json');
         HttpClient.DefaultRequestHeaders.Add('User-Agent', 'Dynamics 365');
         HttpClient.DefaultRequestHeaders.TryAddWithoutValidation('Content-Type', 'Application/json');
+        HttpClient.DefaultRequestHeaders.TryAddWithoutValidation('Accept', 'Application/json');
         HttpClient.DefaultRequestHeaders.Add('Authorization', CreateXSensAuthHeader(APIKey));
 
         HttpRequestMessage.Content(HttpContent);
@@ -572,6 +573,8 @@ codeunit 50020 ProcessChargebee
                 exit('null')
             end;*/
             exit(ApiResult);
+        end else begin
+            exit('null')
         end;
     end;
 
