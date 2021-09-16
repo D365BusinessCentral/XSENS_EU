@@ -63,6 +63,10 @@ xmlport 50005 "Import Journaalposten"
                 {
                     XmlName = 'Field7';
                     Width = 30;
+                    trigger OnAfterAssignVariable()
+                    begin
+                        fImportRecord;
+                    end;
                 }
                 textelement(gtxtdimension3)
                 {
@@ -91,7 +95,7 @@ xmlport 50005 "Import Journaalposten"
 
                     trigger OnAfterAssignVariable()
                     begin
-                        fImportRecord;
+                        //fImportRecord;
                     end;
                 }
 

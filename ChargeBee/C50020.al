@@ -22,7 +22,8 @@ codeunit 50020 ProcessChargebee
         sLast_Updated := DELCHR(sLast_Updated, '>', ' ');
         bPost := ChargebeeSetup.InstantBooking;
         ChangeLastUpdated := true;
-        gBusinessUnit := ChargebeeSetup."Business Unit";
+        gBusinessUnit := ChargebeeSetup."Segment Code";
+        gProductLines := ChargebeeSetup."Product Lines";
         bUseSalesTax := ChargebeeSetup."Use Sales Tax";
         if bUseSalesTax then begin
             gSalesTaxAccount := ChargebeeSetup."Sales Tax account";
@@ -59,6 +60,7 @@ codeunit 50020 ProcessChargebee
         gNoVAT: Code[20];
         gSalesTaxAccount: Code[20];
         gBusinessUnit: Code[20];
+        gProductLines: Code[20];
 
     local procedure ReturnDate(vDateSerial: Variant): Date;
     var
@@ -390,6 +392,7 @@ codeunit 50020 ProcessChargebee
                     SalesLine.VALIDATE("Line Discount Amount", DiscountAmt);
                 //
                 SalesLine.VALIDATE("Shortcut Dimension 1 Code", gBusinessUnit);
+                SalesLine.Validate("Shortcut Dimension 4 Code", gProductLines);
                 if bUseSalesTax then SalesLine.VALIDATE("VAT Prod. Posting Group", gNoVAT);
                 SalesLine.INSERT(true);
                 //vValue := JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].tax_amount');

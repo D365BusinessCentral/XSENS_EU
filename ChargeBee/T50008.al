@@ -52,10 +52,15 @@ table 50005 ChargebeeSetup
             Description = 'Product Posting Grioup for No VAT';
             TableRelation = "VAT Product Posting Group";
         }
-        field(110; "Business Unit"; Code[20])
+        field(110; "Segment Code"; Code[20])
         {
-            Description = 'Business Unit';
+            Description = 'Segment Code';
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
+        }
+        field(111; "Product Lines"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(4));
         }
     }
 

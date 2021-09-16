@@ -179,5 +179,20 @@ codeunit 50101 "Events"
             SalesHeader."Shortcut Dimension 4 Code" := RecDimSetEntry."Dimension Value Code";
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Line", 'OnAfterShowDimensions', '', false, false)]
+    local procedure OnAfterShowDimensions(var SalesLine: Record "Sales Line"; xSalesLine: Record "Sales Line");
+    var
+        RecGLSetup: Record "General Ledger Setup";
+        RecDimSetEntry: Record "Dimension Set Entry";
+    begin
+        if SalesLine."Dimension Set ID" <> xSalesLine."Dimension Set ID" then begin
+            RecGLSetup.GET;
+            CLEAR(RecDimSetEntry);
+            IF RecDimSetEntry.GET(SalesLine."Dimension Set ID", RecGLSetup."Shortcut Dimension 4 Code") THEN
+                SalesLine."Shortcut Dimension 4 Code" := RecDimSetEntry."Dimension Value Code";
+        end;
+    end;
+
+
 
 }

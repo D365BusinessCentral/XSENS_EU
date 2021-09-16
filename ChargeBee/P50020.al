@@ -40,7 +40,11 @@ page 50020 ChargebeeSetup
                     ToolTip = 'Vul volledige url naar Chargebee-omgeving in (incl. /api/v2)';
                     ApplicationArea = All;
                 }
-                field("Business Unit"; Rec."Business Unit")
+                field("Segment Code"; Rec."Segment Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Product Lines"; Rec."Product Lines")
                 {
                     ApplicationArea = All;
                 }
