@@ -898,16 +898,16 @@ report 50001 "Sales - Order Confirm XSS DCR"
                             wgRecCompanyInfo."Company Location"::Holland:
                                 begin
                                     if wgMonolithicVAT then
-                                        wgVATAmountText := STRSUBSTNO(Trl('TotalVATAmount%1Perc'), VATAmtLine."VAT %")
+                                        wgVATAmountText := STRSUBSTNO(Trl('Total VAT Amount %1 Perc'), VATAmtLine."VAT %")
                                     else
-                                        wgVATAmountText := Trl('TotalVATAmount');
+                                        wgVATAmountText := Trl('Total VAT Amount');
                                 end;
                             wgRecCompanyInfo."Company Location"::"North America":
                                 begin
                                     if wgMonolithicVAT then
-                                        wgVATAmountText := STRSUBSTNO(Trl('TotalTaxAmount%1Perc'), VATAmtLine."VAT %")
+                                        wgVATAmountText := STRSUBSTNO(Trl('Total Tax Amount %1 Perc'), VATAmtLine."VAT %")
                                     else
-                                        wgVATAmountText := Trl('TotalTaxAmount');
+                                        wgVATAmountText := Trl('Total Tax Amount');
                                 end;
                         end;
                         //NM_END
@@ -1251,12 +1251,18 @@ report 50001 "Sales - Order Confirm XSS DCR"
             case wgRecCompanyInfo."Company Location" of
                 wgRecCompanyInfo."Company Location"::Holland:
                     begin
-                        wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl VAT.'), wlCurrencyCode);
+                        if wgTotVATAmount = 0 then
+                            wgTotalInclVATText := STRSUBSTNO(Trl('Total %1'), wlCurrencyCode)
+                        else
+                            wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl VAT.'), wlCurrencyCode);
                         wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl VAT.'), wlCurrencyCode);
                     end;
                 wgRecCompanyInfo."Company Location"::"North America":
                     begin
-                        wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl Tax.'), wlCurrencyCode);
+                        if wgTotVATAmount = 0 then
+                            wgTotalInclVATText := STRSUBSTNO(Trl('Total %1'), wlCurrencyCode)
+                        else
+                            wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl Tax.'), wlCurrencyCode);
                         wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl Tax.'), wlCurrencyCode);
                     end;
             end;
