@@ -489,6 +489,9 @@ report 50001 "Sales - Order Confirm XSS DCR"
             column(TotLineAmount; wgTotLineAmount)
             {
             }
+            column(VATAmtText; VATAmtLine.VATAmountText())
+            {
+            }
             column(ShipmentDate; FORMAT(SalesHdr."Shipment Date", 0, '<Day> <Month Text> <Year4>'))
             {
             }
@@ -498,7 +501,13 @@ report 50001 "Sales - Order Confirm XSS DCR"
             column(ShipmentMethodExternal; "Shipment Method Description")
             {
             }
-            column(Comment_External; "Comment External")
+            column(AmountInclVAT; "Amount Including VAT")
+            {
+            }
+            column(VATAmount; VATAmtLine."VAT Amount")
+            {
+            }
+            column(SalesForce_Comment; "SalesForce Comment")
             {
             }
             dataitem(CopyLoop; "Integer")
@@ -550,11 +559,6 @@ report 50001 "Sales - Order Confirm XSS DCR"
                     DataItemTableView = SORTING("Document Type", "Document No.", "Line No.");
                     UseTemporary = true;
                     column(Amount; Amount)
-                    {
-                        AutoFormatExpression = "Currency Code";
-                        AutoFormatType = 1;
-                    }
-                    column(AmountInclVAT; "Amount Including VAT")
                     {
                         AutoFormatExpression = "Currency Code";
                         AutoFormatType = 1;
@@ -763,11 +767,11 @@ report 50001 "Sales - Order Confirm XSS DCR"
                         AutoFormatExpression = SalesHdr."Currency Code";
                         AutoFormatType = 1;
                     }
-                    column(VATAmount; "VAT Amount")
-                    {
-                        AutoFormatExpression = SalesHdr."Currency Code";
-                        AutoFormatType = 1;
-                    }
+                    // column(VATAmount; "VAT Amount")
+                    // {
+                    //     AutoFormatExpression = SalesHdr."Currency Code";
+                    //     AutoFormatType = 1;
+                    // }
                     column(VATBase; "VAT Base")
                     {
                         AutoFormatExpression = SalesHdr."Currency Code";
@@ -879,9 +883,9 @@ report 50001 "Sales - Order Confirm XSS DCR"
                         AutoFormatExpression = SalesHdr."Currency Code";
                         AutoFormatType = 1;
                     }
-                    column(VATAmtText; wgVATAmountText)
-                    {
-                    }
+                    // column(VATAmtText; wgVATAmountText)
+                    // {
+                    // }
                     column(TotVALVATBaseLCY; wgTotVALVATBaseLCY)
                     {
                     }

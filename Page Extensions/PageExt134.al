@@ -30,6 +30,13 @@ pageextension 50015 "Posted Sales Credit Memo" extends "Posted Sales Credit Memo
                 }
             }
         }
+        addafter("Your Reference")
+        {
+            field("SalesForce Comment"; Rec."SalesForce Comment")
+            {
+                ApplicationArea = All;
+            }
+        }
         addlast("Bill-to")
         {
             field("Bill-to Email"; Rec."Bill-to Email")

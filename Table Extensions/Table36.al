@@ -218,7 +218,6 @@ tableextension 50011 "Sales Header" extends "Sales Header"
                         NLD = 'Factuurverklaring';
             Description = 'Used';
         }
-
     }
     keys
     {

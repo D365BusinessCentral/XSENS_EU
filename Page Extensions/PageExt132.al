@@ -30,6 +30,20 @@ pageextension 50014 "Posted Sales Invoice" extends "Posted Sales Invoice"
                 }
             }
         }
+        addafter("Your Reference")
+        {
+            field("SalesForce Comment"; Rec."SalesForce Comment")
+            {
+                ApplicationArea = All;
+            }
+        }
+        addafter("Shipment Method Code")
+        {
+            field("Shipment Method Description"; Rec."Shipment Method Description")
+            {
+                ApplicationArea = All;
+            }
+        }
         addlast("Bill-to")
         {
             field("Bill-to Email"; Rec."Bill-to Email")

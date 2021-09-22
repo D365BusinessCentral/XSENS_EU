@@ -149,5 +149,9 @@ tableextension 50021 "Sales Invoice Header" extends "Sales Invoice Header"
             CaptionML = ENU = 'Declaration Statement',
                         NLD = 'Factuur verklaring';
         }
+        field(50018; "Shipment Method Description"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 }

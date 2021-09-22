@@ -6270,6 +6270,15 @@ End Function
         <Field Name="TotLineAmountFormat">
           <DataField>TotLineAmountFormat</DataField>
         </Field>
+        <Field Name="VATAmtText">
+          <DataField>VATAmtText</DataField>
+        </Field>
+        <Field Name="VATAmount">
+          <DataField>VATAmount</DataField>
+        </Field>
+        <Field Name="VATAmountFormat">
+          <DataField>VATAmountFormat</DataField>
+        </Field>
         <Field Name="OutputNo">
           <DataField>OutputNo</DataField>
         </Field>
@@ -6393,12 +6402,6 @@ End Function
         <Field Name="LineAmount_2Format">
           <DataField>LineAmount_2Format</DataField>
         </Field>
-        <Field Name="VATAmount">
-          <DataField>VATAmount</DataField>
-        </Field>
-        <Field Name="VATAmountFormat">
-          <DataField>VATAmountFormat</DataField>
-        </Field>
         <Field Name="VATBase">
           <DataField>VATBase</DataField>
         </Field>
@@ -6476,9 +6479,6 @@ End Function
         </Field>
         <Field Name="TotVATAmountFormat">
           <DataField>TotVATAmountFormat</DataField>
-        </Field>
-        <Field Name="VATAmtText">
-          <DataField>VATAmtText</DataField>
         </Field>
         <Field Name="TotVALVATBaseLCY">
           <DataField>TotVALVATBaseLCY</DataField>

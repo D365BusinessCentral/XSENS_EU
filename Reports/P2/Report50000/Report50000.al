@@ -159,10 +159,10 @@ report 50000 "Sales - Invoice XSS DCR"
             column(lblShipment; Trl('Shipment'))
             {
             }
-            column(lblShipmentDate; Trl('ShipmentDate'))
+            column(lblShipmentDate; Trl('Shipment Date'))
             {
             }
-            column(lblShipmentMethod; Trl('ShipmentMethod'))
+            column(lblShipmentMethod; Trl('Shipment Method'))
             {
             }
             column(lblShipToAddress; Trl('ShipToAddress'))
@@ -222,7 +222,7 @@ report 50000 "Sales - Invoice XSS DCR"
             column(lblPage; Trl('Page'))
             {
             }
-            column(lblPaymentMethod; Trl('PaymentMethod'))
+            column(lblPaymentMethod; Trl('Payment Method'))
             {
             }
             column(lblTermsAndCond; Trl('TermsAndCond'))
@@ -393,7 +393,7 @@ report 50000 "Sales - Invoice XSS DCR"
             column(SelltoCustNo; "Sell-to Customer No.")
             {
             }
-            column(ShipmentMethodDesc; "Shipment Method Code")// "Shipment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetShipmMethodTrl("Shipment Method Code"))//Krishna)//Krishna
+            column(ShipmentMethodDesc; ShipmentMethodG.Description) //"Shipment Method Code")// "Shipment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetShipmMethodTrl("Shipment Method Code"))//Krishna)//Krishna
             {
             }
             column(ShipToAddr1; wgShipToAddr[1])
@@ -472,6 +472,27 @@ report 50000 "Sales - Invoice XSS DCR"
             //31.08.2021
             column(TotalSubTotal; TotalSubTotal) { }
             column(TotLineAmount; wgTotLineAmount)
+            {
+            }
+            column(SalesForce_Comment; "SalesForce Comment")
+            {
+            }
+            column(Shipment_Method_Description; "Shipment Method Description")
+            {
+            }
+            column(ShipmentDate; FORMAT(InvHdr."Shipment Date", 0, '<Day> <Month Text> <Year4>'))
+            {
+            }
+            column(PaymentMethodDesc; PaymentMethodG.Description) //InvHdr."Payment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl(InvHdr."Payment Method Code"))//Krishna)
+            {
+            }
+            column(VatRegulationG; VatRegulationG)
+            {
+            }
+            column(VATAmtText; VATAmtLine.VATAmountText())
+            {
+            }
+            column(VATAmount; VATAmtLine."VAT Amount")
             {
             }
             dataitem(CopyLoop; "Integer")
@@ -739,11 +760,11 @@ report 50000 "Sales - Invoice XSS DCR"
                         AutoFormatExpression = InvHdr."Currency Code";
                         AutoFormatType = 1;
                     }
-                    column(VATAmount; "VAT Amount")
-                    {
-                        AutoFormatExpression = InvHdr."Currency Code";
-                        AutoFormatType = 1;
-                    }
+                    // column(VATAmount; "VAT Amount")
+                    // {
+                    //     AutoFormatExpression = InvHdr."Currency Code";
+                    //     AutoFormatType = 1;
+                    // }
                     column(VATBase; "VAT Base")
                     {
                         AutoFormatExpression = InvHdr."Currency Code";
@@ -850,9 +871,9 @@ report 50000 "Sales - Invoice XSS DCR"
                 dataitem(TermsAndConditions; "Integer")
                 {
                     DataItemTableView = SORTING(Number) ORDER(Ascending) WHERE(Number = CONST(1));
-                    column(PaymentMethodDesc; InvHdr."Payment Method Code")// wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl(InvHdr."Payment Method Code"))//Krishna
-                    {
-                    }
+                    // column(PaymentMethodDesc; InvHdr."Payment Method Code")// wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl(InvHdr."Payment Method Code"))//Krishna
+                    // {
+                    // }
                     column(SalesForceComment; InvHdr."SalesForce Comment")
                     {
                     }
@@ -888,9 +909,9 @@ report 50000 "Sales - Invoice XSS DCR"
                         AutoFormatExpression = InvHdr."Currency Code";
                         AutoFormatType = 1;
                     }
-                    column(VATAmtText; wgVATAmountText)
-                    {
-                    }
+                    // column(VATAmtText; wgVATAmountText)
+                    // {
+                    // }
                     column(TotVALVATBaseLCY; wgTotVALVATBaseLCY)
                     {
                     }
@@ -1082,8 +1103,19 @@ report 50000 "Sales - Invoice XSS DCR"
                 Clear(TotalAmountInclVAT);
                 TotalAmountInclVAT := VATAmtLine.GetTotalAmountInclVAT;
                 //09.09.2021
+                Clear(ShipmentMethodG);
+                if ShipmentMethodG.Get("Shipment Method Code") then;
                 Clear(PaymentTermsG);
                 if PaymentTermsG.Get("Payment Terms Code") then;
+                Clear(PaymentMethodG);
+                if PaymentMethodG.Get("Payment Method Code") then;
+                Clear(VatRegulationG);
+                case InvHdr."VAT Bus. Posting Group" of
+                    'EU-SALE':
+                        VatRegulationG := '“Subject to Intra Community Supply (Art.138 VAT Directive 2006/112) – 0% VATapplicable”';
+                    'ROW-SALE':
+                        VatRegulationG := '“No tax charged because of EXPORT-shipment”)';
+                end;
             end;
         }
     }
@@ -1246,6 +1278,9 @@ report 50000 "Sales - Invoice XSS DCR"
         TotalAmountInclVAT: Decimal;
         TotalSubTotal: Decimal;
         PaymentTermsG: Record "Payment Terms";
+        PaymentMethodG: Record "Payment Method";
+        ShipmentMethodG: Record "Shipment Method";
+        VatRegulationG: Text;
 
     local procedure Trl(pLblName: Text): Text;
     begin

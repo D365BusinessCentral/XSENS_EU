@@ -108,5 +108,9 @@ tableextension 50019 "Sales Shipment Header" extends "Sales Shipment Header"
             CaptionML = ENU = 'Bill-to Email',
                         NLD = 'Factuur naar Email';
         }
+        field(50018; "Shipment Method Description"; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 }

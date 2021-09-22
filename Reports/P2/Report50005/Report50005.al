@@ -487,6 +487,12 @@ report 50005 "Purchase - Order XSS DCR"
             column(TotLineAmount; wgTotLineAmount)
             {
             }
+            column(VATAmtText; VATAmtLine.VATAmountText())
+            {
+            }
+            column(VATAmount; VATAmtLine."VAT Amount")
+            {
+            }
             dataitem(CopyLoop; "Integer")
             {
                 DataItemTableView = SORTING(Number);
@@ -693,11 +699,11 @@ report 50005 "Purchase - Order XSS DCR"
                         AutoFormatExpression = PurchHdr."Currency Code";
                         AutoFormatType = 1;
                     }
-                    column(VATAmount; "VAT Amount")
-                    {
-                        AutoFormatExpression = PurchHdr."Currency Code";
-                        AutoFormatType = 1;
-                    }
+                    // column(VATAmount; "VAT Amount")
+                    // {
+                    //     AutoFormatExpression = PurchHdr."Currency Code";
+                    //     AutoFormatType = 1;
+                    // }
                     column(VATBase; "VAT Base")
                     {
                         AutoFormatExpression = PurchHdr."Currency Code";
@@ -804,9 +810,9 @@ report 50005 "Purchase - Order XSS DCR"
                         AutoFormatExpression = PurchHdr."Currency Code";
                         AutoFormatType = 1;
                     }
-                    column(VATAmtText; wgVATAmountText)
-                    {
-                    }
+                    // column(VATAmtText; wgVATAmountText)
+                    // {
+                    // }
                     column(TotVALVATBaseLCY; wgTotVALVATBaseLCY)
                     {
                     }

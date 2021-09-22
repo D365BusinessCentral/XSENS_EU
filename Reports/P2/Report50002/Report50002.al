@@ -31,7 +31,7 @@ report 50002 "Proforma Invoice XSS DCR"
     {
         dataitem(SalesHdr; "Sales Header")
         {
-            DataItemTableView = SORTING("Document Type", "No.") WHERE("Document Type" = CONST(Order));
+            DataItemTableView = SORTING("Document Type", "No.") WHERE("Document Type" = CONST(Invoice));
             RequestFilterFields = "No.", "Sell-to Customer No.", "No. Printed";
             RequestFilterHeading = 'Sales Order';
             column(lblAllowInvDisc; Trl('AllowInvDisc'))
@@ -464,6 +464,12 @@ report 50002 "Proforma Invoice XSS DCR"
             {
             }
             column(TotLineAmount; wgTotLineAmount)
+            {
+            }
+            column(SalesForce_Comment; "SalesForce Comment")
+            {
+            }
+            column(VatRegulationG; VatRegulationG)
             {
             }
             dataitem(CopyLoop; "Integer")
@@ -987,6 +993,13 @@ report 50002 "Proforma Invoice XSS DCR"
                 if ShipmentMethodG.Get("Shipment Method Code") then;
                 Clear(PaymentMethodG);
                 if PaymentMethodG.Get("Payment Method Code") then;
+                Clear(VatRegulationG);
+                case SalesHdr."VAT Bus. Posting Group" of
+                    'EU-SALE':
+                        VatRegulationG := '“Subject to Intra Community Supply (Art.138 VAT Directive 2006/112) – 0% VATapplicable”';
+                    'ROW-SALE':
+                        VatRegulationG := '“No tax charged because of EXPORT-shipment”)';
+                end;
             end;
         }
     }
@@ -1164,6 +1177,7 @@ report 50002 "Proforma Invoice XSS DCR"
         PaymentTermsG: Record "Payment Terms";
         PaymentMethodG: Record "Payment Method";
         ShipmentMethodG: Record "Shipment Method";
+        VatRegulationG: Text;
 
     local procedure Trl(pLblName: Text): Text;
     begin

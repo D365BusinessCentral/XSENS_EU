@@ -372,7 +372,7 @@ report 50004 "Sales - Credit Memo XSS DCR"
             column(ReturnOrderNo; "Return Order No.")
             {
             }
-            column(PaymentTermsDesc; "Payment Terms Code")//wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl("Payment Terms Code")//Krishna)
+            column(PaymentTermsDesc; PaymentTermsG.Description) //"Payment Terms Code")//wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl("Payment Terms Code")//Krishna)
             {
             }
             column(PostingDate; "Posting Date")
@@ -393,7 +393,7 @@ report 50004 "Sales - Credit Memo XSS DCR"
             column(SelltoCustNo; "Sell-to Customer No.")
             {
             }
-            column(ShipmentMethodDesc; "Shipment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetShipmMethodTrl("Shipment Method Code"))//Krishna)
+            column(ShipmentMethodDesc; ShipmentMethodG.Description) //"Shipment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetShipmMethodTrl("Shipment Method Code"))//Krishna)
             {
             }
             column(ShipToAddr1; wgShipToAddr[1])
@@ -469,6 +469,21 @@ report 50004 "Sales - Credit Memo XSS DCR"
             //31.08.2021
             column(Sell_to_E_Mail; "Sell-to E-Mail") { }
             column(TotLineAmount; wgTotLineAmount)
+            {
+            }
+            column(SalesForce_Comment; "SalesForce Comment")
+            {
+            }
+            // column(Shipment_Method_Description; "Shipment Method Description")
+            // {
+            // }
+            column(PaymentMethodDesc; PaymentMethodG.Description) //InvHdr."Payment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetPaymTermsTrl(InvHdr."Payment Method Code"))//Krishna)
+            {
+            }
+            column(VatRegulationG; VatRegulationG)
+            {
+            }
+            column(ShipmentDate; FORMAT(InvHdr."Shipment Date", 0, '<Day> <Month Text> <Year4>'))
             {
             }
             dataitem(CopyLoop; "Integer")
@@ -985,6 +1000,21 @@ report 50004 "Sales - Credit Memo XSS DCR"
                     gTxtVATTextLine := '';
                 end;
                 //NM_END
+
+                //09.09.2021
+                Clear(ShipmentMethodG);
+                if ShipmentMethodG.Get("Shipment Method Code") then;
+                Clear(PaymentTermsG);
+                if PaymentTermsG.Get("Payment Terms Code") then;
+                Clear(PaymentMethodG);
+                if PaymentMethodG.Get("Payment Method Code") then;
+                Clear(VatRegulationG);
+                case InvHdr."VAT Bus. Posting Group" of
+                    'EU-SALE':
+                        VatRegulationG := '“Subject to Intra Community Supply (Art.138 VAT Directive 2006/112) – 0% VATapplicable”';
+                    'ROW-SALE':
+                        VatRegulationG := '“No tax charged because of EXPORT-shipment”)';
+                end;
             end;
         }
     }
@@ -1127,6 +1157,10 @@ report 50004 "Sales - Credit Memo XSS DCR"
         gRecXSENSSetup: Record "XSENS Setup";
         gTxtVATTextLine: Text[150];
         gIntCompanyLocation: Integer;
+        PaymentTermsG: Record "Payment Terms";
+        PaymentMethodG: Record "Payment Method";
+        ShipmentMethodG: Record "Shipment Method";
+        VatRegulationG: Text;
 
     local procedure Trl(pLblName: Text): Text;
     begin
