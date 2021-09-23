@@ -439,7 +439,7 @@ report 50003 "Sales - Shipment XSS DCR"
                         DataItemTableView = sorting("Document Type", "Item No.", "Document No.") WHERE("Document Type" = CONST("Sales Shipment"));
                         column(Serial_No_; "Serial No.") { }
                         column(Lot_No_; "Lot No.") { }
-                        column(ItemQuantity; Quantity) { }
+                        column(ItemQuantity; Abs(Quantity)) { }
                     }
                     dataitem(LineComment; "Sales Comment Line")
                     {
