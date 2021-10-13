@@ -31,7 +31,7 @@ report 50002 "Proforma Invoice XSS DCR"
     {
         dataitem(SalesHdr; "Sales Header")
         {
-            DataItemTableView = SORTING("Document Type", "No.") WHERE("Document Type" = CONST(Invoice));
+            DataItemTableView = SORTING("Document Type", "No.") WHERE("Document Type" = filter(Order | Invoice));
             RequestFilterFields = "No.", "Sell-to Customer No.", "No. Printed";
             RequestFilterHeading = 'Sales Order';
             column(lblAllowInvDisc; Trl('AllowInvDisc'))
@@ -260,6 +260,12 @@ report 50002 "Proforma Invoice XSS DCR"
             {
             }
             column(CompanyAddr6; wgCompanyAddr[6])
+            {
+            }
+            column(CompanyAddr7; wgCompanyAddr[7])
+            {
+            }
+            column(CompanyAddr8; wgCompanyAddr[8])
             {
             }
             column(CompanyBankAccNo; wgRecCompanyInfo."Bank Account No.")
@@ -998,7 +1004,7 @@ report 50002 "Proforma Invoice XSS DCR"
                     'EU-SALE':
                         VatRegulationG := '“Subject to Intra Community Supply (Art.138 VAT Directive 2006/112) – 0% VATapplicable”';
                     'ROW-SALE':
-                        VatRegulationG := '“No tax charged because of EXPORT-shipment”)';
+                        VatRegulationG := '“No tax charged because of EXPORT-shipment”';
                 end;
             end;
         }

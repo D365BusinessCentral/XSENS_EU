@@ -31,6 +31,10 @@ codeunit 50020 ProcessChargebee
             gNoVAT := ChargebeeSetup."No VAT";
         end;
 
+        //TEST
+        //Message('Test: ' + GiveApiResult('invoices/22', 'GET'));
+        //Error('Stop...');
+
         //GET INVOICES
         sNext_Offset := '';
         repeat
@@ -73,14 +77,13 @@ codeunit 50020 ProcessChargebee
         exit(dOffsetDate + NoOfDays);
     end;
 
-    local procedure CreateXSensAuthHeader(APIKey: Text[100]): Text;
+    local procedure CreateXSensAuthHeader(APIkey: Text): Text
     var
         AuthString: Text;
-        TempBlob: Record TempBlob;
+        BaseConv: Codeunit "Base64 Convert";
     begin
-        TempBlob.INIT;
-        TempBlob.WriteAsText(APIKey, TEXTENCODING::UTF8);
-        AuthString := TempBlob.ToBase64String();
+        AuthString := APIkey;
+        AuthString := BaseConv.ToBase64(AuthString);
         AuthString := STRSUBSTNO('Basic %1', AuthString);
         exit(AuthString);
     end;
@@ -392,7 +395,7 @@ codeunit 50020 ProcessChargebee
                     SalesLine.VALIDATE("Line Discount Amount", DiscountAmt);
                 //
                 SalesLine.VALIDATE("Shortcut Dimension 1 Code", gBusinessUnit);
-                SalesLine.Validate("Shortcut Dimension 4 Code", gProductLines);
+                //SalesLine.Validate("Shortcut Dimension 4 Code", gProductLines);
                 if bUseSalesTax then SalesLine.VALIDATE("VAT Prod. Posting Group", gNoVAT);
                 SalesLine.INSERT(true);
                 //vValue := JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].tax_amount');
@@ -427,7 +430,8 @@ codeunit 50020 ProcessChargebee
             end;
         end;
         if CanRelease then
-            SalesHeader.SetStatus(SalesHeader.Status::Released);
+            SalesPost.ReleaseSalesDocument(SalesHeader);
+        //SalesHeader.SetStatus(SalesHeader.Status::Released);
         if bPost then begin
             CLEAR(SalesPost);
             SalesPost.RUN(SalesHeader);
@@ -517,7 +521,6 @@ codeunit 50020 ProcessChargebee
 
     local procedure GiveApiResult(lastURLPart: Text[300]; Method: Text[10]): Text;
     var
-        //HttpWebRequestMgt: Codeunit "Http Web Request Mgt.";
         HttpClient: HttpClient;
         HttpResponseMessage: HttpResponseMessage;
         HttpHeaders: HttpHeaders;
@@ -525,54 +528,26 @@ codeunit 50020 ProcessChargebee
         HttpRequestMessage: HttpRequestMessage;
 
         Instr: InStream;
-        TempBlob: Record TempBlob;
         ApiResult: Text;
         ChargebeeSetup: Record ChargebeeSetup;
         sURL: Text[300];
         APIKey: Text[100];
     begin
         ChargebeeSetup.GET;
+        //APIKey := ChargebeeSetup.APIKey + '::';
         APIKey := DELCHR(ChargebeeSetup.APIKey, '>', ' ');
-        APIKey := ChargebeeSetup.APIKey + '::';
         sURL := ChargebeeSetup."Base url" + '/' + lastURLPart;
-        /*HttpWebRequestMgt.Initialize(sURL);
-        HttpWebRequestMgt.DisableUI;
-        HttpWebRequestMgt.SetMethod(Method);
-        HttpWebRequestMgt.SetReturnType('application/json');
-        HttpWebRequestMgt.SetContentType('application/json');
-        HttpWebRequestMgt.AddHeader('Authorization', CreateXSensAuthHeader(APIKey));*/
-        HttpRequestMessage.Method(Method);
-        HttpClient.SetBaseAddress(sURL);
-        HttpContent.GetHeaders(HttpHeaders);
-        HttpHeaders.Remove('Content-Type');
-        //HttpHeaders.Add('Content-Type', 'Application/json');
-        // HttpHeaders.Add('Accept', 'Application/json');
-        HttpClient.DefaultRequestHeaders.Add('User-Agent', 'Dynamics 365');
-        HttpClient.DefaultRequestHeaders.TryAddWithoutValidation('Content-Type', 'Application/json');
-        HttpClient.DefaultRequestHeaders.TryAddWithoutValidation('Accept', 'Application/json');
-        HttpClient.DefaultRequestHeaders.Add('Authorization', CreateXSensAuthHeader(APIKey));
-
-        HttpRequestMessage.Content(HttpContent);
-        //if HttpClient.Post(URL, HttpContent, HttpResponseMessage) then begin
+        HttpRequestMessage.SetRequestUri(sURL);
+        HttpHeaders := HttpClient.DefaultRequestHeaders();
+        HttpHeaders.Add('Authorization', CreateXSensAuthHeader(APIKey));
         if HttpClient.Send(HttpRequestMessage, HttpResponseMessage) then begin
             if HttpResponseMessage.IsSuccessStatusCode() then begin
                 HttpResponseMessage.Content().ReadAs(ApiResult);
             end else begin
                 exit('null');
-                //HttpResponseMessage.Content().ReadAs(ApiResult);
             end;
-
-            /*TempBlob.INIT;
-            TempBlob.Blob.CREATEINSTREAM(Instr);
-            if not HttpWebRequestMgt.GetResponseStream(Instr) then exit('null');
-            //HttpWebRequestMgt.GetResponse(Instr,httpStatusCode,ResponseHeaders);
-            //MESSAGE(ResponseHeaders.ToString);
-            ApiResult := TempBlob.ReadAsText('', TEXTENCODING::UTF8);
-            if ApiResult = '' then begin
-                //  MESSAGE(GETLASTERRORTEXT);
-                exit('null')
-            end;*/
             exit(ApiResult);
+
         end else begin
             exit('null')
         end;

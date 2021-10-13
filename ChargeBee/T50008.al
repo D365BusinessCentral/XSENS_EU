@@ -32,7 +32,7 @@ table 50005 ChargebeeSetup
         field(60; "Base url"; Text[100])
         {
             Description = 'Vul volledige url naar Chargebee-omgeving in (incl. /api/v2)';
-            InitValue = 'https://xsens-test.chargebee.com/api/v2';
+            InitValue = 'https://xsens-us-test.chargebee.com/api/v2';
         }
         field(70; "Use Sales Tax"; Boolean)
         {

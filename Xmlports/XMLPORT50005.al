@@ -10,7 +10,7 @@ xmlport 50005 "Import Journaalposten"
     Direction = Import;
     Format = VariableText;
     TextEncoding = UTF8;
-    FieldSeparator = ',';
+    FieldSeparator = ';';
     //kk
 
     //default***************

@@ -273,6 +273,12 @@ report 50004 "Sales - Credit Memo XSS DCR"
             column(CompanyAddr6; wgCompanyAddr[6])
             {
             }
+            column(CompanyAddr7; wgCompanyAddr[7])
+            {
+            }
+            column(CompanyAddr8; wgCompanyAddr[8])
+            {
+            }
             column(CompanyBankAccNo; wgRecCompanyInfo."Bank Account No.")
             {
             }
@@ -468,6 +474,7 @@ report 50004 "Sales - Credit Memo XSS DCR"
             }
             //31.08.2021
             column(Sell_to_E_Mail; "Sell-to E-Mail") { }
+            column(TotalAmountInclVAT; TotalAmountInclVAT) { }
             column(TotLineAmount; wgTotLineAmount)
             {
             }
@@ -956,6 +963,9 @@ report 50004 "Sales - Credit Memo XSS DCR"
                 wgTotPaymentDiscOnVAT := -(wgTotLineAmount - wgTotInvDiscAmount - VATAmtLine.GetTotalAmountInclVAT);
                 wgTotAmount := VATAmtLine.GetTotalVATBase;
 
+                Clear(TotalAmountInclVAT);
+                TotalAmountInclVAT := VATAmtLine.GetTotalAmountInclVAT;
+
                 //Prepare VAT Amount Lines LCY
                 if (not wgRecGLSetup."Print VAT specification in LCY") or
                    (InvHdr."Currency Code" = '') or
@@ -1011,9 +1021,9 @@ report 50004 "Sales - Credit Memo XSS DCR"
                 Clear(VatRegulationG);
                 case InvHdr."VAT Bus. Posting Group" of
                     'EU-SALE':
-                        VatRegulationG := '“Subject to Intra Community Supply (Art.138 VAT Directive 2006/112) – 0% VATapplicable”';
+                        VatRegulationG := 'Subject to Intra Community Supply (Art.138 VAT Directive 2006/112) – 0% VATapplicable';
                     'ROW-SALE':
-                        VatRegulationG := '“No tax charged because of EXPORT-shipment”)';
+                        VatRegulationG := 'No tax charged because of EXPORT-shipment';
                 end;
             end;
         }
@@ -1161,6 +1171,7 @@ report 50004 "Sales - Credit Memo XSS DCR"
         PaymentMethodG: Record "Payment Method";
         ShipmentMethodG: Record "Shipment Method";
         VatRegulationG: Text;
+        TotalAmountInclVAT: Decimal;
 
     local procedure Trl(pLblName: Text): Text;
     begin
@@ -1421,19 +1432,24 @@ report 50004 "Sales - Credit Memo XSS DCR"
             end;
             wgTotalText := STRSUBSTNO(Trl('Total%1'), wlCurrencyCode);
             //NM_BEGIN GW
-            case wgRecCompanyInfo."Company Location" of
-                wgRecCompanyInfo."Company Location"::Holland:
-                    begin
-                        wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl VAT.'), wlCurrencyCode);
-                        wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl VAT.'), wlCurrencyCode);
-                    end;
-                wgRecCompanyInfo."Company Location"::"North America":
-                    begin
-                        wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl Tax.'), wlCurrencyCode);
-                        wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl Tax.'), wlCurrencyCode);
-                    end;
-            end;
+            // case wgRecCompanyInfo."Company Location" of
+            //     wgRecCompanyInfo."Company Location"::Holland:
+            //         begin
+            //             wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl VAT.'), wlCurrencyCode);
+            //             wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl VAT.'), wlCurrencyCode);
+            //         end;
+            //     wgRecCompanyInfo."Company Location"::"North America":
+            //         begin
+            //             wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl Tax.'), wlCurrencyCode);
+            //             wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl Tax.'), wlCurrencyCode);
+            //         end;
+            // end;
             //NM_END
+            wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl VAT.'), wlCurrencyCode);
+            if wgTotVATAmount = 0 then
+                wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 '), wlCurrencyCode)
+            else
+                wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl VAT.'), wlCurrencyCode);
             wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, "Salesperson Code", wlSalesPersonText);
         end;
     end;

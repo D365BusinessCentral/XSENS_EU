@@ -151,7 +151,7 @@ report 50005 "Purchase - Order XSS DCR"
             column(lblPromisedReceiptDate; Trl('PromisedReceiptDate'))
             {
             }
-            column(lblPurchPerson; Trl('Purchperson'))
+            column(lblPurchPerson; Trl('Purchaser'))
             {
             }
             column(lblQuantity; Trl('Quantity'))
@@ -241,7 +241,7 @@ report 50005 "Purchase - Order XSS DCR"
             column(lblVendQuoteNo; Trl('VendQuoteNo'))
             {
             }
-            column(lblPurchOrderNo; Trl('PurchOrder No.'))
+            column(lblPurchOrderNo; Trl('Purchase Order No.'))
             {
             }
             column(lblCostCenter; Trl('CostCenter'))
@@ -293,6 +293,12 @@ report 50005 "Purchase - Order XSS DCR"
             {
             }
             column(CompanyAddr6; wgCompanyAddr[6])
+            {
+            }
+            column(CompanyAddr7; wgCompanyAddr[7])
+            {
+            }
+            column(CompanyAddr8; wgCompanyAddr[8])
             {
             }
             column(CompanyBankAccNo; wgRecCompanyInfo."Bank Account No.")
@@ -605,7 +611,7 @@ report 50005 "Purchase - Order XSS DCR"
                     column(VendorItemNo; "Vendor Item No.")
                     {
                     }
-                    column(CostCenter; gTxtCostCenter)
+                    column(CostCenter; "Shortcut Dimension 2 Code") //gTxtCostCenter)
                     {
                     }
                     column(ProjectCode; gTxtProjectCode)
@@ -660,8 +666,8 @@ report 50005 "Purchase - Order XSS DCR"
                         //  PurchLine."No." := '';
 
                         // Add Project Code & Cost Center to Purch Line
-                        gTxtProjectCode := gCduFinancieel.fGetDimensionFromID(PurchLine."Dimension Set ID", 'PROJECTS');
-                        gTxtCostCenter := gCduFinancieel.fGetDimensionValueFromID(PurchLine."Dimension Set ID", 'COST CENTRE');
+                        gTxtProjectCode := gCduFinancieel.fGetDimensionFromID(PurchLine."Dimension Set ID", 'PROJECT');
+                        gTxtCostCenter := gCduFinancieel.fGetDimensionValueFromID(PurchLine."Dimension Set ID", 'COST CENTER');
                     end;
 
                     trigger OnPreDataItem();

@@ -96,7 +96,10 @@ codeunit 50101 "Events"
                             CurrencyFactor := 1;
 
                         Clear(CurrencyExchangeRate);
-                        ExchangeRateAmt := CurrencyExchangeRate.GetCurrentCurrencyFactor(RecSalesHeader."Currency Code");
+                        if RecSalesHeader."Currency Code" = '' then
+                            ExchangeRateAmt := 1
+                        else
+                            ExchangeRateAmt := CurrencyExchangeRate.GetCurrentCurrencyFactor(RecSalesHeader."Currency Code");
                         PurchOrderLine.Validate("Direct Unit Cost", Round((RecSalesLine."Unit Price" / CurrencyFactor) * ExchangeRateAmt, 0.01, '=') * RecVendor.Percentage / 100);
                     end;
                 end;

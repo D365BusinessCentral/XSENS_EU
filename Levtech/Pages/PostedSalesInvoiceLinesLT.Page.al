@@ -5,6 +5,7 @@ page 50097 "Posted Sales Invoice Lines_LT"
     PageType = List;
     SourceTable = "Sales Invoice Line";
 
+
     layout
     {
         area(content)

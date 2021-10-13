@@ -30,6 +30,13 @@ pageextension 50007 "Sales Invoice" extends "Sales Invoice"
                 }
             }
         }
+        addafter("Shipment Method Code")
+        {
+            field("Shipment Method Description"; Rec."Shipment Method Description")
+            {
+                ApplicationArea = All;
+            }
+        }
         addlast(Control205)
         {
             field("Bill-to Email"; Rec."Bill-to Email")

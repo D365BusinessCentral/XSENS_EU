@@ -10,6 +10,8 @@ tableextension 50011 "Sales Header" extends "Sales Header"
         }
         field(50010; ExternalID; Text[30])
         {
+            Enabled = true;
+            Editable = true;
         }
         field(50012; "Shortcut Dimension 4 Code"; Code[20])
         {

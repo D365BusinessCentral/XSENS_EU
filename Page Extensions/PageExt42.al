@@ -178,6 +178,21 @@ pageextension 50006 "Sales Order" extends "Sales Order"
                 Importance = Additional;
             }
         }
+        addbefore("Direct Debit Mandate ID")
+        {
+            field("Tax Area Code"; Rec."Tax Area Code")
+            {
+                Editable = true;
+                Enabled = true;
+                ApplicationArea = All;
+            }
+            field("Tax Liable"; Rec."Tax Liable")
+            {
+                Editable = true;
+                Enabled = true;
+                ApplicationArea = All;
+            }
+        }
         modify("Shipment Method Code")
         {
             trigger OnAfterValidate()
@@ -193,6 +208,111 @@ pageextension 50006 "Sales Order" extends "Sales Order"
                         Rec."Shipment Method Description" := 'EX-Works Enschede (Incoterms 2010)';
                 end;
             end;
+        }
+        modify("Sell-to Contact")
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify("Bill-to Name")
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify("Bill-to Address")
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify("Bill-to Address 2")
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify("Bill-to City")
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify("Bill-to County")
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify("Bill-to Post Code")
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify("Bill-to Country/Region Code")
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify("Bill-to Contact No.")
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify("Bill-to Contact")
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify(BillToContactPhoneNo)
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify(BillToContactMobilePhoneNo)
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify(BillToContactEmail)
+        {
+            Editable = true;
+            Enabled = true;
+        }
+        modify("Ship-to Name")
+        {
+            Editable = true;
+        }
+        modify("Ship-to Address")
+        {
+            Editable = true;
+        }
+        modify("Ship-to Address 2")
+        {
+            Editable = true;
+        }
+        modify("Ship-to City")
+        {
+            Editable = true;
+        }
+        modify("Ship-to County")
+        {
+            Editable = true;
+        }
+        modify("Ship-to Post Code")
+        {
+            Editable = true;
+        }
+        modify("Ship-to Country/Region Code")
+        {
+            Editable = true;
+        }
+        modify("Ship-to Contact")
+        {
+            Editable = true;
+        }
+        modify(Control82)
+        {
+            Visible = true;
+        }
+        modify(Control4)
+        {
+            Visible = true;
         }
     }
 }

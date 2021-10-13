@@ -190,6 +190,12 @@ report 50003 "Sales - Shipment XSS DCR"
             column(CompanyAddr6; wgCompanyAddr[6])
             {
             }
+            column(CompanyAddr7; wgCompanyAddr[7])
+            {
+            }
+            column(CompanyAddr8; wgCompanyAddr[8])
+            {
+            }
             column(CompanyBankAccNo; wgRecCompanyInfo."Bank Account No.")
             {
             }
@@ -440,6 +446,16 @@ report 50003 "Sales - Shipment XSS DCR"
                         column(Serial_No_; "Serial No.") { }
                         column(Lot_No_; "Lot No.") { }
                         column(ItemQuantity; Abs(Quantity)) { }
+                        column(SetSerialLotNo; SetSerialLotNo) { }
+                        trigger OnAfterGetRecord()
+                        var
+                            myInt: Integer;
+                        begin
+                            if ("Serial No." = '') AND ("Lot No." = '') then
+                                SetSerialLotNo := false
+                            else
+                                SetSerialLotNo := true;
+                        end;
                     }
                     dataitem(LineComment; "Sales Comment Line")
                     {
@@ -779,6 +795,7 @@ report 50003 "Sales - Shipment XSS DCR"
         PaymentMethodG: Record "Payment Method";
         ShipmentMethodG: Record "Shipment Method";
         PaymentTermsG: Record "Payment Terms";
+        SetSerialLotNo: Boolean;
 
     local procedure Trl(pLblName: Text): Text;
     begin
