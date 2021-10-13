@@ -299,6 +299,10 @@ page 50099 "Sales Order LT"
                     QuickEntry = false;
                     ToolTip = 'Specifies whether the document is open, waiting to be approved, has been invoiced for prepayment, or has been released to the next stage of processing.';
                 }
+                field("VAT Registration No."; Rec."VAT Registration No.")
+                {
+                    ApplicationArea = All;
+                }
                 group("Work Description")
                 {
                     Caption = 'Work Description';
