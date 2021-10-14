@@ -10,7 +10,7 @@ xmlport 50005 "Import Journaalposten"
     Direction = Import;
     Format = VariableText;
     TextEncoding = UTF8;
-    FieldSeparator = ';';
+    FieldSeparator = ',';
     //kk
 
     //default***************
@@ -55,12 +55,13 @@ xmlport 50005 "Import Journaalposten"
                 }
                 textelement(gtxtdimension1)
                 {
-                    MinOccurs = Once;
+                    MinOccurs = Zero;
                     XmlName = 'Field6';
                     Width = 6;
                 }
                 textelement(gtxtdimension2)
                 {
+                    MinOccurs = Zero;
                     XmlName = 'Field7';
                     Width = 30;
                     trigger OnAfterAssignVariable()
@@ -68,36 +69,35 @@ xmlport 50005 "Import Journaalposten"
                         fImportRecord;
                     end;
                 }
-                textelement(gtxtdimension3)
+                textelement(gtxtInterCompanyPartner)
                 {
                     MinOccurs = Zero;//kk
                     XmlName = 'Field8';
                     Width = 25;
                 }
-                textelement(gtxtInterCompanyPartner)
+                textelement(gtxtdimension3)
                 {
                     MinOccurs = Zero;//kk
                     XmlName = 'Field9';
                     Width = 25;
                 }
-
                 textelement(gtxtTax)
                 {
                     MinOccurs = Zero;//kk
                     XmlName = 'Field10';
                     Width = 25;
                 }
-                textelement(gtxtCreditCardPayee)
-                {
-                    MinOccurs = Zero;//kk
-                    XmlName = 'Field11';
-                    Width = 25;
+                // textelement(gtxtCreditCardPayee)
+                // {
+                //     MinOccurs = Zero;//kk
+                //     XmlName = 'Field11';
+                //     Width = 25;
 
-                    trigger OnAfterAssignVariable()
-                    begin
-                        //fImportRecord;
-                    end;
-                }
+                //     trigger OnAfterAssignVariable()
+                //     begin
+                //         //fImportRecord;
+                //     end;
+                // }
 
                 trigger OnBeforeInsertRecord();
                 begin
@@ -253,13 +253,16 @@ xmlport 50005 "Import Journaalposten"
         gTxtDimension1 := '';
         gTxtDimension2 := '';
         gTxtDimension3 := '';
+        gtxtTax := '';
+        gtxtInterCompanyPartner := '';
     end;
 
     procedure fImportRecord();
     begin
         gIntCounter := gIntCounter + 1;
         if gIntCounter = 1 then
-            exit;
+            //exit;
+            currXMLport.Skip();
         gDialog.UPDATE(1, gTxtFileName);
         gDialog.UPDATE(2, gIntCounter);
 
@@ -337,18 +340,23 @@ xmlport 50005 "Import Journaalposten"
         //LT-Start
         //pRecGenJournalLine.Validate("Credit Card Payee No.", gtxtVendorNumber);
 
+
+        if Evaluate(gShortcutDim7, gtxtTax) then
+            pRecGenJournalLine.ValidateShortcutDimCode(4, gShortcutDim7);
+
+        if EVALUATE(gCodShortcutDimCode3, gTxtDimension3) then
+            pRecGenJournalLine.ValidateShortcutDimCode(3, gCodShortcutDimCode3); //20190102 KBG NMSD-240
+
         if Evaluate(gShortcutDim5, gtxtInterCompanyPartner) then
             pRecGenJournalLine.ValidateShortcutDimCode(5, gShortcutDim5);
 
-        if Evaluate(gShortcutDim7, gtxtTax) then
-            pRecGenJournalLine.ValidateShortcutDimCode(7, gShortcutDim7);
+        // if Evaluate(gShortcutDim7, gtxtTax) then
+        //     pRecGenJournalLine.ValidateShortcutDimCode(7, gShortcutDim7);
 
-        if Evaluate(gShortcutDim8, gtxtCreditCardPayee) then
-            pRecGenJournalLine.ValidateShortcutDimCode(8, gShortcutDim8);
+        // if Evaluate(gShortcutDim8, gtxtCreditCardPayee) then
+        //     pRecGenJournalLine.ValidateShortcutDimCode(8, gShortcutDim8);
 
         //LT-End
-        if EVALUATE(gCodShortcutDimCode3, gTxtDimension3) then
-            pRecGenJournalLine.ValidateShortcutDimCode(3, gCodShortcutDimCode3); //20190102 KBG NMSD-240
         //pRecGenJournalLine."Shortcut Dimension 3 Code"         := gTxtDimension3;
         //pRecGenJournalLine."Shortcut Dimension 3 Code"         := gTxtDimension3; //20181122 JS Projectveld=Dimension3 toegevoegd
 

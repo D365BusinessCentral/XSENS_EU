@@ -32,8 +32,10 @@ codeunit 50014 "Sales Order Customization"
         IsHandled := true;
     end;
 
-    [EventSubscriber(ObjectType::Page, Page::"Sales Order", 'OnAfterActionEvent', 'Post', false, false)]
-    local procedure OnAfterActionEvent(var Rec: Record "Sales Header")
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertShipmentLine', '', false, false)]
+    local procedure OnAfterActionEvent(PreviewMode: Boolean; var SalesHeader: Record "Sales Header";
+    var SalesLine: Record "Sales Line"; var SalesShptLine: Record "Sales Shipment Line";
+    xSalesLine: Record "Sales Line")
     var
         RecItem: Record Item;
         RecProductionBOM: Record "Production BOM Header";
@@ -44,54 +46,53 @@ codeunit 50014 "Sales Order Customization"
         VersionMgt: Codeunit VersionManagement;
         ActiveVersionCode: Code[20];
         LastLineNo: Integer;
-        SalesLineL: Record "Sales Line";
         ServiceItemComponentL: Record "Service Item Component";
     begin
-        Clear(SalesLineL);
-        SalesLineL.SetRange("Document No.", Rec."No.");
-        if SalesLineL.FindSet() then begin
-            repeat
-                Clear(ServItem);
-                ServItem.SetRange("Item No.", SalesLineL."No.");
-                if ServItem.FindSet() then begin
-                    repeat
-                        //ServItem.TestField("Item No.");
-                        ServiceItemComponentL.SetRange("Parent Service Item No.", ServItem."No.");
-                        ServiceItemComponentL.FindFirst();
-                        Clear(RecItem);
-                        RecItem.GET(ServItem."Item No.");
-                        RecItem.TestField("Copy Production BOM");
-                        RecItem.TestField("Production BOM No.");
-                        Clear(RecProductionBOM);
-                        RecProductionBOM.GET(RecItem."Production BOM No.");
-                        ActiveVersionCode := VersionMgt.GetBOMVersion(RecProductionBOM."No.", WorkDate, true);
-                        LastLineNo := GetLastLineNumber(ServiceItemComponentL);
-                        Clear(RecProductionBOMLine);
-                        RecProductionBOMLine.SetRange("Production BOM No.", RecProductionBOM."No.");
-                        if ActiveVersionCode = '' then
-                            RecProductionBOMLine.SetRange("Version Code", ActiveVersionCode);
-                        RecProductionBOMLine.SetRange(Type, RecProductionBOMLine.Type::Item);
-                        if RecProductionBOMLine.FindSet() then begin
-                            repeat
-                                LastLineNo += 10000;
-                                RecServiceItemComponent.Init();
-                                RecServiceItemComponent.Validate("Parent Service Item No.", ServItem."No.");
-                                RecServiceItemComponent.Validate("Line No.", LastLineNo);
-                                RecServiceItemComponent.Validate(Active, true);
-                                RecServiceItemComponent.Validate(Type, RecServiceItemComponent.Type::Item);
-                                RecServiceItemComponent.Validate("No.", RecProductionBOMLine."No.");
-                                RecServiceItemComponent.Validate("Variant Code", RecProductionBOMLine."Variant Code");
-                                RecServiceItemComponent.Validate("Quantity (Base)", RecProductionBOMLine.Quantity);
-                                RecServiceItemComponent.Validate("Scrap %", RecProductionBOMLine."Scrap %");
-                                RecServiceItemComponent.Validate("Quantity Per", RecProductionBOMLine."Quantity per");
-                                RecServiceItemComponent.Validate("Unit of Measure Code", RecProductionBOMLine."Unit of Measure Code");
-                                RecServiceItemComponent.Validate("Routing Link Code", RecProductionBOMLine."Routing Link Code");
-                                RecServiceItemComponent.Insert(true);
-                            until RecProductionBOMLine.Next() = 0;
-                        end
-                    until ServItem.Next() = 0;
-                end;
-            until SalesLineL.Next() = 0;
+        if SalesHeader."Document Type" IN [SalesHeader."Document Type"::Order] then begin
+            SalesLine.SetRange("Document No.", SalesHeader."No.");
+            if SalesLine.FindSet() then begin
+                repeat
+                    Clear(ServItem);
+                    ServItem.SetRange("Item No.", SalesLine."No.");
+                    if ServItem.FindSet() then begin
+                        repeat
+                            //ServiceItemComponentL.SetRange("Parent Service Item No.", ServItem."No.");
+                            //ServiceItemComponentL.FindFirst();
+                            Clear(RecItem);
+                            RecItem.GET(ServItem."Item No.");
+                            RecItem.TestField("Copy Production BOM");
+                            RecItem.TestField("Production BOM No.");
+                            Clear(RecProductionBOM);
+                            RecProductionBOM.GET(RecItem."Production BOM No.");
+                            ActiveVersionCode := VersionMgt.GetBOMVersion(RecProductionBOM."No.", WorkDate, true);
+                            //LastLineNo := GetLastLineNumber(ServiceItemComponentL);
+                            Clear(RecProductionBOMLine);
+                            RecProductionBOMLine.SetRange("Production BOM No.", RecProductionBOM."No.");
+                            if ActiveVersionCode = '' then
+                                RecProductionBOMLine.SetRange("Version Code", ActiveVersionCode);
+                            RecProductionBOMLine.SetRange(Type, RecProductionBOMLine.Type::Item);
+                            if RecProductionBOMLine.FindSet() then begin
+                                repeat
+                                    LastLineNo += 10000;
+                                    RecServiceItemComponent.Init();
+                                    RecServiceItemComponent.Validate("Parent Service Item No.", ServItem."No.");
+                                    RecServiceItemComponent.Validate("Line No.", LastLineNo);
+                                    RecServiceItemComponent.Validate(Active, true);
+                                    RecServiceItemComponent.Validate(Type, RecServiceItemComponent.Type::Item);
+                                    RecServiceItemComponent.Validate("No.", RecProductionBOMLine."No.");
+                                    RecServiceItemComponent.Validate("Variant Code", RecProductionBOMLine."Variant Code");
+                                    RecServiceItemComponent.Validate("Quantity (Base)", RecProductionBOMLine.Quantity);
+                                    RecServiceItemComponent.Validate("Scrap %", RecProductionBOMLine."Scrap %");
+                                    RecServiceItemComponent.Validate("Quantity Per", RecProductionBOMLine."Quantity per");
+                                    RecServiceItemComponent.Validate("Unit of Measure Code", RecProductionBOMLine."Unit of Measure Code");
+                                    RecServiceItemComponent.Validate("Routing Link Code", RecProductionBOMLine."Routing Link Code");
+                                    RecServiceItemComponent.Insert(true);
+                                until RecProductionBOMLine.Next() = 0;
+                            end
+                        until ServItem.Next() = 0;
+                    end;
+                until SalesLine.Next() = 0;
+            end;
         end;
     end;
 
