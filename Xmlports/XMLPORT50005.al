@@ -10,7 +10,7 @@ xmlport 50005 "Import Journaalposten"
     Direction = Import;
     Format = VariableText;
     TextEncoding = UTF8;
-    FieldSeparator = ',';
+    FieldSeparator = ';';
     //kk
 
     //default***************
@@ -64,10 +64,10 @@ xmlport 50005 "Import Journaalposten"
                     MinOccurs = Zero;
                     XmlName = 'Field7';
                     Width = 30;
-                    trigger OnAfterAssignVariable()
-                    begin
-                        fImportRecord;
-                    end;
+                    // trigger OnAfterAssignVariable()
+                    // begin
+                    //     fImportRecord;
+                    // end;
                 }
                 textelement(gtxtInterCompanyPartner)
                 {
@@ -86,6 +86,10 @@ xmlport 50005 "Import Journaalposten"
                     MinOccurs = Zero;//kk
                     XmlName = 'Field10';
                     Width = 25;
+                    trigger OnAfterAssignVariable()
+                    begin
+                        fImportRecord;
+                    end;
                 }
                 // textelement(gtxtCreditCardPayee)
                 // {
@@ -340,15 +344,14 @@ xmlport 50005 "Import Journaalposten"
         //LT-Start
         //pRecGenJournalLine.Validate("Credit Card Payee No.", gtxtVendorNumber);
 
-
-        if Evaluate(gShortcutDim7, gtxtTax) then
-            pRecGenJournalLine.ValidateShortcutDimCode(4, gShortcutDim7);
+        if Evaluate(gShortcutDim5, gtxtInterCompanyPartner) then
+            pRecGenJournalLine.ValidateShortcutDimCode(3, gShortcutDim5);
 
         if EVALUATE(gCodShortcutDimCode3, gTxtDimension3) then
-            pRecGenJournalLine.ValidateShortcutDimCode(3, gCodShortcutDimCode3); //20190102 KBG NMSD-240
+            pRecGenJournalLine.ValidateShortcutDimCode(4, gCodShortcutDimCode3); //20190102 KBG NMSD-240
 
-        if Evaluate(gShortcutDim5, gtxtInterCompanyPartner) then
-            pRecGenJournalLine.ValidateShortcutDimCode(5, gShortcutDim5);
+        if Evaluate(gShortcutDim7, gtxtTax) then
+            pRecGenJournalLine.ValidateShortcutDimCode(5, gShortcutDim7);
 
         // if Evaluate(gShortcutDim7, gtxtTax) then
         //     pRecGenJournalLine.ValidateShortcutDimCode(7, gShortcutDim7);

@@ -1,6 +1,7 @@
 codeunit 50020 ProcessChargebee
 {
     // version XSSCB1.4
+    // Peter de Vries - Solutions-Factory: Modified for Business Central
 
 
     trigger OnRun();
@@ -31,21 +32,17 @@ codeunit 50020 ProcessChargebee
             gNoVAT := ChargebeeSetup."No VAT";
         end;
 
-        //TEST
-        //Message('Test: ' + GiveApiResult('invoices/22', 'GET'));
-        //Error('Stop...');
-
         //GET INVOICES
         sNext_Offset := '';
         repeat
             sNext_Offset := ProcessInvoice(sNext_Offset, sLast_Updated, bPost, false);
-        until sNext_Offset = 'null';
+        until sNext_Offset = '0';
 
         //GET CREDIT INVOICES
         sNext_Offset := '';
         repeat
             sNext_Offset := ProcessInvoice(sNext_Offset, sLast_Updated, bPost, true);
-        until sNext_Offset = 'null';
+        until sNext_Offset = '0';
 
         //CHECK PAYMENTS
         CheckPayments(LastDate, GLAccountDB);
@@ -90,7 +87,6 @@ codeunit 50020 ProcessChargebee
 
     local procedure ProcessInvoice(Offset: Text[100]; sLast_Updated: Text[100]; bPost: Boolean; bCredit: Boolean): Text;
     var
-        //JObject: DotNet "'Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'.Newtonsoft.Json.Linq.JObject";
         JObject: JsonObject;
         vID: Variant;
         vDateSerial: Variant;
@@ -109,14 +105,12 @@ codeunit 50020 ProcessChargebee
         ApiResult: Text;
         SalesPost: Codeunit "Sales-Post";
         CBTrans: Record "Chargebee Transactions";
-        //JObjectCust: DotNet "'Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'.Newtonsoft.Json.Linq.JObject";
         JObjectCust: JsonObject;
         ApiResultCust: Text;
         lastURLCustPart: Text[300];
         cCustomer: Code[20];
         dAmount: Decimal;
         recCustomer: Record Customer;
-        //JObjectItem: DotNet "'Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'.Newtonsoft.Json.Linq.JObject";
         JObjectItem: JsonObject;
         ApiResultItem: Text;
         LastURLItemPart: Text[300];
@@ -148,29 +142,22 @@ codeunit 50020 ProcessChargebee
         end;
         ApiResult := GiveApiResult(lastURLPart, 'GET');
         if ApiResult = 'null' then exit(FORMAT(vNext_Offset)); //No records in the list
-        //JObject := JObject.Parse(ApiResult);
         JObject.ReadFrom(ApiResult);
-        //vNext_Offset := JObject.SelectToken('next_offset');
-        JObject.GET('next_offset', jsontoken);
-        if not jsontoken.AsValue().IsNull then
+        if JObject.SelectToken('next_offset', jsontoken) then
             vNext_Offset := jsontoken.AsValue().AsText()
         else
-            vNext_Offset := '';
-        //vID := JObject.SelectToken('list[0].' + IC + '.id');
-        JObject.Get('list[0].' + IC + '.id', jsontoken);
-        if not jsontoken.AsValue().IsNull then
+            vNext_Offset := '0';
+        if JObject.SelectToken('list[0].' + IC + '.id', jsontoken) then
             vID := jsontoken.AsValue().AsText()
         else
-            vID := '';
+            exit(FORMAT(vNext_Offset));
 
         EVALUATE(InvoiceNo, FORMAT(vID));
 
-        //vDateSerial := JObject.SelectToken('list[0].' + IC + '.date');
-        JObject.get('list[0].' + IC + '.date', jsontoken);
-        if not jsontoken.AsValue().IsNull then
+        if JObject.SelectToken('list[0].' + IC + '.date', jsontoken) then
             vDateSerial := jsontoken.AsValue().AsText()
         else
-            vDateSerial := '';
+            vDateSerial := '0';
 
         SetTransaction(CBTrans.Type::Invoice, InvoiceNo, 'Create Invoice..',
                                                                 InvoiceNo);
@@ -198,12 +185,10 @@ codeunit 50020 ProcessChargebee
             end;
         end;
         //GET CUSTOMER
-        //lastURLCustPart := 'customers/' + FORMAT(JObject.SelectToken('list[0].' + IC + '.customer_id'));
-        JObject.get('list[0].' + IC + '.customer_id', jsontoken);
-        if not jsontoken.AsValue().IsNull then
-            lastURLCustPart := jsontoken.AsValue().AsText()
+        if JObject.SelectToken('list[0].' + IC + '.customer_id', jsontoken) then
+            lastURLCustPart := 'customers/' + jsontoken.AsValue().AsText()
         else
-            lastURLCustPart := '';
+            lastURLCustPart := '0';
 
         ApiResultCust := GiveApiResult(lastURLCustPart, 'GET');
         if ApiResultCust = 'null' then begin
@@ -212,17 +197,12 @@ codeunit 50020 ProcessChargebee
             exit(FORMAT(vNext_Offset));
         end;
 
-        //JObjectCust := JObjectCust.Parse(ApiResultCust);
         JObjectCust.ReadFrom(ApiResultCust);
-
-        //EVALUATE(cCustomer, FORMAT(JObjectCust.SelectToken('customer.cf_sfaccountnumber')));
-        JObjectCust.get('customer.cf_sfaccountnumber', jsontoken);
-        if not jsontoken.AsValue().IsNull then
+        if JObjectCust.SelectToken('customer.cf_sfaccountnumber', jsontoken) then
             EVALUATE(cCustomer, jsontoken.AsValue().AsText())
         else
-            cCustomer := '';
-
-        if cCustomer = 'NULL' then begin
+            cCustomer := '0';
+        if cCustomer = '0' then begin
             ChangeTransaction(CBTrans.Type::Invoice, InvoiceNo, STRSUBSTNO('Entity cf_sfaccountnumber %1 does not exist', lastURLCustPart), 0, '', false);
             ChangeLastUpdated := false;
             exit(FORMAT(vNext_Offset));      //entity cf_accountnumber bestaat niet
@@ -245,9 +225,7 @@ codeunit 50020 ProcessChargebee
         SalesHeader.VALIDATE("Sell-to Customer No.", cCustomer);
         if bCredit then begin
             SalesHeader.VALIDATE("Applies-to Doc. Type", SalesHeader."Applies-to Doc. Type"::Invoice);
-            //vValue := JObject.SelectToken('list[0].credit_note.reference_invoice_id');
-            JObject.get('list[0].credit_note.reference_invoice_id', jsontoken);
-            if not jsontoken.AsValue().IsNull then
+            if JObject.SelectToken('list[0].credit_note.reference_invoice_id', jsontoken) then
                 vValue := jsontoken.AsValue().AsText()
             else
                 vValue := '';
@@ -255,6 +233,7 @@ codeunit 50020 ProcessChargebee
             //"Applies-to ID" -> Mag niet worden gevuld
         end;
         //...
+
         SalesHeader.INSERT(true);
         SalesHeader."No. Series" := '';
         SalesHeader."Posting No. Series" := '';
@@ -265,14 +244,12 @@ codeunit 50020 ProcessChargebee
         CanRelease := true;
         repeat
 
-            // vValue := JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].id');
-            JObject.get('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].id', jsontoken);
-            if not jsontoken.AsValue().IsNull then
+            if JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].id', jsontoken) then
                 vValue := jsontoken.AsValue().AsText()
             else
-                vValue := '';
+                vValue := '0';
             // No choice but to get the null var so skip it
-            if FORMAT(vValue) <> 'null' then begin
+            if FORMAT(vValue) <> '0' then begin
                 SalesLine.INIT;
                 if not bCredit then
                     SalesLine."Document Type" := SalesLine."Document Type"::Invoice
@@ -280,20 +257,16 @@ codeunit 50020 ProcessChargebee
                     SalesLine."Document Type" := SalesLine."Document Type"::"Credit Memo";
                 SalesLine."Document No." := InvoiceNo;
                 SalesLine."Line No." := (Counter + 1) * 10000;
-                // vValue := JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].description');
-                JObject.GET('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].description', jsontoken);
-                if not jsontoken.AsValue().IsNull then
+                if JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].description', jsontoken) then
                     vValue := jsontoken.AsValue().AsText()
                 else
                     vValue := '';
-
                 EVALUATE(SalesLine.Description, PADSTR(FORMAT(vValue), 50));
-                //vValue := JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].entity_type');
-                JObject.GET('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].entity_type', jsontoken);
-                if not jsontoken.AsValue().IsNull then
+
+                if JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].entity_type', jsontoken) then
                     vValue := jsontoken.AsValue().AsText()
                 else
-                    vValue := '';
+                    vValue := 'plan';
 
                 SalesLine.Type := SalesLine.Type::Item;
                 if FORMAT(vValue) = 'plan' then
@@ -302,12 +275,10 @@ codeunit 50020 ProcessChargebee
                     //GET ITEM
                     LineQuantity := 0;
                     ItemFound := true;
-                    //vValue := JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].entity_id');
-                    JObject.GET('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].entity_id', jsontoken);
-                    if not jsontoken.AsValue().IsNull then
+                    if JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].entity_id', jsontoken) then
                         vValue := jsontoken.AsValue().AsText()
                     else
-                        vValue := '';
+                        vValue := '0';
                     LastURLItemPart := 'addons/' + FORMAT(vValue);
                     ApiResultItem := GiveApiResult(LastURLItemPart, 'GET');
                     if ApiResultItem = 'null' then begin
@@ -317,16 +288,13 @@ codeunit 50020 ProcessChargebee
                         CanRelease := false;
                     end;
                     if ItemFound then begin
-                        //JObjectItem := JObjectItem.Parse(ApiResultItem);
                         JObjectItem.ReadFrom(ApiResultItem);
-                        //EVALUATE(cItem, FORMAT(JObjectItem.SelectToken('addon.cf_nav_item_number')));
-                        JObjectItem.GET('addon.cf_nav_item_number', jsontoken);
-                        if not jsontoken.AsValue().IsNull then
+                        if JObjectItem.SelectToken('addon.cf_nav_item_number', jsontoken) then
                             cItem := jsontoken.AsValue().AsText()
                         else
-                            cItem := 'NULL';
+                            cItem := '0';
 
-                        if cItem = 'NULL' then begin
+                        if cItem = '0' then begin
                             cDesc := STRSUBSTNO('Entity cf_nav_item_number %1 does not exist', LastURLItemPart);
                             ChangeTransaction(CBTrans.Type::Invoice, InvoiceNo, cDesc, 0, '', false);
                             ItemFound := false;
@@ -348,32 +316,26 @@ codeunit 50020 ProcessChargebee
                             EVALUATE(SalesLine.Description, cDesc);
                         end;
                     end;
-                    //vValue := JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].quantity');
-                    JObject.GET('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].quantity', jsontoken);
-                    if not jsontoken.AsValue().IsNull then
+                    if JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].quantity', jsontoken) then
                         vValue := jsontoken.AsValue().AsText()
                     else
-                        vValue := '';
+                        vValue := '0';
                     EVALUATE(LineQuantity, FORMAT(vValue));
                     EVALUATE(SalesLine.Quantity, FORMAT(vValue));
                 end;
                 if ItemFound then
                     SalesLine.VALIDATE(Quantity);
-                //vValue := JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].amount');
-                JObject.GET('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].amount', jsontoken);
-                if not jsontoken.AsValue().IsNull then
+                if JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].amount', jsontoken) then
                     vValue := jsontoken.AsValue().AsText()
                 else
-                    vValue := '';
+                    vValue := '0';
                 EVALUATE(LineAmount, FORMAT(vValue));
                 LineAmount := LineAmount / 100;
                 if LineQuantity = 0 then begin
-                    //vValue := JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].unit_amount');
-                    JObject.GET('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].unit_amount', jsontoken);
-                    if not jsontoken.AsValue().IsNull then
+                    if JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].unit_amount', jsontoken) then
                         vValue := jsontoken.AsValue().AsText()
                     else
-                        vValue := '';
+                        vValue := '0';
                     EVALUATE(dAmount, FORMAT(vValue));
                     dAmount := dAmount / 100;
                     SalesLine.VALIDATE("Unit Price", dAmount);
@@ -383,9 +345,7 @@ codeunit 50020 ProcessChargebee
                 end;
                 SalesLine.VALIDATE(Amount, LineAmount);
                 //Discount amount
-                //vValue := JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].discount_amount');
-                JObject.GET('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].discount_amount', jsontoken);
-                if not jsontoken.AsValue().IsNull then
+                if JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].discount_amount', jsontoken) then
                     vValue := jsontoken.AsValue().AsText()
                 else
                     vValue := '';
@@ -398,31 +358,27 @@ codeunit 50020 ProcessChargebee
                 //SalesLine.Validate("Shortcut Dimension 4 Code", gProductLines);
                 if bUseSalesTax then SalesLine.VALIDATE("VAT Prod. Posting Group", gNoVAT);
                 SalesLine.INSERT(true);
-                //vValue := JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].tax_amount');
-                JObject.GET('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].tax_amount', jsontoken);
-                if not jsontoken.AsValue().IsNull then
+                if JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].tax_amount', jsontoken) then
                     vValue := jsontoken.AsValue().AsText()
                 else
-                    vValue := '';
+                    vValue := '0';
                 EVALUATE(dBTWCB, FORMAT(vValue));
                 dBTWCB := dBTWCB / 100;
-                dBTWNAV := SalesLine."Amount Including VAT" - SalesLine.Amount;
+                dBTWNAV := SalesLine."Amount Including VAT" - SalesLine.GetLineAmountExclVAT();
                 if not bUseSalesTax then begin
                     if dBTWNAV <> dBTWCB then
-                        UpdateWorkdescription(SalesHeader, dBTWNAV, dBTWCB, Counter);
+                        UpdateWorkdescription(SalesHeader, dBTWNAV, dBTWCB, Counter + 1);
                 end;
             end;
             Counter := Counter + 1;
-        until FORMAT(vValue) = 'null';
+        until FORMAT(vValue) = '0';
         if bUseSalesTax then begin
-            //vValue := JObject.SelectToken('list[0].' + IC + '.tax');
-            JObject.GET('list[0].' + IC + '.tax', jsontoken);
-            if not jsontoken.AsValue().IsNull then
+            if JObject.SelectToken('list[0].' + IC + '.tax', jsontoken) then
                 vValue := jsontoken.AsValue().AsText()
             else
-                vValue := '';
+                vValue := '0';
 
-            if FORMAT(vValue) <> 'null' then begin
+            if FORMAT(vValue) <> '0' then begin
                 EVALUATE(dAmount, FORMAT(vValue));
                 dAmount := dAmount / 100;
                 iLineNo := (Counter + 1) * 10000;
@@ -431,7 +387,6 @@ codeunit 50020 ProcessChargebee
         end;
         if CanRelease then
             SalesPost.ReleaseSalesDocument(SalesHeader);
-        //SalesHeader.SetStatus(SalesHeader.Status::Released);
         if bPost then begin
             CLEAR(SalesPost);
             SalesPost.RUN(SalesHeader);
@@ -457,7 +412,6 @@ codeunit 50020 ProcessChargebee
         LastDateTime: DateTime;
         lastURLPart: Text[300];
         ApiResult: Text;
-        //JObject: DotNet "'Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed'.Newtonsoft.Json.Linq.JObject";
         JObject: JsonObject;
         jsontoken: JsonToken;
         vTransID: Variant;
@@ -503,14 +457,12 @@ codeunit 50020 ProcessChargebee
                                 ChangeTransaction(CBTrans.Type::Payment, cEntry, 'PAYMENT NOT REGISTERED IN CHARGEBEE', GLEntry.Amount, CustLedgerEntryInvoice."Customer No.", false);
                             end
                             else begin
-                                //JObject := JObject.Parse(ApiResult);
-                                //vTransID := JObject.SelectToken('transaction.id');
                                 JObject.ReadFrom(ApiResult);
-                                JObject.get('transaction.id', jsontoken);
-                                if not jsontoken.AsValue().IsNull then
-                                    vTransID := jsontoken.AsValue().AsText();
+                                if JObject.SelectToken('transaction.id', jsontoken) then
+                                    vTransID := jsontoken.AsValue().AsText()
+                                else
+                                    vTransID := '0';
                                 ChangeTransaction(CBTrans.Type::Payment, cEntry, 'Payment registered in Chargebee', GLEntry.Amount, CustLedgerEntryInvoice."Customer No.", true);
-                                //MESSAGE(FORMAT(vTransID));
                             end;
                         end;
                     end;
@@ -607,8 +559,6 @@ codeunit 50020 ProcessChargebee
 
     local procedure UpdateWorkdescription(SalesHeader: Record "Sales Header"; dVATNAV: Decimal; dVATCH: Decimal; Counter: Integer);
     var
-        dBTWCB: Decimal;
-        dBTWNAV: Decimal;
         Instr: InStream;
         Outstr: OutStream;
         tmpText: Text[1024];
@@ -621,7 +571,7 @@ codeunit 50020 ProcessChargebee
             Outstr.WRITETEXT(tmpText);
             Outstr.WRITETEXT;
         end;
-        Outstr.WRITETEXT('Regel ' + FORMAT(Counter) + STRSUBSTNO(': Btw bedrag Chargebee %1. Btw bedrag NAV %2.', dBTWCB, dBTWNAV));
+        Outstr.WRITETEXT('Regel ' + FORMAT(Counter) + STRSUBSTNO(': Btw bedrag Chargebee %1. Btw bedrag NAV %2.', dVATCH, dVATNAV));
         Outstr.WRITETEXT;
         SalesHeader.MODIFY;
     end;
