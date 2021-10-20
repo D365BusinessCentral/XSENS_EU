@@ -106,26 +106,26 @@ tableextension 50011 "Sales Header" extends "Sales Header"
         {
             CaptionML = ENU = 'Sell-to IC Customer No.',
                         NLD = 'IC Orderklantnr.';
-            Editable = false;
+            // Editable = false;
             TableRelation = Customer;
         }
         field(50361; "Sell-to IC Name"; Text[50])
         {
             CaptionML = ENU = 'Sell-to IC Name',
                         NLD = 'IC Ordernaam';
-            Editable = false;
+            // Editable = false;
         }
         field(50362; "Sell-to IC Name 2"; Text[50])
         {
             CaptionML = ENU = 'Sell-to IC Name 2',
                         NLD = 'IC Ordernaam 2';
-            Editable = false;
+            //Editable = false;
         }
         field(50363; "Sell-to IC Address"; Text[50])
         {
             CaptionML = ENU = 'Sell-to IC Address',
                         NLD = 'IC Orderadres';
-            Editable = false;
+            //Editable = false;
 
             trigger OnValidate();
             var
@@ -138,25 +138,25 @@ tableextension 50011 "Sales Header" extends "Sales Header"
         {
             CaptionML = ENU = 'Sell-to IC Address 2',
                         NLD = 'IC Orderadres 2';
-            Editable = false;
+            // Editable = false;
         }
         field(50365; "Sell-to IC City"; Text[30])
         {
             CaptionML = ENU = 'Sell-to IC City',
                         NLD = 'IC Orderplaats';
-            Editable = false;
+            //  Editable = false;
         }
         field(50366; "Sell-to IC Contact"; Text[50])
         {
             CaptionML = ENU = 'Sell-to IC Contact',
                         NLD = 'IC Ordercontact';
-            Editable = false;
+            // Editable = false;
         }
         field(50367; "Sell-to IC Post Code"; Code[20])
         {
             CaptionML = ENU = 'Sell-to IC Post Code',
                         NLD = 'IC Postcode';
-            Editable = false;
+            //   Editable = false;
             TableRelation = "Post Code";
             //This property is currently not supported
             //TestTableRelation = false;
