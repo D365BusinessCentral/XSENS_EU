@@ -108,6 +108,7 @@ tableextension 50011 "Sales Header" extends "Sales Header"
                         NLD = 'IC Orderklantnr.';
             // Editable = false;
             TableRelation = Customer;
+            ValidateTableRelation = false;
         }
         field(50361; "Sell-to IC Name"; Text[50])
         {
@@ -197,6 +198,7 @@ tableextension 50011 "Sales Header" extends "Sales Header"
                         NLD = 'US Betalingscondities';
             Description = 'Used';
             TableRelation = "Payment Terms";
+            ValidateTableRelation = false;
         }
         field(50506; "US Sales Order No."; Code[20])
         {
