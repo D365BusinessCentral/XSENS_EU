@@ -2,7 +2,7 @@ tableextension 50009 Item extends Item
 {
     fields
     {
-        field(50100; "Copy Production BOM"; Boolean)
+        field(50100; "Copy Serive Item Components"; Boolean)
         {
             DataClassification = ToBeClassified;
         }

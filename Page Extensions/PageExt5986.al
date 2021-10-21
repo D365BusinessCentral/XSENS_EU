@@ -32,9 +32,9 @@ pageextension 50022 "Service Item Component List" extends "Service Item Componen
     {
         addafter("&Copy from BOM")
         {
-            action("Copy Production BOM")
+            action("Copy Components")
             {
-                Caption = 'Copy Production BOM', comment = 'NLB="Copy Production BOM"';
+                Caption = 'Copy Components', comment = 'NLB="Copy Components"';
                 ApplicationArea = Service;
                 Image = CopyBOM;
                 trigger OnAction()
@@ -96,7 +96,7 @@ pageextension 50022 "Service Item Component List" extends "Service Item Componen
                     ServiceItem.Get(Rec."Parent Service Item No.");
                     ServiceItem.TestField("Serial No.");
                     RecItem.GET(ServiceItem."Item No.");
-                    RecItem.TestField("Copy Production BOM");
+                    RecItem.TestField("Copy Serive Item Components");
 
                     Clear(RecILE);
                     RecILE.SetRange("Entry Type", RecILE."Entry Type"::Output);

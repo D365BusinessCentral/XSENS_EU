@@ -434,7 +434,7 @@ codeunit 50101 "Events"
     begin
         if ServiceItem."Serial No." = '' then exit;
         RecItem.GET(ServiceItem."Item No.");
-        if not RecItem."Copy Production BOM" then exit;
+        if not RecItem."Copy Serive Item Components" then exit;
 
         Clear(RecILE);
         RecILE.SetRange("Entry Type", RecILE."Entry Type"::Output);
