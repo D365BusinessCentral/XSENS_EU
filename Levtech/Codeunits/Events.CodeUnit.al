@@ -401,6 +401,7 @@ codeunit 50101 "Events"
             ICOutBoxPurchHeader."SalesForce Comment" := lRecSalesHeader."SalesForce Comment";       //20160914 KBG 07441
             ICOutBoxPurchHeader."SalesForce Comment 2" := lRecSalesHeader."Comment 2";                //20160914 KBG 07441
             ICOutBoxPurchHeader."Sales Your Reference" := lRecSalesHeader."Your Reference";
+            ICOutBoxPurchHeader."Salesperson Code" := lRecSalesHeader."Salesperson Code";
         END;
     end;
 
