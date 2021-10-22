@@ -244,9 +244,9 @@ codeunit 50101 "Events"
             // RecSalesHeader."SalesForce Comment" := ICInboxSalesLine."SalesForce Comment";
             // RecSalesHeader."Comment 2" := ICInboxSalesLine."SalesForce Comment 2";
             // RecSalesHeader."Your Reference" := ICInboxSalesLine."Your Reference (US)";
-            IF ICInboxSalesLine."Sales Person Code (US)" <> '' THEN
-                IF lRecSalesperson.GET(ICInboxSalesLine."Sales Person Code (US)") THEN
-                    RecSalesHeader.VALIDATE("Salesperson Code", ICInboxSalesLine."Sales Person Code (US)");
+            // IF ICInboxSalesLine."Sales Person Code (US)" <> '' THEN
+            //     IF lRecSalesperson.GET(ICInboxSalesLine."Sales Person Code (US)") THEN
+            //         RecSalesHeader.VALIDATE("Salesperson Code", ICInboxSalesLine."Sales Person Code (US)");
             IF ICInboxSalesLine."Business Unit Code (US)" <> '' THEN
                 RecSalesHeader.VALIDATE("Shortcut Dimension 1 Code", ICInboxSalesLine."Business Unit Code (US)");
             RecSalesHeader.MODIFY;
