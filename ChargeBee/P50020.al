@@ -8,6 +8,7 @@ page 50020 ChargebeeSetup
     SourceTable = ChargebeeSetup;
     UsageCategory = Documents;
     ApplicationArea = All;
+    Caption = 'Chargebee Setup';
 
     layout
     {
@@ -27,10 +28,14 @@ page 50020 ChargebeeSetup
                 {
                     ApplicationArea = All;
                 }
+                field("Invoice prefix"; Rec."Invoice prefix")
+                {
+                    ApplicationArea = All;
+                }
                 field("GL Account"; Rec."GL Account")
                 {
-                    CaptionML = ENU = 'G/L Account',
-                                NLD = 'Grootboekrekening';
+                    CaptionML = ENU = 'Accounts receivable',
+                                NLD = 'Debiteurenrekening';
                     TableRelation = "G/L Account"."No.";
                     ToolTip = 'Vul hier het grootboeknummer van de debiteuren rekening Chargebee facturen in';
                     ApplicationArea = All;
@@ -92,8 +97,27 @@ page 50020 ChargebeeSetup
             {
                 Image = TransferOrder;
                 Promoted = true;
-                RunObject = Page "ChargeBee Transactions";//Krishna The page is not available
+                PromotedCategory = Report;
+                ApplicationArea = All;
+                RunObject = Page "Chargebee Transaction Logging";  //Krishna The page is not available
+                                                                   //PdV: Echt wel
             }
+            // action("DO NOT USE - Delete Invoices")
+            // {
+            //     Image = Delete;
+            //     ApplicationArea = All;
+            //     trigger OnAction()
+            //     var
+            //         SalesHeader: Record "Sales Header";
+            //         SalesLine: Record "Sales Line";
+            //         CBTrans: Record "Chargebee Transactions";
+            //     begin
+            //         SalesLine.DeleteAll();
+            //         SalesHeader.DeleteAll();
+            //         CBTrans.DeleteAll();
+            //         Commit();
+            //     end;
+            // }
         }
     }
 

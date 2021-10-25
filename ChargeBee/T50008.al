@@ -22,6 +22,10 @@ table 50005 ChargebeeSetup
             CaptionML = NLD = 'Direct boeken',
                         ENG = 'Instant booking';
         }
+        field(45; "Invoice prefix"; Text[2])
+        {
+
+        }
         field(50; "GL Account"; Code[20])
         {
             CaptionML = NLD = 'Grootboekrekening debiteuren',

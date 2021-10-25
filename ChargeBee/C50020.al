@@ -10,8 +10,8 @@ codeunit 50020 ProcessChargebee
         APIKey: Text[100];
         LastDate: Date;
         sLast_Updated: Text[100];
-        GLAccountDB: Code[20];
         bPost: Boolean;
+        CBTrans: Record "Chargebee Transactions";
     begin
         // INITIALIZE
         ChargebeeSetup.GET;
@@ -19,7 +19,6 @@ codeunit 50020 ProcessChargebee
         if LastDate = 0D then ERROR('U moet de laatste update datum invullen in de Chargebee Setup');
         LastDate := LastDate - 1;   //chargebee uses 'updated_after and there'll be a gap between running time and midnight (-2)
         sLast_Updated := ReturnEpoch(LastDate);
-        GLAccountDB := ChargebeeSetup."GL Account";
         sLast_Updated := DELCHR(sLast_Updated, '>', ' ');
         bPost := ChargebeeSetup.InstantBooking;
         ChangeLastUpdated := true;
@@ -30,6 +29,14 @@ codeunit 50020 ProcessChargebee
             gSalesTaxAccount := ChargebeeSetup."Sales Tax account";
             gFullVAT := ChargebeeSetup."Full VAT";
             gNoVAT := ChargebeeSetup."No VAT";
+        end;
+
+        //TEST CONNECTION
+        if GiveApiResult('', 'GET') = 'null' then begin
+            SetTransaction(CBTrans.Type::Error, Format(CurrentDateTime), 'No Response...', '');
+            if GuiAllowed then Message('No connection...');
+            Commit();
+            Error('');
         end;
 
         //GET INVOICES
@@ -45,7 +52,7 @@ codeunit 50020 ProcessChargebee
         until sNext_Offset = '0';
 
         //CHECK PAYMENTS
-        CheckPayments(LastDate, GLAccountDB);
+        CheckPayments(LastDate);
 
         //CLOSE
         if ChangeLastUpdated then
@@ -53,37 +60,7 @@ codeunit 50020 ProcessChargebee
         ChargebeeSetup.MODIFY;
     end;
 
-    var
-        ChargebeeSetup: Record ChargebeeSetup;
-        ChangeLastUpdated: Boolean;
-        bUseSalesTax: Boolean;
-        gFullVAT: Code[20];
-        gNoVAT: Code[20];
-        gSalesTaxAccount: Code[20];
-        gBusinessUnit: Code[20];
-        gProductLines: Code[20];
 
-    local procedure ReturnDate(vDateSerial: Variant): Date;
-    var
-        NoOfDays: Decimal;
-        dOffsetDate: Date;
-    begin
-        dOffsetDate := 19700101D;
-        EVALUATE(NoOfDays, FORMAT(vDateSerial));
-        NoOfDays := ROUND(NoOfDays / 86400, 1);
-        exit(dOffsetDate + NoOfDays);
-    end;
-
-    local procedure CreateXSensAuthHeader(APIkey: Text): Text
-    var
-        AuthString: Text;
-        BaseConv: Codeunit "Base64 Convert";
-    begin
-        AuthString := APIkey;
-        AuthString := BaseConv.ToBase64(AuthString);
-        AuthString := STRSUBSTNO('Basic %1', AuthString);
-        exit(AuthString);
-    end;
 
     local procedure ProcessInvoice(Offset: Text[100]; sLast_Updated: Text[100]; bPost: Boolean; bCredit: Boolean): Text;
     var
@@ -131,6 +108,7 @@ codeunit 50020 ProcessChargebee
         DiscountAmt: Decimal;
         jsontoken: JsonToken;
     begin
+
         // GET CHARGEBEE INVOICE
         Offset := DELCHR(Offset, '>', ' ');
         if not bCredit then begin
@@ -141,16 +119,23 @@ codeunit 50020 ProcessChargebee
             lastURLPart := 'credit_notes?limit=1&updated_at[after]=' + sLast_Updated + '&offset=' + Offset;
         end;
         ApiResult := GiveApiResult(lastURLPart, 'GET');
-        if ApiResult = 'null' then exit(FORMAT(vNext_Offset)); //No records in the list
+        if ApiResult = 'null' then begin
+            vNext_Offset := '0';
+            exit(FORMAT(vNext_Offset)); //No records in the list
+        end;
         JObject.ReadFrom(ApiResult);
         if JObject.SelectToken('next_offset', jsontoken) then
             vNext_Offset := jsontoken.AsValue().AsText()
-        else
+        else begin
             vNext_Offset := '0';
+            exit(FORMAT(vNext_Offset));
+        end;
         if JObject.SelectToken('list[0].' + IC + '.id', jsontoken) then
             vID := jsontoken.AsValue().AsText()
-        else
+        else begin
+            vNext_Offset := '0';
             exit(FORMAT(vNext_Offset));
+        end;
 
         EVALUATE(InvoiceNo, FORMAT(vID));
 
@@ -185,10 +170,14 @@ codeunit 50020 ProcessChargebee
             end;
         end;
         //GET CUSTOMER
+        lastURLCustPart := '';
         if JObject.SelectToken('list[0].' + IC + '.customer_id', jsontoken) then
             lastURLCustPart := 'customers/' + jsontoken.AsValue().AsText()
-        else
-            lastURLCustPart := '0';
+        else begin
+            ChangeTransaction(CBTrans.Type::Invoice, InvoiceNo, 'Cannot find Customer in Chargebee on customer_id', 0, '', false);
+            ChangeLastUpdated := false;
+            exit(FORMAT(vNext_Offset));
+        end;
 
         ApiResultCust := GiveApiResult(lastURLCustPart, 'GET');
         if ApiResultCust = 'null' then begin
@@ -198,11 +187,10 @@ codeunit 50020 ProcessChargebee
         end;
 
         JObjectCust.ReadFrom(ApiResultCust);
-        if JObjectCust.SelectToken('customer.cf_sfaccountnumber', jsontoken) then
-            EVALUATE(cCustomer, jsontoken.AsValue().AsText())
-        else
-            cCustomer := '0';
-        if cCustomer = '0' then begin
+        cCustomer := '0';
+        if JObjectCust.SelectToken('customer.cf_sfaccountnumber', jsontoken) then begin
+            EVALUATE(cCustomer, jsontoken.AsValue().AsText());
+        end else begin
             ChangeTransaction(CBTrans.Type::Invoice, InvoiceNo, STRSUBSTNO('Entity cf_sfaccountnumber %1 does not exist', lastURLCustPart), 0, '', false);
             ChangeLastUpdated := false;
             exit(FORMAT(vNext_Offset));      //entity cf_accountnumber bestaat niet
@@ -404,7 +392,7 @@ codeunit 50020 ProcessChargebee
         exit(FORMAT((LastDate - dOffSetDate) * 86400));
     end;
 
-    local procedure CheckPayments(LastDate: Date; GLAccountDB: Code[20]);
+    local procedure CheckPayments(LastDate: Date);
     var
         GLEntry: Record "G/L Entry";
         CustLedgerEntry: Record "Cust. Ledger Entry";
@@ -418,23 +406,30 @@ codeunit 50020 ProcessChargebee
         CBTrans: Record "Chargebee Transactions";
         cEntry: Code[20];
         Desc: Text[50];
+        GLAccountDB: Code[20];
+        InvPrefixWithStar: Text[3];
     begin
+        GLAccountDB := ChargebeeSetup."GL Account";
+        InvPrefixWithStar := ChargebeeSetup."Invoice prefix" + '*';
         GLEntry.RESET;
         GLEntry.SETRANGE("G/L Account No.", GLAccountDB);
         GLEntry.SETRANGE("Document Type", GLEntry."Document Type"::Payment);
         LastDateTime := CREATEDATETIME(LastDate, 000000T);
         GLEntry.SETFILTER("Last Modified DateTime", '>=%1', LastDateTime);
-        if not GLEntry.FINDSET then exit;
+        if not GLEntry.FINDSET then begin
+            SetTransaction(CBTrans.Type::Payment, format(CurrentDateTime), 'No payments found on ' + GLAccountDB + 'after ' + format(LastDateTime), '');
+            exit;
+        end;
         repeat
             CustLedgerEntry.RESET;
             CustLedgerEntry.SETRANGE("Transaction No.", GLEntry."Transaction No.");
             if CustLedgerEntry.FINDSET then begin
                 CustLedgerEntryInvoice.RESET;
-                CustLedgerEntryInvoice.SETFILTER("Document No.", 'CB*');
+                CustLedgerEntryInvoice.SETFILTER("Document No.", InvPrefixWithStar);
                 CustLedgerEntryInvoice.SETRANGE("Entry No.", CustLedgerEntry."Closed by Entry No.");  //Deelbetalingen
                 if not CustLedgerEntryInvoice.FINDFIRST then begin
                     CustLedgerEntryInvoice.RESET;
-                    CustLedgerEntryInvoice.SETFILTER("Document No.", 'CB*');
+                    CustLedgerEntryInvoice.SETFILTER("Document No.", InvPrefixWithStar);
                     CustLedgerEntryInvoice.SETRANGE("Closed by Entry No.", CustLedgerEntry."Entry No.");  //Afgesloten
                 end;
                 if CustLedgerEntryInvoice.FINDFIRST then begin
@@ -478,7 +473,6 @@ codeunit 50020 ProcessChargebee
         HttpHeaders: HttpHeaders;
         HttpContent: HttpContent;
         HttpRequestMessage: HttpRequestMessage;
-
         Instr: InStream;
         ApiResult: Text;
         ChargebeeSetup: Record ChargebeeSetup;
@@ -492,6 +486,7 @@ codeunit 50020 ProcessChargebee
         HttpRequestMessage.SetRequestUri(sURL);
         HttpHeaders := HttpClient.DefaultRequestHeaders();
         HttpHeaders.Add('Authorization', CreateXSensAuthHeader(APIKey));
+        if Method = 'POST' then HttpRequestMessage.Method := 'POST' else HttpRequestMessage.Method := 'GET';
         if HttpClient.Send(HttpRequestMessage, HttpResponseMessage) then begin
             if HttpResponseMessage.IsSuccessStatusCode() then begin
                 HttpResponseMessage.Content().ReadAs(ApiResult);
@@ -534,8 +529,8 @@ codeunit 50020 ProcessChargebee
         if not CBTrans.GET(Type, ID) then exit(false);
         if CBTrans.Type = CBTrans.Type::Invoice then if CBTrans.Succeeded then exit(false);
         CBTrans.Description := Description;
-        if Amount > 0 then
-            CBTrans.Amount := Amount;
+        //if Amount <> 0 then
+        CBTrans.Amount := Amount;
         if Customer <> '' then
             CBTrans.Customer := Customer;
         CBTrans.Succeeded := Succeeded;
@@ -595,5 +590,38 @@ codeunit 50020 ProcessChargebee
         SalesLine.VALIDATE("Unit Price", dTax);
         SalesLine.INSERT(true);
     end;
+
+    local procedure ReturnDate(vDateSerial: Variant): Date;
+    var
+        NoOfDays: Decimal;
+        dOffsetDate: Date;
+    begin
+        dOffsetDate := 19700101D;
+        EVALUATE(NoOfDays, FORMAT(vDateSerial));
+        NoOfDays := ROUND(NoOfDays / 86400, 1);
+        exit(dOffsetDate + NoOfDays);
+    end;
+
+    local procedure CreateXSensAuthHeader(APIkey: Text): Text
+    var
+        AuthString: Text;
+        BaseConv: Codeunit "Base64 Convert";
+    begin
+        AuthString := APIkey;
+        AuthString := BaseConv.ToBase64(AuthString);
+        AuthString := STRSUBSTNO('Basic %1', AuthString);
+        exit(AuthString);
+    end;
+
+    var
+        ChargebeeSetup: Record ChargebeeSetup;
+        ChangeLastUpdated: Boolean;
+        bUseSalesTax: Boolean;
+        gFullVAT: Code[20];
+        gNoVAT: Code[20];
+        gSalesTaxAccount: Code[20];
+        gBusinessUnit: Code[20];
+        gProductLines: Code[20];
+
 }
 

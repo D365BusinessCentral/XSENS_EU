@@ -7,7 +7,7 @@ table 50004 "Chargebee Transactions"
     {
         field(10; Type; Option)
         {
-            OptionMembers = Invoice,Payment;
+            OptionMembers = Invoice,Payment,Error;
         }
         field(20; ID; Code[20])
         {
