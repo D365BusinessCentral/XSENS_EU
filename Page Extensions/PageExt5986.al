@@ -133,6 +133,63 @@ pageextension 50022 "Service Item Component List" extends "Service Item Componen
                     end;
                 end;
             }
+
+            action("Copy Components From Archived ILE")
+            {
+                Caption = 'Copy Components From Archived ILE';
+                ApplicationArea = Service;
+                Image = CopyBOM;
+                trigger OnAction()
+                var
+                    RecILE: Record "Item Ledger Entry IT";
+                    RecILE2: Record "Item Ledger Entry IT";
+                    RecItem: Record Item;
+                    RecServiceItemComponent: Record "Service Item Component";
+                    ServiceItem: Record "Service Item";
+                    LastLineNo: Integer;
+                begin
+                    //******************** Getting components from ILE **************
+                    Clear(ServiceItem);
+                    ServiceItem.Get(Rec."Parent Service Item No.");
+                    ServiceItem.TestField("Serial No.");
+                    RecItem.GET(ServiceItem."Item No.");
+                    RecItem.TestField("Copy Serive Item Components");
+
+                    Clear(RecILE);
+                    RecILE.SetRange("Entry Type", RecILE."Entry Type"::Output);
+                    RecILE.SetRange("Item No.", RecItem."No.");
+                    RecILE.SetRange("Serial No.", ServiceItem."Serial No.");
+                    if RecILE.FindFirst() then begin
+                        LastLineNo := GetLastLineNumber;
+                        Clear(RecILE2);
+                        RecILE2.SetRange("Entry Type", RecILE2."Entry Type"::Consumption);
+                        RecILE2.SetRange("Document No.", RecILE."Document No.");
+                        RecILE2.SetRange("Posting Date", RecILE."Posting Date");
+                        if RecILE2.FindSet() then begin
+                            repeat
+                                LastLineNo += 10000;
+                                RecServiceItemComponent.Init();
+                                RecServiceItemComponent.Validate("Parent Service Item No.", ServiceItem."No.");
+                                RecServiceItemComponent.Validate("Line No.", LastLineNo);
+                                RecServiceItemComponent.Validate(Description, RecItem.Description);
+                                RecServiceItemComponent.Validate("Description 2", RecItem."Description 2");
+                                RecServiceItemComponent.Validate("Date Installed", RecILE2."Document Date");
+                                RecServiceItemComponent.Validate(Active, true);
+                                RecServiceItemComponent.Validate(Type, RecServiceItemComponent.Type::Item);
+                                RecServiceItemComponent.Validate("No.", RecILE2."Item No.");
+                                RecServiceItemComponent.Validate("Variant Code", RecILE2."Variant Code");
+                                RecServiceItemComponent.Validate("Quantity (Base)", RecILE2.Quantity);
+                                //RecServiceItemComponent.Validate("Scrap %", RecILE2."Scrap %");
+                                RecServiceItemComponent.Validate("Quantity Per", 1);//RecILE2."Quantity per");
+                                RecServiceItemComponent.Validate("Unit of Measure Code", RecILE2."Unit of Measure Code");
+                                //RecServiceItemComponent.Validate("Routing Link Code", RecILE2."Routing Link Code");
+                                RecServiceItemComponent.Validate("Serial No.", RecILE2."Serial No.");
+                                RecServiceItemComponent.Insert(true);
+                            until RecILE2.Next() = 0;
+                        end;
+                    end;
+                end;
+            }
         }
     }
 

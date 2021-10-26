@@ -115,6 +115,10 @@ page 50098 "Posted Sales Invoice_LT"
                         Importance = Additional;
                         ToolTip = 'Specifies the number of the contact that the invoice was sent to.';
                     }
+                    field("Sell-to IC Customer No."; Rec."Sell-to IC Customer No.")
+                    {
+                        ApplicationArea = All;
+                    }
                 }
                 field("Sell-to Contact"; Rec."Sell-to Contact")
                 {

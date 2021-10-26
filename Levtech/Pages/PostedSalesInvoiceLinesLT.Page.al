@@ -177,6 +177,10 @@ page 50097 "Posted Sales Invoice Lines_LT"
                 {
                     ApplicationArea = All;
                 }
+                field("Sell-to IC Customer No."; Rec."Sell-to IC Customer No.")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
         area(factboxes)

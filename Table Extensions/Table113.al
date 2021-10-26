@@ -124,6 +124,13 @@ tableextension 50022 "Sales Invoice Line" extends "Sales Invoice Line"
             TableRelation = IF ("Drop Shipment" = CONST(true)) "Sales Line"."Line No." WHERE("Document Type" = CONST(Order),
                                                                                             "Document No." = FIELD("Sales Order No."));
         }
+        field(50360; "Sell-to IC Customer No."; Code[20])
+        {
+            CaptionML = ENU = 'Sell-to IC Customer No.',
+                        NLD = 'IC Orderklantnr.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Sales Invoice Header"."Sell-to IC Customer No." where("No." = field("Document No.")));
+        }
         field(50450; Sorting; Integer)
         {
             CaptionML = ENU = 'Sorting',
