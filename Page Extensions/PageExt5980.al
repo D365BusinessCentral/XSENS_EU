@@ -13,5 +13,16 @@ pageextension 50021 "Service Item Card" extends "Service Item Card"
                 ApplicationArea = All;
             }
         }
+        addafter(Description)
+        {
+            field("Description 2"; Rec."Description 2")
+            {
+                ApplicationArea = All;
+            }
+        }
+        modify("Service Item Group Code")
+        {
+            ApplicationArea = All;
+        }
     }
 }
