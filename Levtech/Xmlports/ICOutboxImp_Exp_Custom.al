@@ -449,57 +449,75 @@ xmlport 50000 "IC Outbox Imp/Exp_Intwo"
                         }
                         fieldattribute(SellToICCustNo; ICOutBoxPurchHdr."Sell-to IC Customer No.")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(SellToICName; ICOutBoxPurchHdr."Sell-to IC Name")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(SellToICName2; ICOutBoxPurchHdr."Sell-to IC Name 2")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(SellToICAddress; ICOutBoxPurchHdr."Sell-to IC Address")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(SellToICAddress2; ICOutBoxPurchHdr."Sell-to IC Address 2")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(SellToICCity; ICOutBoxPurchHdr."Sell-to IC City")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(SellToICContact; ICOutBoxPurchHdr."Sell-to IC Contact")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(SellToICPostCode; ICOutBoxPurchHdr."Sell-to IC Post Code")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(ShipToContact; ICOutBoxPurchHdr."Ship-to Contact")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(ShipToCountryRegion; ICOutBoxPurchHdr."Ship-to Country/Region Code")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(USPaymentTermsCode; ICOutBoxPurchHdr."Payment Terms Code (US)")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(USSalesOrderNo; ICOutBoxPurchHdr."Sales Order No. (US)")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(SalesForceComment; ICOutBoxPurchHdr."SalesForce Comment")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(SalesForceComment2; ICOutBoxPurchHdr."SalesForce Comment 2")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(SalesPersonCode; ICOutBoxPurchHdr."Salesperson Code")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(SalesYourReference; ICOutBoxPurchHdr."Sales Your Reference")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(SalesQuoteNo; ICOutBoxPurchHdr."Sales Quote No.")
                         {
+                            Occurrence = Optional;
                         }
                         fieldattribute(ExpectedReceiptDate; ICOutBoxPurchHdr."Expected Receipt Date")
                         {
+                            Occurrence = Optional;
                         }
                         textelement(ICPurDocDimensions)
                         {
