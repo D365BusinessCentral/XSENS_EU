@@ -23,6 +23,10 @@ pageextension 50006 "Sales Order" extends "Sales Order"
                 ApplicationArea = All;
                 Visible = false;
             }
+            field(ExternalID; Rec.ExternalID)
+            {
+                ApplicationArea = All;
+            }
             group(SalesForce)
             {
                 CaptionML = ENU = 'SalesForce',
@@ -313,6 +317,13 @@ pageextension 50006 "Sales Order" extends "Sales Order"
         modify(Control4)
         {
             Visible = true;
+        }
+        addlast("Invoice Details")
+        {
+            field("VAT Registration No."; Rec."VAT Registration No.")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 }

@@ -51,6 +51,10 @@ pageextension 50025 "Sales Order List" extends "Sales Order List"
             {
                 ApplicationArea = All;
             }
+            field("Ready to Ship"; Rec."Ready to Ship")
+            {
+                ApplicationArea = All;
+            }
         }
     }
     local procedure fReturnComment(): Text[80];
