@@ -560,8 +560,8 @@ report 50003 "Sales - Shipment XSS DCR"
 
                             lPos := STRPOS("No.", 'DISC');
 
-                            if ShptLine."No." = 'SHIPPING' then
-                                CurrReport.SKIP;
+                            // if ShptLine."No." = 'SHIPPING' then
+                            //     CurrReport.SKIP;
 
                             if lPos > 0 then
                                 CurrReport.SKIP;
@@ -701,11 +701,11 @@ report 50003 "Sales - Shipment XSS DCR"
                         Caption = 'Show Assembly Components';
                         ApplicationArea = All;
                     }
-                    field(wgShowDiskShippingItems; wgShowDiskShippingItems)
-                    {
-                        Caption = 'Show Shipping / Disc Items';
-                        ApplicationArea = All;
-                    }
+                    // field(wgShowDiskShippingItems; wgShowDiskShippingItems)
+                    // {
+                    //     Caption = 'Show Shipping / Disc Items';
+                    //     ApplicationArea = All;
+                    // }
                 }
             }
         }
@@ -746,6 +746,7 @@ report 50003 "Sales - Shipment XSS DCR"
         gIntCompanyLocation := wgRecCompanyInfo."Company Location";
         //gRecXSENSSetup.GET;
         wgShowLotSN := true;//13.09.2021
+        wgShowDiskShippingItems := true;
     end;
 
     trigger OnPreReport();

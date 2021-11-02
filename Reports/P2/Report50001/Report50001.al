@@ -519,6 +519,9 @@ report 50001 "Sales - Order Confirm XSS DCR"
             column(SalesForce_Comment; "SalesForce Comment")
             {
             }
+            column(Sell_to_Contact;"Sell-to Contact")
+            {
+            }
             dataitem(CopyLoop; "Integer")
             {
                 DataItemTableView = SORTING(Number);

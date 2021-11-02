@@ -591,7 +591,7 @@
                               <TablixBody>
                                 <TablixColumns>
                                   <TablixColumn>
-                                    <Width>5.79098cm</Width>
+                                    <Width>5.15598cm</Width>
                                   </TablixColumn>
                                 </TablixColumns>
                                 <TablixRows>
@@ -1041,9 +1041,9 @@
                               </TablixRowHierarchy>
                               <DataSetName>DataSet_Result</DataSetName>
                               <Top>0.01661cm</Top>
-                              <Left>13.0209cm</Left>
+                              <Left>13.6559cm</Left>
                               <Height>3.1339cm</Height>
-                              <Width>5.79098cm</Width>
+                              <Width>5.15598cm</Width>
                               <ZIndex>1</ZIndex>
                               <Style>
                                 <Border>
@@ -1055,10 +1055,10 @@
                               <TablixBody>
                                 <TablixColumns>
                                   <TablixColumn>
-                                    <Width>3.23973cm</Width>
+                                    <Width>2.37017cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>3.71711cm</Width>
+                                    <Width>5.22523cm</Width>
                                   </TablixColumn>
                                 </TablixColumns>
                                 <TablixRows>
@@ -1231,40 +1231,10 @@
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
+                                          <ColSpan>2</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell>
-                                        <CellContents>
-                                          <Textbox Name="Textbox1">
-                                            <CanGrow>true</CanGrow>
-                                            <KeepTogether>true</KeepTogether>
-                                            <Paragraphs>
-                                              <Paragraph>
-                                                <TextRuns>
-                                                  <TextRun>
-                                                    <Value />
-                                                    <Style>
-                                                      <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
-                                                    </Style>
-                                                  </TextRun>
-                                                </TextRuns>
-                                                <Style>
-                                                  <TextAlign>Left</TextAlign>
-                                                </Style>
-                                              </Paragraph>
-                                            </Paragraphs>
-                                            <rd:DefaultName>Textbox1</rd:DefaultName>
-                                            <Style>
-                                              <Border>
-                                                <Style>None</Style>
-                                              </Border>
-                                              <PaddingLeft>5pt</PaddingLeft>
-                                              <PaddingRight>5pt</PaddingRight>
-                                            </Style>
-                                          </Textbox>
-                                        </CellContents>
-                                      </TablixCell>
+                                      <TablixCell />
                                     </TablixCells>
                                   </TablixRow>
                                   <TablixRow>
@@ -1784,7 +1754,7 @@
                               <Top>0.01661cm</Top>
                               <Left>6.06406cm</Left>
                               <Height>3.1339cm</Height>
-                              <Width>6.95684cm</Width>
+                              <Width>7.5954cm</Width>
                               <ZIndex>2</ZIndex>
                               <Style>
                                 <Border>
@@ -2447,7 +2417,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!LineDiscPerc.Value</Value>
+                                                    <Value>=IIf(Fields!LineDiscPerc.Value = 0,"",Fields!LineDiscPerc.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>

@@ -478,6 +478,14 @@ report 50002 "Proforma Invoice XSS DCR"
             column(VatRegulationG; VatRegulationG)
             {
             }
+            column(VATAmtText; VATAmtLine.VATAmountText())
+            {
+            }
+            column(VATAmount; VATAmtLine."VAT Amount")
+            {
+            }
+
+            column(TotalAmountInclVAT; TotalAmountInclVAT) { }
             dataitem(CopyLoop; "Integer")
             {
                 DataItemTableView = SORTING(Number);
@@ -735,11 +743,11 @@ report 50002 "Proforma Invoice XSS DCR"
                         AutoFormatExpression = SalesHdr."Currency Code";
                         AutoFormatType = 1;
                     }
-                    column(VATAmount; "VAT Amount")
-                    {
-                        AutoFormatExpression = SalesHdr."Currency Code";
-                        AutoFormatType = 1;
-                    }
+                    // column(VATAmount; "VAT Amount")
+                    // {
+                    //     AutoFormatExpression = SalesHdr."Currency Code";
+                    //     AutoFormatType = 1;
+                    // }
                     column(VATBase; "VAT Base")
                     {
                         AutoFormatExpression = SalesHdr."Currency Code";
@@ -851,9 +859,9 @@ report 50002 "Proforma Invoice XSS DCR"
                         AutoFormatExpression = SalesHdr."Currency Code";
                         AutoFormatType = 1;
                     }
-                    column(VATAmtText; wgVATAmountText)
-                    {
-                    }
+                    // column(VATAmtText; wgVATAmountText)
+                    // {
+                    // }
                     column(TotVALVATBaseLCY; wgTotVALVATBaseLCY)
                     {
                     }
@@ -921,7 +929,7 @@ report 50002 "Proforma Invoice XSS DCR"
                 //wgCduDocCreatorTransLationMgt.wgSetLanguageCode('ENU');    //GW//Krishna   //GW
 
                 wlFncFormatAddressFields(SalesHdr);
-                wlFncFormatDocumentFields(SalesHdr);
+                // wlFncFormatDocumentFields(SalesHdr);
 
                 if wgPrint then begin
                     if wgArchiveDocument then
@@ -989,6 +997,8 @@ report 50002 "Proforma Invoice XSS DCR"
                         DATABASE::"Sales Header", SalesHdr."Document Type");
                 end;
 
+                Clear(TotalAmountInclVAT);
+                TotalAmountInclVAT := VATAmtLine.GetTotalAmountInclVAT;
                 //Set HideLineDiscount
                 wlRecRef.GETTABLE(SalesHdr);
                 //wgHideLineDiscount := wgCduDocCreatorReportFunctions.wgFncHideLineDiscount(wlRecRef);//Krishna
@@ -1006,6 +1016,8 @@ report 50002 "Proforma Invoice XSS DCR"
                     'ROW-SALE':
                         VatRegulationG := '“No tax charged because of EXPORT-shipment”';
                 end;
+
+                wlFncFormatDocumentFields(SalesHdr);
             end;
         }
     }
@@ -1184,6 +1196,7 @@ report 50002 "Proforma Invoice XSS DCR"
         PaymentMethodG: Record "Payment Method";
         ShipmentMethodG: Record "Shipment Method";
         VatRegulationG: Text;
+        TotalAmountInclVAT: Decimal;
 
     local procedure Trl(pLblName: Text): Text;
     begin
@@ -1218,19 +1231,25 @@ report 50002 "Proforma Invoice XSS DCR"
             end;
             wgTotalText := STRSUBSTNO(Trl('Total%1'), wlCurrencyCode);
             //NM_BEGIN GW
-            case wgRecCompanyInfo."Company Location" of
-                wgRecCompanyInfo."Company Location"::Holland:
-                    begin
-                        wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl VAT.'), wlCurrencyCode);
-                        wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl VAT.'), wlCurrencyCode);
-                    end;
-                wgRecCompanyInfo."Company Location"::"North America":
-                    begin
-                        wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl Tax.'), wlCurrencyCode);
-                        wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl Tax.'), wlCurrencyCode);
-                    end;
-            end;
+            // case wgRecCompanyInfo."Company Location" of
+            //     wgRecCompanyInfo."Company Location"::Holland:
+            //         begin
+            //             wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl VAT.'), wlCurrencyCode);
+            //             wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl VAT.'), wlCurrencyCode);
+            //         end;
+            //     wgRecCompanyInfo."Company Location"::"North America":
+            //         begin
+            //             wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl Tax.'), wlCurrencyCode);
+            //             wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl Tax.'), wlCurrencyCode);
+            //         end;
+            // end;
             //NM_END
+            wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl VAT.'), wlCurrencyCode);
+            if wgTotVATAmount = 0 then
+                wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 '), wlCurrencyCode)
+            else
+                wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl VAT.'), wlCurrencyCode);
+            wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, "Salesperson Code", wlSalesPersonText);
             wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, "Salesperson Code", wlSalesPersonText);
         end;
     end;
