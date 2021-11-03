@@ -27,6 +27,10 @@ pageextension 50006 "Sales Order" extends "Sales Order"
             {
                 ApplicationArea = All;
             }
+            field("Declaration Statement"; Rec."Declaration Statement")
+            {
+                ApplicationArea = All;
+            }
             group(SalesForce)
             {
                 CaptionML = ENU = 'SalesForce',

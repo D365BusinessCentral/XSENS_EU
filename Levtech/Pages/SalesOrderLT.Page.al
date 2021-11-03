@@ -288,6 +288,10 @@ page 50099 "Sales Order LT"
                 {
                     ApplicationArea = All;
                 }
+                field("Declaration Statement"; Rec."Declaration Statement")
+                {
+                    ApplicationArea = All;
+                }
                 field("SalesForce Comment"; Rec."SalesForce Comment")
                 {
                     ApplicationArea = All;
