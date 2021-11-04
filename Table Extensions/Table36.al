@@ -186,7 +186,7 @@ tableextension 50011 "Sales Header" extends "Sales Header"
             CaptionML = ENU = 'Date Order confimation',
                         NLD = 'Datum orderbevestiging';
         }
-        field(50504; "Comment 2"; Text[200])
+        field(50504; "Comment 2"; Text[255])
         {
             CaptionML = ENU = 'Comment 2',
                         NLD = 'Opmerking 2';
