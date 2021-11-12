@@ -1,4 +1,4 @@
-pageextension 50000 "Company Information" extends "Company Information"
+pageextension 50001 "Company Information" extends "Company Information"
 {
     // version NAVW111.00.00.19846,NAVNL11.00.00.19846,XSS5.088
 

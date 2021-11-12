@@ -134,7 +134,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!ShipToAddr1.Value</Value>
+                                                    <Value>=Fields!BillToAddr1.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -172,7 +172,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!ShipToAddr2.Value</Value>
+                                                    <Value>=Fields!BillToAddr2.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -210,7 +210,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!ShipToAddr3.Value</Value>
+                                                    <Value>=Fields!BillToAddr3.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -248,7 +248,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!ShipToAddr4.Value</Value>
+                                                    <Value>=Fields!BillToAddr4.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -286,7 +286,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!ShipToAddr5.Value</Value>
+                                                    <Value>=Fields!BillToAddr5.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -324,7 +324,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!ShipToAddr6.Value</Value>
+                                                    <Value>=Fields!BillToAddr6.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -362,7 +362,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!ShipToAddr7.Value</Value>
+                                                    <Value>=Fields!BillToAddr7.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -400,7 +400,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!ShipToAddr8.Value</Value>
+                                                    <Value>=Fields!BillToAddr8.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -531,42 +531,42 @@
                                   <TablixMember />
                                   <TablixMember>
                                     <Visibility>
-                                      <Hidden>=Fields!ShipToAddr1.Value =""</Hidden>
+                                      <Hidden>=Fields!BillToAddr1.Value =""</Hidden>
                                     </Visibility>
                                   </TablixMember>
                                   <TablixMember>
                                     <Visibility>
-                                      <Hidden>=Fields!ShipToAddr2.Value =""</Hidden>
+                                      <Hidden>=Fields!BillToAddr2.Value =""</Hidden>
                                     </Visibility>
                                   </TablixMember>
                                   <TablixMember>
                                     <Visibility>
-                                      <Hidden>=Fields!ShipToAddr3.Value =""</Hidden>
+                                      <Hidden>=Fields!BillToAddr3.Value =""</Hidden>
                                     </Visibility>
                                   </TablixMember>
                                   <TablixMember>
                                     <Visibility>
-                                      <Hidden>=Fields!ShipToAddr4.Value =""</Hidden>
+                                      <Hidden>=Fields!BillToAddr4.Value =""</Hidden>
                                     </Visibility>
                                   </TablixMember>
                                   <TablixMember>
                                     <Visibility>
-                                      <Hidden>=Fields!ShipToAddr5.Value =""</Hidden>
+                                      <Hidden>=Fields!BillToAddr5.Value =""</Hidden>
                                     </Visibility>
                                   </TablixMember>
                                   <TablixMember>
                                     <Visibility>
-                                      <Hidden>=Fields!ShipToAddr6.Value =""</Hidden>
+                                      <Hidden>=Fields!BillToAddr6.Value =""</Hidden>
                                     </Visibility>
                                   </TablixMember>
                                   <TablixMember>
                                     <Visibility>
-                                      <Hidden>=Fields!ShipToAddr7.Value =""</Hidden>
+                                      <Hidden>=Fields!BillToAddr7.Value =""</Hidden>
                                     </Visibility>
                                   </TablixMember>
                                   <TablixMember>
                                     <Visibility>
-                                      <Hidden>=Fields!ShipToAddr8.Value =""</Hidden>
+                                      <Hidden>=Fields!BillToAddr8.Value =""</Hidden>
                                     </Visibility>
                                   </TablixMember>
                                   <TablixMember />
@@ -6029,6 +6029,30 @@ End Function
         </Field>
         <Field Name="ShipToAddr8">
           <DataField>ShipToAddr8</DataField>
+        </Field>
+        <Field Name="BillToAddr1">
+          <DataField>BillToAddr1</DataField>
+        </Field>
+        <Field Name="BillToAddr2">
+          <DataField>BillToAddr2</DataField>
+        </Field>
+        <Field Name="BillToAddr3">
+          <DataField>BillToAddr3</DataField>
+        </Field>
+        <Field Name="BillToAddr4">
+          <DataField>BillToAddr4</DataField>
+        </Field>
+        <Field Name="BillToAddr5">
+          <DataField>BillToAddr5</DataField>
+        </Field>
+        <Field Name="BillToAddr6">
+          <DataField>BillToAddr6</DataField>
+        </Field>
+        <Field Name="BillToAddr7">
+          <DataField>BillToAddr7</DataField>
+        </Field>
+        <Field Name="BillToAddr8">
+          <DataField>BillToAddr8</DataField>
         </Field>
         <Field Name="ShipToAddrSet">
           <DataField>ShipToAddrSet</DataField>

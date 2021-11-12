@@ -441,7 +441,7 @@ report 50003 "Sales - Shipment XSS DCR"
                     }
                     dataitem("Item Ledger Entry"; "Item Ledger Entry")
                     {
-                        DataItemLink = "Item No." = field("No."), "Document No." = field("Document No.");
+                        DataItemLink = "Item No." = field("No."), "Document No." = field("Document No."), "Document Line No." = field("Line No.");
                         DataItemTableView = sorting("Document Type", "Item No.", "Document No.") WHERE("Document Type" = CONST("Sales Shipment"));
                         column(Serial_No_; "Serial No.") { }
                         column(Lot_No_; "Lot No.") { }

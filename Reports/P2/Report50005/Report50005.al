@@ -581,7 +581,7 @@ report 50005 "Purchase - Order XSS DCR"
                     column(LineDiscPerc; "Line Discount %")
                     {
                     }
-                    column(No_2; No)
+                    column(No_2; "No.")
                     {
                     }
                     column(PromisedReceiptDate; "Promised Receipt Date")
@@ -619,6 +619,9 @@ report 50005 "Purchase - Order XSS DCR"
                     }
                     //01.09.2021
                     column(Unit_Cost; "Unit Cost") { }
+                    column(Vendor_Item_No_; "Vendor Item No.")
+                    {
+                    }
 
                     dataitem(LineComment; "Sales Comment Line")
                     {

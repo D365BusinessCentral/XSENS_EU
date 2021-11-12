@@ -97,13 +97,13 @@ report 50009 "Prod. Order - Mat. Req.XSS DCR"
             column(ProdOrderNoEAN8; gTxtBarcodeProdOrderEAN82)
             {
             }
-            column(BarcodeProdOrderNo; gRecTMPBlob.Blob)
+            column(BarcodeProdOrderNo; gRecTMPBlob.Blob1)
             {
             }
-            column(BarcodeSourceNo; gRecTMPBlob2.Blob)
+            column(BarcodeSourceNo; gRecTMPBlob2.Blob2)
             {
             }
-            column(BarcodeQuantity; gRecTMPBlob3.Blob)
+            column(BarcodeQuantity; gRecTMPBlob3.Blob3)
             {
             }
             column(UserID; UserId)
@@ -189,7 +189,8 @@ report 50009 "Prod. Order - Mat. Req.XSS DCR"
                     if "Item No." <> '' then begin
                         CLEAR(gRecReservEntry);
                         gCduReservationEngineMgt.InitFilterAndSortingLookupFor(gRecReservEntry, true);
-                        gCduReserveProdOrderLine.FilterReservFor(gRecReservEntry, "Prod. Order Line");
+                        //gCduReserveProdOrderLine.FilterReservFor(gRecReservEntry, "Prod. Order Line");
+                        "Prod. Order Line".SetReservationEntry(gRecReservEntry);
                         if gRecReservEntry.FINDFIRST then;
                     end;
                 end;
@@ -198,6 +199,7 @@ report 50009 "Prod. Order - Mat. Req.XSS DCR"
             trigger OnAfterGetRecord();
             var
                 lTxtProdOrder: Text[20];
+                EntryNoL: Integer;
             begin
                 //NM_BEGIN 20190715 MDO NMSD-59
                 //Bestaande code voor Barcode uitgeschakeld. Dit kregen we zo snel niet werkend en daarom
@@ -214,9 +216,13 @@ report 50009 "Prod. Order - Mat. Req.XSS DCR"
                 gRecTMPBlob.Reset();
                 gRecTMPBlob2.Reset();
                 gRecTMPBlob3.Reset();
-                gCduGeneral.fBarcodeCreatorV15EncodeCode128("Production Order"."No.", 2, false, gRecTMPBlob);
-                gCduGeneral.fBarcodeCreatorV15EncodeCode128("Production Order"."Source No.", 2, false, gRecTMPBlob2);
-                gCduGeneral.fBarcodeCreatorV15EncodeCode128(STRSUBSTNO('%1', FORMAT("Production Order".Quantity)), 2, false, gRecTMPBlob3);
+                EntryNoL := gRecTMPBlob.GetEntryNo();
+                Clear(gRecTMPBlob);
+                gRecTMPBlob.Init();
+                gRecTMPBlob."Entry No." := EntryNoL;
+                gCduGeneral.fBarcodeCreatorV15EncodeCode128("Production Order"."No.", 2, false, gRecTMPBlob, 1);
+                gCduGeneral.fBarcodeCreatorV15EncodeCode128("Production Order"."Source No.", 2, false, gRecTMPBlob, 2);
+                gCduGeneral.fBarcodeCreatorV15EncodeCode128(STRSUBSTNO('%1', FORMAT("Production Order".Quantity)), 2, false, gRecTMPBlob, 3);
                 //NM_END 20190715 MDO NMSD-59
 
                 // Barcode.DoGenerateBarcode("No.", 2, TempBlob);
@@ -258,7 +264,15 @@ report 50009 "Prod. Order - Mat. Req.XSS DCR"
         //wgCduDocCreatorTransLationMgt.wgSetLanguageCode('ENU');//Krishna
     end;
 
+    trigger OnPostReport()
     var
+        myInt: Integer;
+    begin
+        BlobMag.DeleteAll();
+    end;
+
+    var
+        BlobMag: Record "Blob Management";
         ReservationEntry: Record "Reservation Entry";
         ReservationEntry2: Record "Reservation Entry";
         ProdOrderFilter: Text;
@@ -281,10 +295,10 @@ report 50009 "Prod. Order - Mat. Req.XSS DCR"
         gTxtBarcodeProdOrderEAN8: Text[20];
         gTxtBarcodeProdOrderEAN82: Text[20];
         gCduGeneral: Codeunit Algemeen;
-        gRecTMPBlob: Record TempBlob temporary;
-        gRecTMPBlob2: Record TempBlob temporary;
-        gRecTMPBlob3: Record TempBlob temporary;
-        TempBlob: Record TempBlob temporary;
+        gRecTMPBlob: Record "Blob Management" temporary; //TempBlob temporary;
+        gRecTMPBlob2: Record "Blob Management" temporary;//TempBlob temporary;
+        gRecTMPBlob3: Record "Blob Management" temporary;//TempBlob temporary;
+                                                         //TempBlob: Record TempBlob temporary;
 
     procedure "fEncodeBarcode128-1"(pText: Text[250]) RetVal: Text[250];
     var

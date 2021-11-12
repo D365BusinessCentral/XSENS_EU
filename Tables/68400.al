@@ -231,28 +231,35 @@ table 68400 "XSS Complaint Header"
 
     procedure SetComplaintDescription(NewComplaintDescription: Text);
     var
-        TempBlob: Record TempBlob temporary;
+        //TempBlob: Record TempBlob temporary;
+        OStream: OutStream;
     begin
         CLEAR("Complaint Description");
-        IF NewComplaintDescription = '' THEN
-            EXIT;
-        TempBlob.Blob := "Complaint Description";
-        TempBlob.WriteAsText(NewComplaintDescription, TEXTENCODING::Windows);
-        "Complaint Description" := TempBlob.Blob;
-        MODIFY;
+        "Complaint Description".CreateOutStream(OStream, TextEncoding::Windows);
+        Modify();
+        // IF NewComplaintDescription = '' THEN
+        //     EXIT;
+        // TempBlob.Blob := "Complaint Description";
+        // TempBlob.WriteAsText(NewComplaintDescription, TEXTENCODING::Windows);
+        // "Complaint Description" := TempBlob.Blob;
+        // MODIFY;
     end;
 
-    procedure GetComplaintDescription(): Text;
+    procedure GetComplaintDescription() ComplaintDescription: Text;
     var
-        TempBlob: Record TempBlob temporary;
+        //TempBlob: Record TempBlob temporary;
         CR: Text[1];
+        IStream: InStream;
+        TypeHelper: Codeunit "Type Helper";
     begin
         CALCFIELDS("Complaint Description");
-        IF NOT "Complaint Description".HASVALUE THEN
-            EXIT('');
-        CR[1] := 10;
-        TempBlob.Blob := "Complaint Description";
-        EXIT(TempBlob.ReadAsText(CR, TEXTENCODING::Windows));
+        "Complaint Description".CreateInStream(IStream, TextEncoding::Windows);
+        if not TypeHelper.TryReadAsTextWithSeparator(IStream, TypeHelper.LFSeparator(), ComplaintDescription) then;
+        // IF NOT "Complaint Description".HASVALUE THEN
+        //     EXIT('');
+        // CR[1] := 10;
+        // TempBlob.Blob := "Complaint Description";
+        // EXIT(TempBlob.ReadAsText(CR, TEXTENCODING::Windows));
     end;
 }
 

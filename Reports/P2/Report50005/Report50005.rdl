@@ -2352,16 +2352,16 @@
                               <TablixBody>
                                 <TablixColumns>
                                   <TablixColumn>
-                                    <Width>1.64656cm</Width>
+                                    <Width>1.46135cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>1.92151cm</Width>
+                                    <Width>3.11213cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>5.04359cm</Width>
+                                    <Width>4.62026cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>2.2496cm</Width>
+                                    <Width>2.01148cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
                                     <Width>2.15964cm</Width>
@@ -2370,10 +2370,10 @@
                                     <Width>1.55109cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>1.84213cm</Width>
+                                    <Width>1.68338cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>2.39776cm</Width>
+                                    <Width>2.21255cm</Width>
                                   </TablixColumn>
                                 </TablixColumns>
                                 <TablixRows>
@@ -2972,6 +2972,18 @@
                                                 <TextRuns>
                                                   <TextRun>
                                                     <Value>=Fields!Description.Value</Value>
+                                                    <Style>
+                                                      <FontFamily>Segoe UI</FontFamily>
+                                                      <FontSize>8pt</FontSize>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style />
+                                              </Paragraph>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=Fields!Vendor_Item_No_.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5869,7 +5881,7 @@
                               <DataSetName>DataSet_Result</DataSetName>
                               <Top>7.67895cm</Top>
                               <Height>3.57187cm</Height>
-                              <Width>18.81188cm</Width>
+                              <Width>18.81187cm</Width>
                               <ZIndex>3</ZIndex>
                               <Style>
                                 <Border>
@@ -6829,6 +6841,9 @@ End Function
         </Field>
         <Field Name="Unit_CostFormat">
           <DataField>Unit_CostFormat</DataField>
+        </Field>
+        <Field Name="Vendor_Item_No_">
+          <DataField>Vendor_Item_No_</DataField>
         </Field>
         <Field Name="Comment">
           <DataField>Comment</DataField>

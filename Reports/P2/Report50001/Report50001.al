@@ -519,7 +519,10 @@ report 50001 "Sales - Order Confirm XSS DCR"
             column(SalesForce_Comment; "SalesForce Comment")
             {
             }
-            column(Sell_to_Contact;"Sell-to Contact")
+            column(Sell_to_Contact; "Sell-to Contact")
+            {
+            }
+            column(US_Sales_Order_No_; "US Sales Order No.")
             {
             }
             dataitem(CopyLoop; "Integer")

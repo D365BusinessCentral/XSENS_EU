@@ -815,7 +815,7 @@ report 50019 "XSS - Reminder - North America"
         VATAmountLine: Record "VAT Amount Line" temporary;
         VATClause: Record "VAT Clause";
         DimSetEntry: Record "Dimension Set Entry";
-        Language: Record Language;
+        Language: Codeunit Language; //Record Language;
         CurrExchRate: Record "Currency Exchange Rate";
         FormatAddr: Codeunit "Format Address";
         SegManagement: Codeunit SegManagement;

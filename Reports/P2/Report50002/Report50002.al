@@ -388,28 +388,28 @@ report 50002 "Proforma Invoice XSS DCR"
             column(ShipmentMethodDesc; ShipmentMethodG.Description) //"Shipment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetShipmMethodTrl("Shipment Method Code"))//Krishna)
             {
             }
-            column(ShipToAddr1; wgShipToAddr[1])
+            column(ShipToAddr1; wgCustAddr[1])
             {
             }
-            column(ShipToAddr2; wgShipToAddr[2])
+            column(ShipToAddr2; wgCustAddr[2])
             {
             }
-            column(ShipToAddr3; wgShipToAddr[3])
+            column(ShipToAddr3; wgCustAddr[3])
             {
             }
-            column(ShipToAddr4; wgShipToAddr[4])
+            column(ShipToAddr4; wgCustAddr[4])
             {
             }
-            column(ShipToAddr5; wgShipToAddr[5])
+            column(ShipToAddr5; wgCustAddr[5])
             {
             }
-            column(ShipToAddr6; wgShipToAddr[6])
+            column(ShipToAddr6; wgCustAddr[6])
             {
             }
-            column(ShipToAddr7; wgShipToAddr[7])
+            column(ShipToAddr7; wgCustAddr[7])
             {
             }
-            column(ShipToAddr8; wgShipToAddr[8])
+            column(ShipToAddr8; wgCustAddr[8])
             {
             }
             column(ShipToAddrSet; wgShowShippingAddr)

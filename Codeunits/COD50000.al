@@ -548,7 +548,7 @@ codeunit 50000 Algemeen
         end;
     end;
 
-    procedure fBarcodeCreatorV15EncodeEAN13(pcodBarcode: Code[250]; pintSize: Integer; pblnVertical: Boolean; var precTmpTempBlob: Record TempBlob temporary);
+    procedure fBarcodeCreatorV15EncodeEAN13(pcodBarcode: Code[250]; pintSize: Integer; pblnVertical: Boolean; var precTmpTempBlob: Record "Blob Management" temporary; BlobNumber: Integer); //TempBlob temporary);
     var
         lintCheckDigit: Integer;
         lcodBarInclCheckD: Code[13];
@@ -628,7 +628,15 @@ codeunit 50000 Algemeen
         lintBars := bxtBarcodeBinary.LENGTH;
         lintLines := ROUND(lintBars * 0.25, 1, '>');
 
-        precTmpTempBlob.Blob.CREATEOUTSTREAM(loutBmpHeader);
+        //precTmpTempBlob.Blob.CREATEOUTSTREAM(loutBmpHeader);
+        case BlobNumber of
+            1:
+                precTmpTempBlob.Blob1.CREATEOUTSTREAM(loutBmpHeader);
+            2:
+                precTmpTempBlob.Blob2.CREATEOUTSTREAM(loutBmpHeader);
+            3:
+                precTmpTempBlob.Blob3.CREATEOUTSTREAM(loutBmpHeader);
+        end;
 
         //WRITING HEADER
         fBarcodeCreatorV15CreateBMPHeader(loutBmpHeader, lintBars, lintLines, pintSize, pblnVertical);
@@ -637,7 +645,7 @@ codeunit 50000 Algemeen
         fBarcodeCreatorV15CreateBarcodeDetail(lintLines, lintBars, pintSize, pblnVertical, loutBmpHeader);
     end;
 
-    procedure fBarcodeCreatorV15EncodeCode128(pcodBarcode: Code[1024]; pintSize: Integer; pblnVertical: Boolean; var precTmpTempBlob: Record TempBlob temporary);
+    procedure fBarcodeCreatorV15EncodeCode128(pcodBarcode: Code[1024]; pintSize: Integer; pblnVertical: Boolean; var precTmpTempBlob: Record "Blob Management" temporary; BlobNumber: Integer); //TempBlob temporary);
     var
         lRecTMPCode: Record "Service Item" temporary;
         lintCount1: Integer;
@@ -774,7 +782,15 @@ codeunit 50000 Algemeen
         lintBars := bxtBarcodeBinary.LENGTH;
         lintLines := ROUND(lintBars * 0.25, 1, '>');
 
-        precTmpTempBlob.Blob.CREATEOUTSTREAM(loutBmpHeader);
+        //precTmpTempBlob.Blob.CREATEOUTSTREAM(loutBmpHeader);
+        case BlobNumber of
+            1:
+                precTmpTempBlob.Blob1.CREATEOUTSTREAM(loutBmpHeader);
+            2:
+                precTmpTempBlob.Blob2.CREATEOUTSTREAM(loutBmpHeader);
+            3:
+                precTmpTempBlob.Blob3.CREATEOUTSTREAM(loutBmpHeader);
+        end;
 
         //WRITING HEADER
         fBarcodeCreatorV15CreateBMPHeader(loutBmpHeader, lintBars, lintLines, pintSize, pblnVertical);
@@ -783,7 +799,7 @@ codeunit 50000 Algemeen
         fBarcodeCreatorV15CreateBarcodeDetail(lintLines, lintBars, pintSize, pblnVertical, loutBmpHeader);
     end;
 
-    procedure fBarcodeCreatorV15EncodeCode39(pcodBarcode: Code[1024]; pintSize: Integer; pblnCheckDigit: Boolean; pblnVertical: Boolean; var precTmpTempBlob: Record TempBlob temporary);
+    procedure fBarcodeCreatorV15EncodeCode39(pcodBarcode: Code[1024]; pintSize: Integer; pblnCheckDigit: Boolean; pblnVertical: Boolean; var precTmpTempBlob: Record "Blob Management" temporary; BlobNumber: Integer); //TempBlob temporary);
     var
         lRecTMPCode: Record "Service Item" temporary;
         lintCount1: Integer;
@@ -849,7 +865,15 @@ codeunit 50000 Algemeen
         lintBars := bxtBarcodeBinary.LENGTH;
         lintLines := ROUND(lintBars * 0.25, 1, '>');
 
-        precTmpTempBlob.Blob.CREATEOUTSTREAM(loutBmpHeader);
+        //precTmpTempBlob.Blob.CREATEOUTSTREAM(loutBmpHeader);
+        case BlobNumber of
+            1:
+                precTmpTempBlob.Blob1.CREATEOUTSTREAM(loutBmpHeader);
+            2:
+                precTmpTempBlob.Blob2.CREATEOUTSTREAM(loutBmpHeader);
+            3:
+                precTmpTempBlob.Blob3.CREATEOUTSTREAM(loutBmpHeader);
+        end;
 
         //WRITING HEADER
         fBarcodeCreatorV15CreateBMPHeader(loutBmpHeader, lintBars, lintLines, pintSize, pblnVertical);
@@ -858,7 +882,7 @@ codeunit 50000 Algemeen
         fBarcodeCreatorV15CreateBarcodeDetail(lintLines, lintBars, pintSize, pblnVertical, loutBmpHeader);
     end;
 
-    procedure fBarcodeCreatorV15EncodeEAN8(pcodBarcode: Code[250]; pintSize: Integer; pblnVertical: Boolean; var precTmpTempBlob: Record TempBlob temporary);
+    procedure fBarcodeCreatorV15EncodeEAN8(pcodBarcode: Code[250]; pintSize: Integer; pblnVertical: Boolean; var precTmpTempBlob: Record "Blob Management" temporary; BlobNumber: Integer); //TempBlob temporary);
     var
         ltxtWeight: Text[12];
         ltxtSentinel: Text[3];
@@ -925,7 +949,15 @@ codeunit 50000 Algemeen
         lintBars := bxtBarcodeBinary.LENGTH;
         lintLines := ROUND(lintBars * 0.25, 1, '>');
 
-        precTmpTempBlob.Blob.CREATEOUTSTREAM(loutBmpHeader);
+        //precTmpTempBlob.Blob.CREATEOUTSTREAM(loutBmpHeader);
+        case BlobNumber of
+            1:
+                precTmpTempBlob.Blob1.CREATEOUTSTREAM(loutBmpHeader);
+            2:
+                precTmpTempBlob.Blob2.CREATEOUTSTREAM(loutBmpHeader);
+            3:
+                precTmpTempBlob.Blob3.CREATEOUTSTREAM(loutBmpHeader);
+        end;
 
         //WRITING HEADER
         fBarcodeCreatorV15CreateBMPHeader(loutBmpHeader, lintBars, lintLines, pintSize, pblnVertical);

@@ -1283,8 +1283,11 @@ codeunit 68400 "XSS Complaints Mgt."
         lBigText: BigText;
         lIntcount: Integer;
         lInstream: InStream;
-        TempBlob: Record TempBlob;
+        //TempBlob: Record TempBlob;
+        Blob: Codeunit "Temp Blob";
         lTxtTotaalText: Text;
+        TypeHelper: Codeunit "Type Helper";
+        OStreamL: OutStream;
     begin
 
         //Data recovery , create blob field from commentLine tabel.
@@ -1306,9 +1309,13 @@ codeunit 68400 "XSS Complaints Mgt."
                     until lRecXSSComplaintComment.NEXT = 0;
                     if lTxtTotaalText <> '' then begin
                         CLEAR(lRecXSSComplaintHeader."Complaint Description");
-                        TempBlob.Blob := lRecXSSComplaintHeader."Complaint Description";
-                        TempBlob.WriteAsText(lTxtTotaalText, TEXTENCODING::Windows);
-                        lRecXSSComplaintHeader."Complaint Description" := TempBlob.Blob;
+                        // TempBlob.Blob := lRecXSSComplaintHeader."Complaint Description";
+                        // TempBlob.WriteAsText(lTxtTotaalText, TEXTENCODING::Windows);
+                        // lRecXSSComplaintHeader."Complaint Description" := TempBlob.Blob;
+                        lRecXSSComplaintHeader."Complaint Description".CreateOutStream(OStreamL, TextEncoding::Windows);
+                        lRecXSSComplaintHeader.CALCFIELDS("Complaint Description");
+                        lRecXSSComplaintHeader."Complaint Description".CreateInStream(lInstream, TextEncoding::Windows);
+                        if not TypeHelper.TryReadAsTextWithSeparator(lInstream, TypeHelper.LFSeparator(), lTxtTotaalText) then;
                         lRecXSSComplaintHeader.MODIFY;
                     end;
                 end;

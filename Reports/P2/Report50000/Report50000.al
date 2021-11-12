@@ -426,6 +426,30 @@ report 50000 "Sales - Invoice XSS DCR"
             column(ShipToAddr8; wgShipToAddr[8])
             {
             }
+            column(BillToAddr1; wgCustAddr[1])
+            {
+            }
+            column(BillToAddr2; wgCustAddr[2])
+            {
+            }
+            column(BillToAddr3; wgCustAddr[3])
+            {
+            }
+            column(BillToAddr4; wgCustAddr[4])
+            {
+            }
+            column(BillToAddr5; wgCustAddr[5])
+            {
+            }
+            column(BillToAddr6; wgCustAddr[6])
+            {
+            }
+            column(BillToAddr7; wgCustAddr[7])
+            {
+            }
+            column(BillToAddr8; wgCustAddr[8])
+            {
+            }
             column(ShipToAddrSet; wgShowShippingAddr)
             {
             }
