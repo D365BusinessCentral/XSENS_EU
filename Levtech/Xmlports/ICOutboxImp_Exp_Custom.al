@@ -487,6 +487,22 @@ xmlport 50000 "IC Outbox Imp/Exp_Intwo"
                         {
                             Occurrence = Optional;
                         }
+                        fieldattribute(ShipToCounty; ICOutBoxPurchHdr."Ship-to County")
+                        {
+                            Occurrence = Optional;
+                        }
+                        fieldattribute(ShipToAddress; ICOutBoxPurchHdr."Ship-to Address")
+                        {
+                            Occurrence = Optional;
+                        }
+                        fieldattribute(ShipToAddress2; ICOutBoxPurchHdr."Ship-to Address 2")
+                        {
+                            Occurrence = Optional;
+                        }
+                        fieldattribute(ShipToZipCode; ICOutBoxPurchHdr."Ship-to Post Code")
+                        {
+                            Occurrence = Optional;
+                        }
                         fieldattribute(USPaymentTermsCode; ICOutBoxPurchHdr."Payment Terms Code (US)")
                         {
                             Occurrence = Optional;
