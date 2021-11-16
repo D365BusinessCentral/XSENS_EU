@@ -22,7 +22,7 @@ codeunit 50020 ProcessChargebee
         sLast_Updated := DELCHR(sLast_Updated, '>', ' ');
         bPost := ChargebeeSetup.InstantBooking;
         ChangeLastUpdated := true;
-        gBusinessUnit := ChargebeeSetup."Segment Code";
+        gSegmentCode := ChargebeeSetup."Segment Code";
         gProductLines := ChargebeeSetup."Product Lines";
         bUseSalesTax := ChargebeeSetup."Use Sales Tax";
         if bUseSalesTax then begin
@@ -225,6 +225,8 @@ codeunit 50020 ProcessChargebee
         SalesHeader.INSERT(true);
         SalesHeader."No. Series" := '';
         SalesHeader."Posting No. Series" := '';
+        SalesHeader."Tax Area Code" := '';
+        SalesHeader."Tax Liable" := false;
         SalesHeader.MODIFY(false);
 
         // ADD SALES INVOICE LINE
@@ -341,10 +343,16 @@ codeunit 50020 ProcessChargebee
                 DiscountAmt := DiscountAmt / 100;
                 if DiscountAmt > 0 then
                     SalesLine.VALIDATE("Line Discount Amount", DiscountAmt);
-                //
-                SalesLine.VALIDATE("Shortcut Dimension 1 Code", gBusinessUnit);
+                SalesLine.VALIDATE("Shortcut Dimension 1 Code", gSegmentCode);
+                SalesLine.ValidateShortcutDimCode(4, gProductLines);
                 //SalesLine.Validate("Shortcut Dimension 4 Code", gProductLines);
-                if bUseSalesTax then SalesLine.VALIDATE("VAT Prod. Posting Group", gNoVAT);
+                if bUseSalesTax then begin
+                    SalesLine."Tax Area Code" := '';
+                    SalesLine."Tax Category" := '';
+                    SalesLine."Tax Group Code" := '';
+                    SalesLine."Tax Liable" := false;
+                    SalesLine.VALIDATE("VAT Prod. Posting Group", gNoVAT);
+                end;
                 SalesLine.INSERT(true);
                 if JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].tax_amount', jsontoken) then
                     vValue := jsontoken.AsValue().AsText()
@@ -373,8 +381,8 @@ codeunit 50020 ProcessChargebee
                 AddSalesTaxLine(dAmount, bCredit, InvoiceNo, iLineNo);
             end;
         end;
-        //if CanRelease then
-        //    SalesPost.ReleaseSalesDocument(SalesHeader);
+        if CanRelease then
+            SalesPost.ReleaseSalesDocument(SalesHeader);
         if bPost then begin
             CLEAR(SalesPost);
             SalesPost.RUN(SalesHeader);
@@ -586,8 +594,12 @@ codeunit 50020 ProcessChargebee
         SalesLine.VALIDATE("No.", gSalesTaxAccount);
         SalesLine.Description := 'Sales Tax amount';
         SalesLine.VALIDATE(Quantity, 1);
-        SalesLine."VAT Prod. Posting Group" := gFullVAT;
+        SalesLine."Tax Area Code" := '';
+        SalesLine."Tax Category" := '';
+        SalesLine."Tax Group Code" := '';
+        SalesLine."Tax Liable" := false;
         SalesLine.VALIDATE("Unit Price", dTax);
+        SalesLine.VALIDATE("VAT Prod. Posting Group", gFullVAT);
         SalesLine.INSERT(true);
     end;
 
@@ -620,7 +632,7 @@ codeunit 50020 ProcessChargebee
         gFullVAT: Code[20];
         gNoVAT: Code[20];
         gSalesTaxAccount: Code[20];
-        gBusinessUnit: Code[20];
+        gSegmentCode: Code[20];
         gProductLines: Code[20];
 
 }
