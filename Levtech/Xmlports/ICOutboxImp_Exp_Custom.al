@@ -491,10 +491,6 @@ xmlport 50000 "IC Outbox Imp/Exp_Intwo"
                         {
                             Occurrence = Optional;
                         }
-                        fieldattribute(ShipToAddress; ICOutBoxPurchHdr."Ship-to Address")
-                        {
-                            Occurrence = Optional;
-                        }
                         fieldattribute(ShipToAddress2; ICOutBoxPurchHdr."Ship-to Address 2")
                         {
                             Occurrence = Optional;
