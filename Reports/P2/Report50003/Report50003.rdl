@@ -24,7 +24,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>11.05245cm</Height>
+                  <Height>10.41745cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -292,37 +292,13 @@
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
                                                   </TextRun>
-                                                </TextRuns>
-                                                <Style />
-                                              </Paragraph>
-                                            </Paragraphs>
-                                            <rd:DefaultName>Textbox82</rd:DefaultName>
-                                            <Style>
-                                              <Border>
-                                                <Style>None</Style>
-                                              </Border>
-                                              <PaddingLeft>5pt</PaddingLeft>
-                                              <PaddingRight>5pt</PaddingRight>
-                                            </Style>
-                                          </Textbox>
-                                          <ColSpan>3</ColSpan>
-                                        </CellContents>
-                                      </TablixCell>
-                                      <TablixCell />
-                                      <TablixCell />
-                                    </TablixCells>
-                                  </TablixRow>
-                                  <TablixRow>
-                                    <Height>0.31339cm</Height>
-                                    <TablixCells>
-                                      <TablixCell>
-                                        <CellContents>
-                                          <Textbox Name="Textbox96">
-                                            <CanGrow>true</CanGrow>
-                                            <KeepTogether>true</KeepTogether>
-                                            <Paragraphs>
-                                              <Paragraph>
-                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>, </Value>
+                                                    <Style>
+                                                      <FontFamily>Segoe UI</FontFamily>
+                                                      <FontSize>8pt</FontSize>
+                                                    </Style>
+                                                  </TextRun>
                                                   <TextRun>
                                                     <Value>=Fields!ShipToAddr6.Value</Value>
                                                     <Style>
@@ -330,37 +306,13 @@
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
                                                   </TextRun>
-                                                </TextRuns>
-                                                <Style />
-                                              </Paragraph>
-                                            </Paragraphs>
-                                            <rd:DefaultName>Textbox96</rd:DefaultName>
-                                            <Style>
-                                              <Border>
-                                                <Style>None</Style>
-                                              </Border>
-                                              <PaddingLeft>5pt</PaddingLeft>
-                                              <PaddingRight>5pt</PaddingRight>
-                                            </Style>
-                                          </Textbox>
-                                          <ColSpan>3</ColSpan>
-                                        </CellContents>
-                                      </TablixCell>
-                                      <TablixCell />
-                                      <TablixCell />
-                                    </TablixCells>
-                                  </TablixRow>
-                                  <TablixRow>
-                                    <Height>0.31339cm</Height>
-                                    <TablixCells>
-                                      <TablixCell>
-                                        <CellContents>
-                                          <Textbox Name="Textbox12">
-                                            <CanGrow>true</CanGrow>
-                                            <KeepTogether>true</KeepTogether>
-                                            <Paragraphs>
-                                              <Paragraph>
-                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value xml:space="preserve"> </Value>
+                                                    <Style>
+                                                      <FontFamily>Segoe UI</FontFamily>
+                                                      <FontSize>8pt</FontSize>
+                                                    </Style>
+                                                  </TextRun>
                                                   <TextRun>
                                                     <Value>=Fields!ShipToAddr7.Value</Value>
                                                     <Style>
@@ -372,7 +324,7 @@
                                                 <Style />
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>Textbox12</rd:DefaultName>
+                                            <rd:DefaultName>Textbox82</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -466,16 +418,6 @@
                                   </TablixMember>
                                   <TablixMember>
                                     <Visibility>
-                                      <Hidden>=Fields!ShipToAddr6.Value =""</Hidden>
-                                    </Visibility>
-                                  </TablixMember>
-                                  <TablixMember>
-                                    <Visibility>
-                                      <Hidden>=Fields!ShipToAddr7.Value =""</Hidden>
-                                    </Visibility>
-                                  </TablixMember>
-                                  <TablixMember>
-                                    <Visibility>
                                       <Hidden>=Fields!ShipToAddr8.Value =""</Hidden>
                                     </Visibility>
                                   </TablixMember>
@@ -483,7 +425,7 @@
                               </TablixRowHierarchy>
                               <DataSetName>DataSet_Result</DataSetName>
                               <Top>3.29004cm</Top>
-                              <Height>2.94869cm</Height>
+                              <Height>2.32191cm</Height>
                               <Width>18.81187cm</Width>
                               <Style>
                                 <Border>
@@ -3461,7 +3403,7 @@
                                 </TablixMembers>
                               </TablixRowHierarchy>
                               <DataSetName>DataSet_Result</DataSetName>
-                              <Top>6.72645cm</Top>
+                              <Top>6.09145cm</Top>
                               <Height>4.326cm</Height>
                               <Width>18.81187cm</Width>
                               <ZIndex>3</ZIndex>
@@ -3529,7 +3471,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Height>11.05245cm</Height>
+            <Height>10.41745cm</Height>
             <Width>18.81188cm</Width>
             <Style>
               <Border>
@@ -3538,7 +3480,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>11.05245cm</Height>
+        <Height>10.41745cm</Height>
         <Style />
       </Body>
       <Width>18.81188cm</Width>

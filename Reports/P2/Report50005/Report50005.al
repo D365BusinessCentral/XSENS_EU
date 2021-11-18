@@ -250,28 +250,28 @@ report 50005 "Purchase - Order XSS DCR"
             column(lblProjectCode; Trl('ProjectCode'))
             {
             }
-            column(BuyFromAddr1; wgBuyFromAddr[1])
+            column(BuyFromAddr1; BuyFromAddr[1])
             {
             }
-            column(BuyFromAddr2; wgBuyFromAddr[2])
+            column(BuyFromAddr2; BuyFromAddr[2])
             {
             }
-            column(BuyFromAddr3; wgBuyFromAddr[3])
+            column(BuyFromAddr3; BuyFromAddr[3])
             {
             }
-            column(BuyFromAddr4; wgBuyFromAddr[4])
+            column(BuyFromAddr4; BuyFromAddr[4])
             {
             }
-            column(BuyFromAddr5; wgBuyFromAddr[5])
+            column(BuyFromAddr5; BuyFromAddr[5])
             {
             }
-            column(BuyFromAddr6; wgBuyFromAddr[6])
+            column(BuyFromAddr6; BuyFromAddr[6])
             {
             }
-            column(BuyFromAddr7; wgBuyFromAddr[7])
+            column(BuyFromAddr7; BuyFromAddr[7])
             {
             }
-            column(BuyFromAddr8; wgBuyFromAddr[8])
+            column(BuyFromAddr8; BuyFromAddr[8])
             {
             }
             column(BuyFromVendorNo; "Buy-from Vendor No.")
@@ -421,28 +421,28 @@ report 50005 "Purchase - Order XSS DCR"
             column(ShipmentMethodDesc; "Shipment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetShipmMethodTrl("Shipment Method Code"))//Krishna)
             {
             }
-            column(ShipToAddr1; wgShipToAddr[1])
+            column(ShipToAddr1; ShipToAddr[1])
             {
             }
-            column(ShipToAddr2; wgShipToAddr[2])
+            column(ShipToAddr2; ShipToAddr[2])
             {
             }
-            column(ShipToAddr3; wgShipToAddr[3])
+            column(ShipToAddr3; ShipToAddr[3])
             {
             }
-            column(ShipToAddr4; wgShipToAddr[4])
+            column(ShipToAddr4; ShipToAddr[4])
             {
             }
-            column(ShipToAddr5; wgShipToAddr[5])
+            column(ShipToAddr5; ShipToAddr[5])
             {
             }
-            column(ShipToAddr6; wgShipToAddr[6])
+            column(ShipToAddr6; ShipToAddr[6])
             {
             }
-            column(ShipToAddr7; wgShipToAddr[7])
+            column(ShipToAddr7; ShipToAddr[7])
             {
             }
-            column(ShipToAddr8; wgShipToAddr[8])
+            column(ShipToAddr8; ShipToAddr[8])
             {
             }
             column(TotalText; wgTotalText)
@@ -986,9 +986,32 @@ report 50005 "Purchase - Order XSS DCR"
                 wlRecTempPrepmtVATAmountLineDeduct: Record "VAT Amount Line" temporary;
                 wlCduPurchPost: Codeunit "Purch.-Post";
                 wlRecRef: RecordRef;
+                CountryRegionL: Record "Country/Region";
             begin
                 //CurrReport.LANGUAGE := wgRecLanguage.GetLanguageID('ENU');
                 //wgCduDocCreatorTransLationMgt.wgSetLanguageCode('ENU');
+
+                ShipToAddr[1] := PurchHdr."Ship-to Name";
+                ShipToAddr[2] := PurchHdr."Ship-to Contact";
+                ShipToAddr[3] := PurchHdr."Ship-to Address";
+                ShipToAddr[4] := PurchHdr."Ship-to Address 2";
+                ShipToAddr[5] := PurchHdr."Ship-to City";
+                ShipToAddr[6] := PurchHdr."Ship-to County";
+                ShipToAddr[7] := PurchHdr."Ship-to Post Code";
+                Clear(CountryRegionL);
+                if CountryRegionL.Get(PurchHdr."Ship-to Country/Region Code") then;
+                ShipToAddr[8] := CountryRegionL.Name;
+
+                BuyFromAddr[1] := PurchHdr."Buy-from Vendor Name";
+                BuyFromAddr[2] := PurchHdr."Buy-from Contact";
+                BuyFromAddr[3] := PurchHdr."Buy-from Address";
+                BuyFromAddr[4] := PurchHdr."Buy-from Address 2";
+                BuyFromAddr[5] := PurchHdr."Buy-from City";
+                BuyFromAddr[6] := PurchHdr."Buy-from County";
+                BuyFromAddr[7] := PurchHdr."Buy-from Post Code";
+                Clear(CountryRegionL);
+                if CountryRegionL.Get(PurchHdr."Buy-from Country/Region Code") then;
+                BuyFromAddr[8] := CountryRegionL.Name;
 
                 wlFncFormatAddressFields(PurchHdr);
                 wlFncFormatDocumentFields(PurchHdr);
@@ -1197,6 +1220,8 @@ report 50005 "Purchase - Order XSS DCR"
         wgDimText: Text[120];
         wgPayToVendAddr: array[8] of Text[50];
         wgShipToAddr: array[8] of Text[50];
+        ShipToAddr: array[8] of Text[50];
+        BuyFromAddr: array[8] of Text[50];
         wgTotalExclVATText: Text[50];
         wgTotalInclVATText: Text[50];
         wgTotalText: Text[50];

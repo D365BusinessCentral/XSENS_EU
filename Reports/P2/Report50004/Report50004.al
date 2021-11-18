@@ -402,28 +402,28 @@ report 50004 "Sales - Credit Memo XSS DCR"
             column(ShipmentMethodDesc; ShipmentMethodG.Description) //"Shipment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetShipmMethodTrl("Shipment Method Code"))//Krishna)
             {
             }
-            column(ShipToAddr1; wgShipToAddr[1])
+            column(ShipToAddr1; BillToAddr[1])
             {
             }
-            column(ShipToAddr2; wgShipToAddr[2])
+            column(ShipToAddr2; BillToAddr[2])
             {
             }
-            column(ShipToAddr3; wgShipToAddr[3])
+            column(ShipToAddr3; BillToAddr[3])
             {
             }
-            column(ShipToAddr4; wgShipToAddr[4])
+            column(ShipToAddr4; BillToAddr[4])
             {
             }
-            column(ShipToAddr5; wgShipToAddr[5])
+            column(ShipToAddr5; BillToAddr[5])
             {
             }
-            column(ShipToAddr6; wgShipToAddr[6])
+            column(ShipToAddr6; BillToAddr[6])
             {
             }
-            column(ShipToAddr7; wgShipToAddr[7])
+            column(ShipToAddr7; BillToAddr[7])
             {
             }
-            column(ShipToAddr8; wgShipToAddr[8])
+            column(ShipToAddr8; BillToAddr[8])
             {
             }
             column(ShipToAddrSet; wgShowShippingAddr)
@@ -927,9 +927,21 @@ report 50004 "Sales - Credit Memo XSS DCR"
             trigger OnAfterGetRecord();
             var
                 wlRecRef: RecordRef;
+                CountryRegionL: Record "Country/Region";
             begin
                 //CurrReport.LANGUAGE := wgRecLanguage.GetLanguageID("Language Code");
                 //wgCduDocCreatorTransLationMgt.wgSetLanguageCode("Language Code");
+
+                BillToAddr[1] := InvHdr."Bill-to Name";
+                BillToAddr[2] := InvHdr."Bill-to Contact";
+                BillToAddr[3] := InvHdr."Bill-to Address";
+                BillToAddr[4] := InvHdr."Bill-to Address 2";
+                BillToAddr[5] := InvHdr."Bill-to City";
+                BillToAddr[6] := InvHdr."Bill-to County";
+                BillToAddr[7] := InvHdr."Bill-to Post Code";
+                if CountryRegionL.Get(InvHdr."Bill-to Country/Region Code") then;
+                BillToAddr[8] := CountryRegionL.Name;
+                wlFncFormatAddressFields(InvHdr);
 
                 wlFncFormatAddressFields(InvHdr);
                 wlFncFormatDocumentFields(InvHdr);
@@ -1132,6 +1144,7 @@ report 50004 "Sales - Credit Memo XSS DCR"
         wgCustAddr: array[8] of Text[50];
         wgDimText: Text[120];
         wgShipToAddr: array[8] of Text[50];
+        BillToAddr: array[8] of Text[50];
         wgTotalExclVATText: Text[50];
         wgTotalInclVATText: Text[50];
         wgTotalText: Text[50];

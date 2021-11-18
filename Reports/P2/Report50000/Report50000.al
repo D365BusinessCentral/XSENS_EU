@@ -402,52 +402,52 @@ report 50000 "Sales - Invoice XSS DCR"
             column(ShipmentMethodDesc; ShipmentMethodG.Description) //"Shipment Method Code")// "Shipment Method Code")//wgCduDocCreatorTransLationMgt.wgFncGetShipmMethodTrl("Shipment Method Code"))//Krishna)//Krishna
             {
             }
-            column(ShipToAddr1; wgShipToAddr[1])
+            column(ShipToAddr1; ShipToAddr[1])
             {
             }
-            column(ShipToAddr2; wgShipToAddr[2])
+            column(ShipToAddr2; ShipToAddr[2])
             {
             }
-            column(ShipToAddr3; wgShipToAddr[3])
+            column(ShipToAddr3; ShipToAddr[3])
             {
             }
-            column(ShipToAddr4; wgShipToAddr[4])
+            column(ShipToAddr4; ShipToAddr[4])
             {
             }
-            column(ShipToAddr5; wgShipToAddr[5])
+            column(ShipToAddr5; ShipToAddr[5])
             {
             }
-            column(ShipToAddr6; wgShipToAddr[6])
+            column(ShipToAddr6; ShipToAddr[6])
             {
             }
-            column(ShipToAddr7; wgShipToAddr[7])
+            column(ShipToAddr7; ShipToAddr[7])
             {
             }
-            column(ShipToAddr8; wgShipToAddr[8])
+            column(ShipToAddr8; ShipToAddr[8])
             {
             }
-            column(BillToAddr1; wgCustAddr[1])
+            column(BillToAddr1; BillToAddr[1])
             {
             }
-            column(BillToAddr2; wgCustAddr[2])
+            column(BillToAddr2; BillToAddr[2])
             {
             }
-            column(BillToAddr3; wgCustAddr[3])
+            column(BillToAddr3; BillToAddr[3])
             {
             }
-            column(BillToAddr4; wgCustAddr[4])
+            column(BillToAddr4; BillToAddr[4])
             {
             }
-            column(BillToAddr5; wgCustAddr[5])
+            column(BillToAddr5; BillToAddr[5])
             {
             }
-            column(BillToAddr6; wgCustAddr[6])
+            column(BillToAddr6; BillToAddr[6])
             {
             }
-            column(BillToAddr7; wgCustAddr[7])
+            column(BillToAddr7; BillToAddr[7])
             {
             }
-            column(BillToAddr8; wgCustAddr[8])
+            column(BillToAddr8; BillToAddr[8])
             {
             }
             column(ShipToAddrSet; wgShowShippingAddr)
@@ -1045,9 +1045,21 @@ report 50000 "Sales - Invoice XSS DCR"
             trigger OnAfterGetRecord();
             var
                 wlRecRef: RecordRef;
+                CountryRegionL: Record "Country/Region";
             begin
                 // CurrReport.LANGUAGE := wgRecLanguage.GetLanguageID('ENU');//Krishna
                 // wgCduDocCreatorTransLationMgt.wgSetLanguageCode('ENU');//Krishna
+
+                BillToAddr[1] := InvHdr."Bill-to Name";
+                BillToAddr[2] := InvHdr."Bill-to Contact";
+                BillToAddr[3] := InvHdr."Bill-to Address";
+                BillToAddr[4] := InvHdr."Bill-to Address 2";
+                BillToAddr[5] := InvHdr."Bill-to City";
+                BillToAddr[6] := InvHdr."Bill-to County";
+                BillToAddr[7] := InvHdr."Bill-to Post Code";
+                Clear(CountryRegionL);
+                if CountryRegionL.Get(InvHdr."Bill-to Country/Region Code") then;
+                BillToAddr[8] := CountryRegionL.Name;
 
                 wlFncFormatAddressFields(InvHdr);
                 //wlFncFormatDocumentFields(InvHdr);
@@ -1268,6 +1280,8 @@ report 50000 "Sales - Invoice XSS DCR"
         wgCustAddr: array[8] of Text[50];
         wgDimText: Text[120];
         wgShipToAddr: array[8] of Text[50];
+        ShipToAddr: array[8] of Text[50];
+        BillToAddr: array[8] of Text[50];
         wgTotalExclVATText: Text[50];
         wgTotalInclVATText: Text[50];
         wgTotalText: Text[50];

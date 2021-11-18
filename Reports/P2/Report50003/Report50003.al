@@ -298,28 +298,28 @@ report 50003 "Sales - Shipment XSS DCR"
             column(ShipmentMethodExternal; "Shipment Method Description")
             {
             }
-            column(ShipToAddr1; wgShipToAddr[1])
+            column(ShipToAddr1; ShipToAddr[1])
             {
             }
-            column(ShipToAddr2; wgShipToAddr[2])
+            column(ShipToAddr2; ShipToAddr[2])
             {
             }
-            column(ShipToAddr3; wgShipToAddr[3])
+            column(ShipToAddr3; ShipToAddr[3])
             {
             }
-            column(ShipToAddr4; wgShipToAddr[4])
+            column(ShipToAddr4; ShipToAddr[4])
             {
             }
-            column(ShipToAddr5; wgShipToAddr[5])
+            column(ShipToAddr5; ShipToAddr[5])
             {
             }
-            column(ShipToAddr6; wgShipToAddr[6])
+            column(ShipToAddr6; ShipToAddr[6])
             {
             }
-            column(ShipToAddr7; wgShipToAddr[7])
+            column(ShipToAddr7; ShipToAddr[7])
             {
             }
-            column(ShipToAddr8; wgShipToAddr[8])
+            column(ShipToAddr8; ShipToAddr[8])
             {
             }
             column(ShowCorrectionLines; wgShowCorrectionLines)
@@ -627,9 +627,22 @@ report 50003 "Sales - Shipment XSS DCR"
             }
 
             trigger OnAfterGetRecord();
+            var
+                CountryRegionL: Record "Country/Region";
             begin
                 //CurrReport.LANGUAGE := wgRecLanguage.GetLanguageID('ENU');
                 //wgCduDocCreatorTransLationMgt.wgSetLanguageCode('ENU');
+
+                ShipToAddr[1] := ShptHdr."Ship-to Name";
+                ShipToAddr[2] := ShptHdr."Ship-to Contact";
+                ShipToAddr[3] := ShptHdr."Ship-to Address";
+                ShipToAddr[4] := ShptHdr."Ship-to Address 2";
+                ShipToAddr[5] := ShptHdr."Ship-to City";
+                ShipToAddr[6] := ShptHdr."Ship-to County";
+                ShipToAddr[7] := ShptHdr."Ship-to Post Code";
+                Clear(CountryRegionL);
+                if CountryRegionL.Get(ShptHdr."Ship-to Country/Region Code") then;
+                ShipToAddr[8] := CountryRegionL.Name;
 
                 wlFncFormatAddressFields(ShptHdr);
                 wlFncFormatDocumentFields(ShptHdr);
@@ -775,6 +788,7 @@ report 50003 "Sales - Shipment XSS DCR"
         wgCustAddr: array[8] of Text[50];
         wgDimText: Text[120];
         wgShipToAddr: array[8] of Text[50];
+        ShipToAddr: array[8] of Text[50];
         wgTotalTrackingQty: Decimal;
         wgNoOfCopies: Integer;
         wgNoOfLoops: Integer;
