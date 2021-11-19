@@ -552,7 +552,18 @@ codeunit 50101 "Events"
         IsHandled := true;
     end;
 
+    [EventSubscriber(ObjectType::Report, Report::"Get Proposal Entries", 'OnBeforeProposalLineInsert', '', false, false)]
+    local procedure OnBeforeProposalLineInsert(var ProposalLine: Record "Proposal Line"; DetailLine: Record "Detail Line")
+    begin
+        if DetailLine."Currency Code" = '' then begin
+            ProposalLine."Currency Code" := 'EUR';
+        end
+    end;
+
     var
         c: Codeunit 431;
         d: Codeunit 435;
+        a: page 11000007;
+        g: Report 11000012;
+        h: page 11000000;
 }
