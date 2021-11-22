@@ -16,5 +16,22 @@ pageextension 50034 "Payment Reconciliation journal" extends "Payment Reconcilia
         {
             Visible = false;
         }
+        modify(ImportBankTransactions)
+        {
+            trigger OnBeforeAction()
+            var
+                EventCodeunit: Codeunit Events;
+            begin
+                EventCodeunit.StoreCurrencyFieldInCustomField();
+            end;
+
+            trigger OnAfterAction()
+            var
+                EventCodeunit: Codeunit Events;
+            begin
+                EventCodeunit.StoreCurrencyCustomInStandardField();
+            end;
+        }
     }
+
 }

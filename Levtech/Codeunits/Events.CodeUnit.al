@@ -552,11 +552,28 @@ codeunit 50101 "Events"
         IsHandled := true;
     end;
 
-    [EventSubscriber(ObjectType::Report, Report::"Get Proposal Entries", 'OnBeforeProposalLineInsert', '', false, false)]
-    local procedure OnBeforeProposalLineInsert(var ProposalLine: Record "Proposal Line"; DetailLine: Record "Detail Line")
+    procedure StoreCurrencyFieldInCustomField()
+    var
+        RecBankAccount: Record "Bank Account";
     begin
-        if DetailLine."Currency Code" = '' then begin
-            ProposalLine."Currency Code" := 'EUR';
+        if RecBankAccount.FindSet() then begin
+            repeat
+                RecBankAccount."Currency Code Buffer" := RecBankAccount."Currency Code";
+                RecBankAccount."Currency Code" := '';
+                RecBankAccount.Modify();
+            until RecBankAccount.Next() = 0;
+        end
+    end;
+
+    procedure StoreCurrencyCustomInStandardField()
+    var
+        RecBankAccount: Record "Bank Account";
+    begin
+        if RecBankAccount.FindSet() then begin
+            repeat
+                RecBankAccount."Currency Code" := RecBankAccount."Currency Code Buffer";
+                RecBankAccount.Modify();
+            until RecBankAccount.Next() = 0;
         end
     end;
 
@@ -566,4 +583,6 @@ codeunit 50101 "Events"
         a: page 11000007;
         g: Report 11000012;
         h: page 11000000;
+        gh: Page "Payment Reconciliation Journal";
+        jhjh: Page "Bank Acc. Reconciliation";
 }
