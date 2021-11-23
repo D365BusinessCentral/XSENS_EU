@@ -3,7 +3,6 @@ codeunit 50020 ProcessChargebee
     // version XSSCB1.4
     // Peter de Vries - Solutions-Factory: Modified for Business Central
 
-
     trigger OnRun();
     var
         sNext_Offset: Text[100];
@@ -76,6 +75,7 @@ codeunit 50020 ProcessChargebee
         PostedCreditMemo: Record "Sales Cr.Memo Header";
         SalesLine: Record "Sales Line";
         vValue: Variant;
+        LoopValue: Variant;
         InvoiceNo: Code[20];
         lastURLPart: Text[300];
         Counter: Integer;
@@ -234,12 +234,13 @@ codeunit 50020 ProcessChargebee
         CanRelease := true;
         repeat
 
-            if JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].id', jsontoken) then
-                vValue := jsontoken.AsValue().AsText()
-            else
-                vValue := '0';
+            if JObject.SelectToken('list[0].' + IC + '.line_items[' + FORMAT(Counter) + '].id', jsontoken) then begin
+                LoopValue := jsontoken.AsValue().AsText();
+            end else begin
+                LoopValue := '0';
+            end;
             // No choice but to get the null var so skip it
-            if FORMAT(vValue) <> '0' then begin
+            if FORMAT(LoopValue) <> '0' then begin
                 SalesLine.INIT;
                 if not bCredit then
                     SalesLine."Document Type" := SalesLine."Document Type"::Invoice
@@ -367,7 +368,7 @@ codeunit 50020 ProcessChargebee
                 end;
             end;
             Counter := Counter + 1;
-        until FORMAT(vValue) = '0';
+        until FORMAT(LoopValue) = '0';
         if bUseSalesTax then begin
             if JObject.SelectToken('list[0].' + IC + '.tax', jsontoken) then
                 vValue := jsontoken.AsValue().AsText()
@@ -388,7 +389,7 @@ codeunit 50020 ProcessChargebee
             SalesPost.RUN(SalesHeader);
         end;
         SalesHeader.CALCFIELDS("Amount Including VAT");
-        ChangeTransaction(CBTrans.Type::Invoice, InvoiceNo, 'Invoice created in NAV', SalesHeader."Amount Including VAT", cCustomer, true);
+        ChangeTransaction(CBTrans.Type::Invoice, InvoiceNo, 'Invoice created in NAV. No of Lines : ' + Format(Counter), SalesHeader."Amount Including VAT", cCustomer, true);
         exit(FORMAT(vNext_Offset));
     end;
 
