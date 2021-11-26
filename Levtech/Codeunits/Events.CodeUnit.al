@@ -556,6 +556,7 @@ codeunit 50101 "Events"
     var
         RecBankAccount: Record "Bank Account";
     begin
+        RecBankAccount.SetFilter("Currency Code", '=%1', 'EUR');
         if RecBankAccount.FindSet() then begin
             repeat
                 RecBankAccount."Currency Code Buffer" := RecBankAccount."Currency Code";
@@ -569,12 +570,29 @@ codeunit 50101 "Events"
     var
         RecBankAccount: Record "Bank Account";
     begin
+        RecBankAccount.SetFilter("Currency Code", '=%1', 'EUR');
         if RecBankAccount.FindSet() then begin
             repeat
                 RecBankAccount."Currency Code" := RecBankAccount."Currency Code Buffer";
+                RecBankAccount."Currency Code Buffer" := '';
                 RecBankAccount.Modify();
             until RecBankAccount.Next() = 0;
         end
+    end;
+
+    procedure CheckAndUpdateCurrency()
+    var
+        RecBankAccount: Record "Bank Account";
+    begin
+        if RecBankAccount.FindSet() then begin
+            repeat
+                if (RecBankAccount."Currency Code" = '') AND (RecBankAccount."Currency Code Buffer" <> '') then begin
+                    RecBankAccount."Currency Code" := RecBankAccount."Currency Code Buffer";
+                    RecBankAccount.Modify();
+                    Commit();
+                end;
+            until RecBankAccount.Next() = 0;
+        end;
     end;
 
     var
