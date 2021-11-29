@@ -822,6 +822,10 @@ page 50099 "Sales Order LT"
                     Importance = Promoted;
                     ToolTip = 'Specifies when items on the document are shipped or were shipped. A shipment date is usually calculated from a requested delivery date plus lead time.';
                 }
+                field("Shipment Date IT"; Rec."Shipment Date IT")
+                {
+                    ApplicationArea = All;
+                }
                 field("Shipping Advice"; Rec."Shipping Advice")
                 {
                     ApplicationArea = Basic, Suite;
