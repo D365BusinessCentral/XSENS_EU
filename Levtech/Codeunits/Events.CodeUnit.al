@@ -589,7 +589,7 @@ codeunit 50101 "Events"
                 if (RecBankAccount."Currency Code" = '') AND (RecBankAccount."Currency Code Buffer" <> '') then begin
                     RecBankAccount."Currency Code" := RecBankAccount."Currency Code Buffer";
                     RecBankAccount.Modify();
-                    Commit();
+                    Commit();//wont be executed more than once- thats why used commit inside repeat
                 end;
             until RecBankAccount.Next() = 0;
         end;

@@ -41,6 +41,37 @@ tableextension 50011 "Sales Header" extends "Sales Header"
         {
             DataClassification = ToBeClassified;
         }
+        //rapidi modification fields-start
+        field(50022; "Payment Terms Code IT"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50023; "Payment Method Code IT"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
+
+        field(50024; "Salesperson Code IT"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50025; "Shipment Date IT"; Date)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50026; "Currency Code IT"; code[10])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50027; "Created By Rapidi"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50028; "Rapidi Fields Updated"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        //-end
         field(50100; "VAT Customer Name"; Text[50])
         {
             DataClassification = ToBeClassified;
@@ -232,6 +263,27 @@ tableextension 50011 "Sales Header" extends "Sales Header"
         {
         }
     }
+
+    procedure PopulateCustomFields()
+    var
+        UpdateCurrencyExchangeRates: Codeunit "Update Currency Exchange Rates";
+        CurrExchRate: Record "Currency Exchange Rate";
+        CurrencyDate: Date;
+    begin
+        Rec."Currency Code" := Rec."Currency Code IT";
+        if "Posting Date" <> 0D then
+            CurrencyDate := "Posting Date"
+        else
+            CurrencyDate := WorkDate;
+        if UpdateCurrencyExchangeRates.ExchangeRatesForCurrencyExist(CurrencyDate, "Currency Code") then begin
+            Rec."Currency Factor" := CurrExchRate.ExchangeRate(CurrencyDate, "Currency Code");
+        end;
+
+        Rec."Shipment Date" := Rec."Shipment Date IT";
+        Rec.Validate("Payment Terms Code", Rec."Payment Terms Code IT");
+        Rec.Validate("Payment Method Code", Rec."Payment Method Code IT");
+        Rec.validate("Salesperson Code", Rec."Salesperson Code IT");
+    end;
 
     var
         gCduAlgemeen: Codeunit Algemeen;

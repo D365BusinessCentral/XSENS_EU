@@ -258,6 +258,10 @@ page 50099 "Sales Order LT"
                         SalespersonCodeOnAfterValidate;
                     end;
                 }
+                field("Salesperson Code IT"; Rec."Salesperson Code IT")
+                {
+                    ApplicationArea = All;
+                }
                 field("Campaign No."; Rec."Campaign No.")
                 {
                     ApplicationArea = RelationshipMgmt;
@@ -372,6 +376,10 @@ page 50099 "Sales Order LT"
                         SalesCalcDiscountByType.ApplyDefaultInvoiceDiscount(0, Rec);
                     end;
                 }
+                field("Currency Code IT"; Rec."Currency Code IT")
+                {
+                    ApplicationArea = All;
+                }
                 field("Prices Including VAT"; Rec."Prices Including VAT")
                 {
                     ApplicationArea = Basic, Suite;
@@ -401,6 +409,10 @@ page 50099 "Sales Order LT"
                     Importance = Promoted;
                     ToolTip = 'Specifies a formula that calculates the payment due date, payment discount date, and payment discount amount.';
                 }
+                field("Payment Terms Code IT"; Rec."Payment Terms Code IT")
+                {
+                    ApplicationArea = All;
+                }
                 field("Payment Method Code"; Rec."Payment Method Code")
                 {
                     ApplicationArea = Basic, Suite;
@@ -411,6 +423,14 @@ page 50099 "Sales Order LT"
                     begin
                         UpdatePaymentService;
                     end;
+                }
+                field("Payment Method Code IT"; Rec."Payment Method Code IT")
+                {
+                    ApplicationArea = All;
+                }
+                field("Created By Rapidi"; Rec."Created By Rapidi")
+                {
+                    ApplicationArea = All;
                 }
                 field("EU 3-Party Trade"; Rec."EU 3-Party Trade")
                 {
