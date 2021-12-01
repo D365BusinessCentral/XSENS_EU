@@ -8,6 +8,22 @@ pageextension 60028 "CustLedgerExt" extends "Customer Ledger Entries"
             {
                 ApplicationArea = All;
             }
+            field("Closed by Entry No."; Rec."Closed by Entry No.")
+            {
+                ApplicationArea = All;
+            }
+            field("Closed at Date"; Rec."Closed at Date")
+            {
+                ApplicationArea = All;
+            }
+            field("Closed by Amount"; Rec."Closed by Amount")
+            {
+                ApplicationArea = all;
+            }
+            field("Closed by Amount (LCY)"; Rec."Closed by Amount (LCY)")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 }

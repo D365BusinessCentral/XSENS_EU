@@ -181,6 +181,14 @@ page 50097 "Posted Sales Invoice Lines_LT"
                 {
                     ApplicationArea = All;
                 }
+                field("Sales Order No."; Rec."Sales Order No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Sales Order Line No."; Rec."Sales Order Line No.")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
         area(factboxes)

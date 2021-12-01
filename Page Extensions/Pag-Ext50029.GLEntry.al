@@ -16,5 +16,13 @@ pageextension 50029 GLEntry extends "General Ledger Entries"
                 Caption = 'Vendor Name';
             }*/
         }
+        modify("Source Type")
+        {
+            Visible = true;
+        }
+        modify("Source No.")
+        {
+            Visible = true;
+        }
     }
 }
