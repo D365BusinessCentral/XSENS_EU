@@ -441,7 +441,21 @@ codeunit 50101 "Events"
         RecItem: Record Item;
         RecServiceItemComponent: Record "Service Item Component";
         LastLineNo: Integer;
+        ServItemMgmt: Codeunit ServItemManagement;
+        RecServiceItemGroup: Record "Service Item Group";
+        WarrantyDateFormula: DateFormula;
     begin
+        //Added code to calculate warranty dates using Service Item group's warranty date formula
+        //6DEC2021-start
+        if ServiceItem."Service Item Group Code" <> '' then begin
+             Clear(RecServiceItemGroup);
+                RecServiceItemGroup.GET(ServiceItem."Service Item Group Code");
+            if FORMAT(RecServiceItemGroup."Default Warranty Duration") <> '' then begin
+                ServItemMgmt.CalcServiceWarrantyDates(
+                                    ServiceItem, ServiceItem."Warranty Starting Date (Parts)", WarrantyDateFormula, RecServiceItemGroup."Default Warranty Duration");
+            end;
+        end;
+        //6DEC2021-End
         if ServiceItem."Serial No." = '' then exit;
         RecItem.GET(ServiceItem."Item No.");
         if not RecItem."Copy Serive Item Components" then exit;
