@@ -48,10 +48,12 @@ pageextension 50006 "Sales Order" extends "Sales Order"
                 field("US Payment Terms"; Rec."US Payment Terms")
                 {
                     ApplicationArea = All;
+                    Caption = 'IC Payment Terms';
                 }
                 field("US Sales Order No."; Rec."US Sales Order No.")
                 {
                     ApplicationArea = All;
+                    Caption = 'IC Sales Order No.';
                 }
             }
         }
