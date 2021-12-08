@@ -7,9 +7,9 @@ report 50030 "IT Trial Balance"
     DefaultLayout = RDLC;
     RDLCLayout = 'Reports\P2\Report50030\TrialBalance.rdl';
 
-    ApplicationArea = Basic, Suite;
+    //ApplicationArea = Basic, Suite;
     Caption = 'IT Trial Balance';
-    UsageCategory = ReportsAndAnalysis;
+    //UsageCategory = ReportsAndAnalysis;
     DataAccessIntent = ReadOnly;
 
     dataset
