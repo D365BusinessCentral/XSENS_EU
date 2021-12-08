@@ -172,9 +172,10 @@ report 50016 "Aged Accounts Payable US"
                         j := j + 1;
                     if j = 0 then
                         j := 1;
-
+                    clear(AmountDue);//Added on 8DEC2021
                     AmountDue[j] := AmountDueToPrint;
                     "BalanceDue$"[j] := "BalanceDue$"[j] + TempVendLedgEntry."Remaining Amt. (LCY)";
+
 
                     "Vendor Ledger Entry" := TempVendLedgEntry;
                     if UseExternalDocNo then
