@@ -16,22 +16,22 @@ pageextension 50034 "Payment Reconciliation journal" extends "Payment Reconcilia
         {
             Visible = false;
         }
-        modify(ImportBankTransactions)
-        {
-            trigger OnBeforeAction()
-            var
-                EventCodeunit: Codeunit Events;
-            begin
-                EventCodeunit.StoreCurrencyFieldInCustomField();
-            end;
+        /* modify(ImportBankTransactions)
+         {
+             trigger OnBeforeAction()
+             var
+                 EventCodeunit: Codeunit Events;
+             begin
+                 EventCodeunit.StoreCurrencyFieldInCustomField();
+             end;
 
-            trigger OnAfterAction()
-            var
-                EventCodeunit: Codeunit Events;
-            begin
-                EventCodeunit.StoreCurrencyCustomInStandardField();
-            end;
-        }
+             trigger OnAfterAction()
+             var
+                 EventCodeunit: Codeunit Events;
+             begin
+                 EventCodeunit.StoreCurrencyCustomInStandardField();
+             end;
+         }*/
     }
 
 }
@@ -45,7 +45,7 @@ pageextension 50045 GiroJournalList extends "Bank/Giro Journal List"
     actions
     {
         // Add changes to page actions here
-        modify("Import Bank Statement")
+        /*modify("Import Bank Statement")
         {
             trigger OnBeforeAction()
             var
@@ -60,7 +60,7 @@ pageextension 50045 GiroJournalList extends "Bank/Giro Journal List"
             begin
                 EventCodeunit.StoreCurrencyCustomInStandardField();
             end;
-        }
+        }*/
     }
 }
 

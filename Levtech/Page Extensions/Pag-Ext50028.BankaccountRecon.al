@@ -2,7 +2,7 @@ pageextension 50038 "Bank account Recon" extends "Bank Acc. Reconciliation"
 {
     actions
     {
-        modify(ImportBankStatement)
+        /*modify(ImportBankStatement)
         {
             trigger OnBeforeAction()
             var
@@ -17,10 +17,10 @@ pageextension 50038 "Bank account Recon" extends "Bank Acc. Reconciliation"
             begin
                 EventCodeunit.StoreCurrencyCustomInStandardField();
             end;
-        }
+        }*/
     }
 }
-pageextension 50039 PaymentRecon extends "Pmt. Reconciliation Journals"
+/*pageextension 50039 PaymentRecon extends "Pmt. Reconciliation Journals"
 {
 
 
@@ -44,4 +44,4 @@ pageextension 50039 PaymentRecon extends "Pmt. Reconciliation Journals"
             end;
         }
     }
-}
+}*/

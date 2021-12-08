@@ -23,12 +23,12 @@ pageextension 50047 "Bank Account" extends "Bank Account Card"
             }
         }
     }
-    trigger OnOpenPage()
+    /*trigger OnOpenPage()
     var
         COEvent: Codeunit Events;
     begin
         COEvent.CheckAndUpdateCurrency();
-    end;
+    end;*/
 
 
 }
@@ -39,7 +39,7 @@ pageextension 50046 PaymentHistoryList extends "Payment History List"
     actions
     {
         // Add changes to page actions here
-        modify(Export)
+        /*modify(Export)
         {
             trigger OnBeforeAction()
             var
@@ -47,7 +47,7 @@ pageextension 50046 PaymentHistoryList extends "Payment History List"
             begin
                 COEvent.CheckAndUpdateCurrency();
             end;
-        }
+        }*/
     }
 
     var

@@ -448,8 +448,8 @@ codeunit 50101 "Events"
         //Added code to calculate warranty dates using Service Item group's warranty date formula
         //6DEC2021-start
         if ServiceItem."Service Item Group Code" <> '' then begin
-             Clear(RecServiceItemGroup);
-                RecServiceItemGroup.GET(ServiceItem."Service Item Group Code");
+            Clear(RecServiceItemGroup);
+            RecServiceItemGroup.GET(ServiceItem."Service Item Group Code");
             if FORMAT(RecServiceItemGroup."Default Warranty Duration") <> '' then begin
                 ServItemMgmt.CalcServiceWarrantyDates(
                                     ServiceItem, ServiceItem."Warranty Starting Date (Parts)", WarrantyDateFormula, RecServiceItemGroup."Default Warranty Duration");
@@ -566,7 +566,7 @@ codeunit 50101 "Events"
         IsHandled := true;
     end;
 
-    procedure StoreCurrencyFieldInCustomField()
+    /*procedure StoreCurrencyFieldInCustomField()
     var
         RecBankAccount: Record "Bank Account";
     begin
@@ -578,9 +578,9 @@ codeunit 50101 "Events"
                 RecBankAccount.Modify();
             until RecBankAccount.Next() = 0;
         end
-    end;
+    end;*/
 
-    procedure StoreCurrencyCustomInStandardField()
+    /*procedure StoreCurrencyCustomInStandardField()
     var
         RecBankAccount: Record "Bank Account";
     begin
@@ -592,9 +592,9 @@ codeunit 50101 "Events"
                 RecBankAccount.Modify();
             until RecBankAccount.Next() = 0;
         end
-    end;
+    end;*/
 
-    procedure CheckAndUpdateCurrency()
+    /*procedure CheckAndUpdateCurrency()
     var
         RecBankAccount: Record "Bank Account";
     begin
@@ -607,7 +607,7 @@ codeunit 50101 "Events"
                 end;
             until RecBankAccount.Next() = 0;
         end;
-    end;
+    end;*/
 
     var
         c: Codeunit 431;
