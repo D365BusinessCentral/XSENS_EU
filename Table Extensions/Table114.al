@@ -91,7 +91,7 @@ tableextension 50023 "Sales Cr.Memo Header" extends "Sales Cr.Memo Header"
                         NLD = 'IC Ordernaam 2';
             Editable = false;
         }
-        field(50363; "Sell-to IC Address"; Text[50])
+        field(50363; "Sell-to IC Address"; Text[100])
         {
             CaptionML = ENU = 'Sell-to IC Address',
                         NLD = 'IC Orderadres';

@@ -199,11 +199,17 @@ codeunit 50101 "Events"
     //For IC related fields 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::ICInboxOutboxMgt, 'OnCreateSalesDocumentOnBeforeSalesHeaderModify', '', false, false)]
     local procedure OnCreateSalesDocumentOnBeforeSalesHeaderModify(var SalesHeader: Record "Sales Header"; ICInboxSalesHeader: Record "IC Inbox Sales Header");
+    Var
+        GLSetup: Record "General Ledger Setup";
     begin
 
         IF ICInboxSalesHeader."Expected Receipt Date" <> 0D THEN BEGIN
             SalesHeader.VALIDATE("Shipment Date", ICInboxSalesHeader."Expected Receipt Date");
         END;
+        GLSetup.GET;
+        if ICInboxSalesHeader."Currency Code" = '' then begin
+            SalesHeader.Validate("Currency Code", GLSetup."LCY Code");
+        end;
         SalesHeader."Ship-to Address" := ICInboxSalesHeader."Ship-to Address";
         SalesHeader."Ship-to Address 2" := ICInboxSalesHeader."Ship-to Address 2";
         SalesHeader."Ship-to Post Code" := ICInboxSalesHeader."Ship-to Post Code";
