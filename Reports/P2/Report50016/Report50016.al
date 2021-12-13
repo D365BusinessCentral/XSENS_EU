@@ -139,25 +139,27 @@ report 50016 "Aged Accounts Payable US"
                     if TempVendLedgEntry."Remaining Amount" = 0 then
                         CurrReport.SKIP;
                     if TempVendLedgEntry."Currency Code" <> '' then
-                        TempVendLedgEntry."Remaining Amt. (LCY)" :=
+                        /*TempVendLedgEntry."Remaining Amt. (LCY)" :=
                           ROUND(
                             CurrExchRate.ExchangeAmtFCYToFCY(
                               PeriodEndingDate[1],
                               TempVendLedgEntry."Currency Code",
                               '',
-                              TempVendLedgEntry."Remaining Amount"));
+                              TempVendLedgEntry."Remaining Amount"));kk*/
                     if PrintAmountInLCY then begin
-                        TempVendLedgEntry."Remaining Amount" :=
-                          ROUND(
-                            CurrExchRate.ExchangeAmtFCYToFCY(
-                              PeriodEndingDate[1],
-                              TempVendLedgEntry."Currency Code",
-                              Vendor."Currency Code",
-                              TempVendLedgEntry."Remaining Amount"),
-                            Currency."Amount Rounding Precision");
-                        AmountDueToPrint := TempVendLedgEntry."Remaining Amount";
-                    end else
-                        AmountDueToPrint := TempVendLedgEntry."Remaining Amt. (LCY)";
+                            /*TempVendLedgEntry."Remaining Amount" :=
+                              ROUND(
+                                CurrExchRate.ExchangeAmtFCYToFCY(
+                                  PeriodEndingDate[1],
+                                  TempVendLedgEntry."Currency Code",
+                                  Vendor."Currency Code",
+                                  TempVendLedgEntry."Remaining Amount"),
+                                Currency."Amount Rounding Precision");kk*/
+                            AmountDueToPrint := TempVendLedgEntry."Remaining Amt. (LCY)";
+                            //AmountDueToPrint := TempVendLedgEntry."Remaining Amount";
+                        end else
+                            AmountDueToPrint := TempVendLedgEntry."Remaining Amount";
+                    //  AmountDueToPrint := TempVendLedgEntry."Remaining Amt. (LCY)";
 
                     case AgingMethod of
                         AgingMethod::"Due Date":
@@ -262,7 +264,7 @@ report 50016 "Aged Accounts Payable US"
                         ToolTipML = ENU = 'Specifies the date that you want the aging calculated for.',
                                     NLD = 'Hiermee wordt de datum opgegeven waarvoor u het verval wilt berekenen.';
                     }
-                    field(AgingBy; AgingBy)
+                    field(AgingBy; AgingMethod)
                     {
                         ApplicationArea = Basic, Suite;
                         CaptionML = ENU = 'Aging by',
@@ -406,7 +408,7 @@ report 50016 "Aged Accounts Payable US"
         GLSetup: Record "General Ledger Setup";
         PrintAmountInLCY: Boolean;
         EndingDate: Date;
-        AgingBy: Option "Due Date","Posting Date","Document Date";
+        //AgingBy: Option "Due Date","Posting Date","Document Date";
         PeriodLength: DateFormula;
         PrintDetails: Boolean;
         HeadingType: Option "Date Interval","Number of Days";
@@ -467,6 +469,8 @@ report 50016 "Aged Accounts Payable US"
                     "Posting Date" := "Due Date";
                 AgingMethod::"Document Date":
                     "Posting Date" := "Document Date";
+                AgingMethod::"Trans Date":
+                    "Posting Date" := "Posting Date";
             end;
             INSERT;
         end;
