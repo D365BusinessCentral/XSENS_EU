@@ -24,6 +24,10 @@ pageextension 60028 "CustLedgerExt" extends "Customer Ledger Entries"
             {
                 ApplicationArea = All;
             }
+            field(Positive; Rec.Positive)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 }
