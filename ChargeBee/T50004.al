@@ -5,6 +5,10 @@ table 50004 "Chargebee Transactions"
 
     fields
     {
+        field(5; Connectie; Code[20])
+        {
+            Caption = 'Connection';
+        }
         field(10; Type; Option)
         {
             OptionMembers = Invoice,Payment,Error;

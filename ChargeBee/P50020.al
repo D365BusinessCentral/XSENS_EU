@@ -12,37 +12,36 @@ page 50020 ChargebeeSetup
 
     layout
     {
-        area(content)
+        area(Content)
         {
             group(Setup)
             {
-                field(APIKey; Rec.APIKey)
-                {
-                    ApplicationArea = All;
-                }
-                field("Last updated"; Rec."Last updated")
-                {
-                    ApplicationArea = All;
-                }
-                field(InstantBooking; Rec.InstantBooking)
-                {
-                    ApplicationArea = All;
-                }
-                field("Invoice prefix"; Rec."Invoice prefix")
-                {
-                    ApplicationArea = All;
-                }
+                // field("Base url"; Rec."Base url")
+                // {
+                //     ToolTip = 'Vul volledige url naar Chargebee-omgeving in (incl. /api/v2)';
+                //     ApplicationArea = All;
+                // }
+                // field(APIKey; Rec.APIKey)
+                // {
+                //     ApplicationArea = All;
+                // }
+                // field("Last updated"; Rec."Last updated")
+                // {
+                //     ApplicationArea = All;
+                // }
+                // field(InstantBooking; Rec.InstantBooking)
+                // {
+                //     ApplicationArea = All;
+                // }
+                // field("Invoice prefix"; Rec."Invoice prefix")
+                // {
+                //     ApplicationArea = All;
+                // }
                 field("GL Account"; Rec."GL Account")
                 {
-                    CaptionML = ENU = 'Accounts receivable',
-                                NLD = 'Debiteurenrekening';
+                    Caption = 'Accounts receivable';
                     TableRelation = "G/L Account"."No.";
                     ToolTip = 'Vul hier het grootboeknummer van de debiteuren rekening Chargebee facturen in';
-                    ApplicationArea = All;
-                }
-                field("Base url"; Rec."Base url")
-                {
-                    ToolTip = 'Vul volledige url naar Chargebee-omgeving in (incl. /api/v2)';
                     ApplicationArea = All;
                 }
                 field("Segment Code"; Rec."Segment Code")
@@ -51,6 +50,13 @@ page 50020 ChargebeeSetup
                 }
                 field("Product Lines"; Rec."Product Lines")
                 {
+                    ApplicationArea = All;
+                }
+                field(Dummy; '')
+                {
+                    Editable = false;
+                    Caption = '';
+                    Enabled = false;
                     ApplicationArea = All;
                 }
                 field("Use Sales Tax"; Rec."Use Sales Tax")
@@ -78,6 +84,13 @@ page 50020 ChargebeeSetup
                     ApplicationArea = All;
                 }
             }
+            part(Lines; ChargebeeSetupLines)
+            {
+                Caption = 'Connections';
+                ApplicationArea = All;
+            }
+
+
         }
     }
 
@@ -102,7 +115,7 @@ page 50020 ChargebeeSetup
                 RunObject = Page "Chargebee Transaction Logging";  //Krishna The page is not available
                                                                    //PdV: Echt wel
             }
-            // action("DO NOT USE - Delete Invoices")
+            // action("DO NOT USE - Delete transaction logging")
             // {
             //     Image = Delete;
             //     ApplicationArea = All;
@@ -120,7 +133,6 @@ page 50020 ChargebeeSetup
             // }
         }
     }
-
     trigger OnOpenPage();
     begin
         if not Rec.GET then begin

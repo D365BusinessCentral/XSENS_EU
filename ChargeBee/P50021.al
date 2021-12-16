@@ -6,7 +6,9 @@ page 50021 "Chargebee Transaction Logging"
     PageType = List;
     SourceTable = "Chargebee Transactions";
     UsageCategory = Lists;
-    Editable = false;
+    InsertAllowed = false;
+    DeleteAllowed = true;
+    ModifyAllowed = false;
 
     layout
     {
@@ -14,6 +16,11 @@ page 50021 "Chargebee Transaction Logging"
         {
             repeater(General)
             {
+                field(Connectie; Rec.Connectie)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Connection';
+                }
                 field("Log Date"; Rec."Log Date")
                 {
                     ApplicationArea = All;
