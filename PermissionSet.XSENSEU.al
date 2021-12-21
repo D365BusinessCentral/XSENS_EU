@@ -1,7 +1,7 @@
-permissionset 50000 "XSENS EU"
+permissionset 50000 "XSENS"
 {
     Assignable = true;
-    Caption = 'XSENS EU';
+    Caption = 'XSENS';
     Permissions =
         table "Chargebee Transactions" = X,
         tabledata "Chargebee Transactions" = RMID,
