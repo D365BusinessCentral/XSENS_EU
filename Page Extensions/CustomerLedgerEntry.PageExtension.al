@@ -28,6 +28,10 @@ pageextension 60028 "CustLedgerExt" extends "Customer Ledger Entries"
             {
                 ApplicationArea = All;
             }
+            field("Transaction No."; Rec."Transaction No.")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 }
