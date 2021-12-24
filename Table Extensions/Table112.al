@@ -139,6 +139,26 @@ tableextension 50021 "Sales Invoice Header" extends "Sales Invoice Header"
             CaptionML = ENU = 'Bill-to Email',
                         NLD = 'Factuur naar Email';
         }
+        field(50504; "Comment 2"; Text[255])
+        {
+            CaptionML = ENU = 'Comment 2',
+                        NLD = 'Opmerking 2';
+            Description = 'Used';
+        }
+        field(50505; "US Payment Terms"; Code[10])
+        {
+            CaptionML = ENU = 'US Payment terms',
+                        NLD = 'US Betalingscondities';
+            Description = 'Used';
+            TableRelation = "Payment Terms";
+            ValidateTableRelation = false;
+        }
+        field(50506; "US Sales Order No."; Code[20])
+        {
+            CaptionML = ENU = 'US Sales Order No.',
+                        NLD = 'US Verkoopordernr.';
+            Description = 'Used';
+        }
         field(50508; Segment; Text[50])
         {
             CaptionML = ENU = 'Segment',

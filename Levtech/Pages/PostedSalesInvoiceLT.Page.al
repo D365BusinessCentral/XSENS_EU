@@ -289,6 +289,25 @@ page 50098 "Posted Sales Invoice_LT"
                         ShowCaption = false;
                     }
                 }
+                group(SalesForce)
+                {
+                    CaptionML = ENU = 'SalesForce',
+                                  NLD = 'SalesForce';
+                    field("Comment 2"; Rec."Comment 2")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("US Payment Terms"; Rec."US Payment Terms")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'IC Payment Terms';
+                    }
+                    field("US Sales Order No."; Rec."US Sales Order No.")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'IC Sales Order No.';
+                    }
+                }
             }
             part(SalesInvLines; "Posted Sales Invoice Subform")
             {
