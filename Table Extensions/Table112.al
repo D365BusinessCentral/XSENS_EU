@@ -147,16 +147,16 @@ tableextension 50021 "Sales Invoice Header" extends "Sales Invoice Header"
         }
         field(50505; "US Payment Terms"; Code[10])
         {
-            CaptionML = ENU = 'US Payment terms',
-                        NLD = 'US Betalingscondities';
+            CaptionML = ENU = 'IC Payment terms',
+                        NLD = 'IC Betalingscondities';
             Description = 'Used';
             TableRelation = "Payment Terms";
             ValidateTableRelation = false;
         }
         field(50506; "US Sales Order No."; Code[20])
         {
-            CaptionML = ENU = 'US Sales Order No.',
-                        NLD = 'US Verkoopordernr.';
+            CaptionML = ENU = 'IC Sales Order No.',
+                        NLD = 'IC Verkoopordernr.';
             Description = 'Used';
         }
         field(50508; Segment; Text[50])

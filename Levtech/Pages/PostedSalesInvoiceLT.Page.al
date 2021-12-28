@@ -297,12 +297,12 @@ page 50098 "Posted Sales Invoice_LT"
                     {
                         ApplicationArea = All;
                     }
-                    field("US Payment Terms"; Rec."US Payment Terms")
+                    field("IC Payment Terms"; Rec."US Payment Terms")
                     {
                         ApplicationArea = All;
                         Caption = 'IC Payment Terms';
                     }
-                    field("US Sales Order No."; Rec."US Sales Order No.")
+                    field("IC Sales Order No."; Rec."US Sales Order No.")
                     {
                         ApplicationArea = All;
                         Caption = 'IC Sales Order No.';

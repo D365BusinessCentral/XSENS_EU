@@ -15,6 +15,10 @@ pageextension 50029 GLEntry extends "General Ledger Entries"
                 ApplicationArea = All;
                 Caption = 'Vendor Name';
             }*/
+            field("Transaction No."; Rec."Transaction No.")
+            {
+                ApplicationArea = All;
+            }
         }
         modify("Source Type")
         {
