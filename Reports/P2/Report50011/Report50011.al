@@ -254,7 +254,7 @@ report 50011 "XSS Certificate of Conformance"
                     CLEAR(SalesLine);
                     SalesLine.DELETEALL;
                     wgCduSalesPost.GetSalesLines(SalesHdr, SalesLine, 0);
-                    CurrReport.PAGENO := 1;
+                    //CurrReport.PAGENO := 1;
                 end;
 
                 trigger OnPreDataItem();

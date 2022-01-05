@@ -1056,7 +1056,7 @@ report 50001 "Sales - Order Confirm XSS DCR"
                 if wgShowLotSN then begin
                     wgCduItemTrackingDocMgt.SetRetrieveAsmItemTracking(true);
                     wgCduItemTrackingDocMgt.RetrieveDocumentItemTracking(TrackingSpec, SalesHdr."No.",
-                        DATABASE::"Sales Header", SalesHdr."Document Type");
+                        DATABASE::"Sales Header", SalesHdr."Document Type".AsInteger());
                 end;
 
                 //Set HideLineDiscount
@@ -1286,40 +1286,38 @@ report 50001 "Sales - Order Confirm XSS DCR"
         wlSalesPersonText: Text[30];
         wlCurrencyCode: Code[10];
     begin
-        with pRecSalesHeader do begin
-            wlCurrencyCode := "Currency Code";
-            if wlCurrencyCode = '' then begin
-                wgRecGLSetup.TESTFIELD("LCY Code");
-                wlCurrencyCode := wgRecGLSetup."LCY Code";
-            end;
-            wgTotalText := STRSUBSTNO(Trl('Total%1'), wlCurrencyCode);
-            //NM_BEGIN GW
-            // case wgRecCompanyInfo."Company Location" of
-            //     wgRecCompanyInfo."Company Location"::Holland:
-            //         begin
-            //             if wgTotVATAmount = 0 then
-            //                 wgTotalInclVATText := STRSUBSTNO(Trl('Total %1'), wlCurrencyCode)
-            //             else
-            //                 wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl VAT.'), wlCurrencyCode);
-            //             wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl VAT.'), wlCurrencyCode);
-            //         end;
-            //     wgRecCompanyInfo."Company Location"::"North America":
-            //         begin
-            //             if wgTotVATAmount = 0 then
-            //                 wgTotalInclVATText := STRSUBSTNO(Trl('Total %1'), wlCurrencyCode)
-            //             else
-            //                 wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl Tax.'), wlCurrencyCode);
-            //             wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl Tax.'), wlCurrencyCode);
-            //         end;
-            // end;
-            //NM_END
-            wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl VAT.'), wlCurrencyCode);
-            if wgTotVATAmount = 0 then
-                wgTotalExclVATText := STRSUBSTNO(Trl('Total %1'), wlCurrencyCode)
-            else
-                wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl VAT.'), wlCurrencyCode);
-            wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, "Salesperson Code", wlSalesPersonText);
+        wlCurrencyCode := pRecSalesHeader."Currency Code";
+        if wlCurrencyCode = '' then begin
+            wgRecGLSetup.TESTFIELD("LCY Code");
+            wlCurrencyCode := wgRecGLSetup."LCY Code";
         end;
+        wgTotalText := STRSUBSTNO(Trl('Total%1'), wlCurrencyCode);
+        //NM_BEGIN GW
+        // case wgRecCompanyInfo."Company Location" of
+        //     wgRecCompanyInfo."Company Location"::Holland:
+        //         begin
+        //             if wgTotVATAmount = 0 then
+        //                 wgTotalInclVATText := STRSUBSTNO(Trl('Total %1'), wlCurrencyCode)
+        //             else
+        //                 wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl VAT.'), wlCurrencyCode);
+        //             wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl VAT.'), wlCurrencyCode);
+        //         end;
+        //     wgRecCompanyInfo."Company Location"::"North America":
+        //         begin
+        //             if wgTotVATAmount = 0 then
+        //                 wgTotalInclVATText := STRSUBSTNO(Trl('Total %1'), wlCurrencyCode)
+        //             else
+        //                 wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl Tax.'), wlCurrencyCode);
+        //             wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl Tax.'), wlCurrencyCode);
+        //         end;
+        // end;
+        //NM_END
+        wgTotalInclVATText := STRSUBSTNO(Trl('Total %1 Incl VAT.'), wlCurrencyCode);
+        if wgTotVATAmount = 0 then
+            wgTotalExclVATText := STRSUBSTNO(Trl('Total %1'), wlCurrencyCode)
+        else
+            wgTotalExclVATText := STRSUBSTNO(Trl('Total %1 Excl VAT.'), wlCurrencyCode);
+        wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, pRecSalesHeader."Salesperson Code", wlSalesPersonText);
     end;
 
     local procedure wlFncFormatAddressFields(var vRecSalesHeader: Record "Sales Header");
@@ -1332,10 +1330,9 @@ report 50001 "Sales - Order Confirm XSS DCR"
         wgCduFormatAddr.SalesHeaderBillTo(wgCustAddr, vRecSalesHeader);
         wgShowShippingAddr := wgCduFormatAddr.SalesHeaderShipTo(wgShipToAddr, wgCustAddr, vRecSalesHeader);
         //NM_BEGIN GW
-        with vRecSalesHeader do
-            wgCduFormatAddr.FormatAddr(
-              gTxtSellToCustAddr, "Sell-to Customer Name", "Sell-to Customer Name 2", "Sell-to Contact", '', '',
-              '', '', '', "Sell-to Country/Region Code");
+        wgCduFormatAddr.FormatAddr(
+  gTxtSellToCustAddr, vRecSalesHeader."Sell-to Customer Name", vRecSalesHeader."Sell-to Customer Name 2", vRecSalesHeader."Sell-to Contact", '', '',
+  '', '', '', vRecSalesHeader."Sell-to Country/Region Code");
         //NM_END
     end;
 

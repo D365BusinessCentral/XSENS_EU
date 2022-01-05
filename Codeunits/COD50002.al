@@ -113,36 +113,32 @@ codeunit 50002 Financieel
     var
         lRecDimSetEntry: Record "Dimension Set Entry";
     begin
-        with lRecDimSetEntry do begin
-            RESET;
-            SETRANGE("Dimension Set ID", pDimSetID);
-            SETRANGE("Dimension Code", pDimCode);
+        lRecDimSetEntry.RESET;
+        lRecDimSetEntry.SETRANGE("Dimension Set ID", pDimSetID);
+        lRecDimSetEntry.SETRANGE("Dimension Code", pDimCode);
 
-            if not FIND('-') then
-                exit('');
+        if not lRecDimSetEntry.FIND('-') then
+            exit('');
 
 
-            exit("Dimension Value Code");
-        end;
+        exit(lRecDimSetEntry."Dimension Value Code");
     end;
 
     procedure fGetDimensionValueFromID(pDimSetID: Integer; pDimCode: Code[20]) RetDimValue: Text;
     var
         lRecDimSetEntry: Record "Dimension Set Entry";
     begin
-        with lRecDimSetEntry do begin
-            RESET;
-            SETRANGE("Dimension Set ID", pDimSetID);
-            SETRANGE("Dimension Code", pDimCode);
+        lRecDimSetEntry.RESET;
+        lRecDimSetEntry.SETRANGE("Dimension Set ID", pDimSetID);
+        lRecDimSetEntry.SETRANGE("Dimension Code", pDimCode);
 
-            if not FIND('-') then
-                exit('');
+        if not lRecDimSetEntry.FIND('-') then
+            exit('');
 
-            CALCFIELDS("Dimension Value Name");
-            if pDimCode = 'COST CENTRE' then
-                exit("Dimension Value Code");
-            exit("Dimension Value Name");
-        end;
+        lRecDimSetEntry.CALCFIELDS("Dimension Value Name");
+        if pDimCode = 'COST CENTRE' then
+            exit(lRecDimSetEntry."Dimension Value Code");
+        exit(lRecDimSetEntry."Dimension Value Name");
     end;
 }
 

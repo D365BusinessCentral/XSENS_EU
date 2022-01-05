@@ -995,11 +995,11 @@ xmlport 50108 "DMS Universal XMLport"
                             ltxtFilename: Text;
                             lcuFileMgmt: Codeunit "File Management";
                         begin
-                            ltxtFilename := lcuFileMgmt.OpenFileDialog(tcFileDlgTitle, txtFileName, tcFileFilter);
-                            IF ltxtFilename <> '' THEN BEGIN
-                                txtFileName := ltxtFilename;
-                                currXMLport.FILENAME(txtFileName);
-                            END;
+                            // ltxtFilename := lcuFileMgmt.OpenFileDialog(tcFileDlgTitle, txtFileName, tcFileFilter);
+                            // IF ltxtFilename <> '' THEN BEGIN
+                            //     txtFileName := ltxtFilename;
+                            //     currXMLport.FILENAME(txtFileName);
+                            // END;
                         end;
 
                         trigger OnValidate()
@@ -1649,43 +1649,42 @@ xmlport 50108 "DMS Universal XMLport"
             EXIT;
 
         rrRecRef.SETTABLE(lrecItemJnl);
-        WITH lrecItemJnl DO BEGIN
-            RecReservationEntry."Serial No." := "Serial No.";
-            RecReservationEntry."Lot No." := "Lot No.";
-            IF ("Serial No." <> '') OR ("Lot No." <> '') THEN BEGIN
-                lcuCreateResEntry.CreateReservEntryFor(
-                  DATABASE::"Item Journal Line",
-                  "Entry Type",
-                  "Journal Template Name", "Journal Batch Name",
-                  0, //prod order line
-                  "Line No.", //source ref no.
-                  "Qty. per Unit of Measure",
-                  Quantity,
-                  "Quantity (Base)",
-                  RecReservationEntry
-                );
+        RecReservationEntry."Serial No." := lrecItemJnl."Serial No.";
+        RecReservationEntry."Lot No." := lrecItemJnl."Lot No.";
+        IF (lrecItemJnl."Serial No." <> '') OR (lrecItemJnl."Lot No." <> '') THEN BEGIN
+            lcuCreateResEntry.CreateReservEntryFor(
+              DATABASE::"Item Journal Line",
+              lrecItemJnl."Entry Type".AsInteger(),
+              lrecItemJnl."Journal Template Name", lrecItemJnl."Journal Batch Name",
+              0, //prod order line
+              lrecItemJnl."Line No.", //source ref no.
+              lrecItemJnl."Qty. per Unit of Measure",
+              lrecItemJnl.Quantity,
+              lrecItemJnl."Quantity (Base)",
+              RecReservationEntry
+            );
 
-                lcuCreateResEntry.SetDates("Warranty Date", "Expiration Date");
+            lcuCreateResEntry.SetDates(lrecItemJnl."Warranty Date", lrecItemJnl."Expiration Date");
 
-                lcuCreateResEntry.CreateEntry(
-                  "Item No.", //ItemNo
-                  "Variant Code", //VariantCode
-                  "Location Code", //LocationCode
-                  Description, //Description
-                  "Posting Date", //ExpectedReceiptDate
-                  0D, //ShipmentDate
-                  0, //TransferredFromEntryNo
-                  ReserveStatus::Prospect //Status (3==Prospect)
-                );
+            lcuCreateResEntry.CreateEntry(
+              lrecItemJnl."Item No.", //ItemNo
+              lrecItemJnl."Variant Code", //VariantCode
+              lrecItemJnl."Location Code", //LocationCode
+              lrecItemJnl.Description, //Description
+              lrecItemJnl."Posting Date", //ExpectedReceiptDate
+              0D, //ShipmentDate
+              0, //TransferredFromEntryNo
+              ReserveStatus::Prospect //Status (3==Prospect)
+            );
 
-                "Warranty Date" := 0D;
-                "Expiration Date" := 0D;
-                "Serial No." := '';
-                "Lot No." := '';
-                MODIFY;
+            lrecItemJnl."Warranty Date" := 0D;
+            lrecItemJnl."Expiration Date" := 0D;
+            lrecItemJnl."Serial No." := '';
+            lrecItemJnl."Lot No." := '';
+            lrecItemJnl.MODIFY;
 
-            END;//if
-        END;//with
+        END;//if
+        //with
     end;
 
     procedure doBlobImport(pfrFieldRef: FieldRef; var ptxtValue: Text)

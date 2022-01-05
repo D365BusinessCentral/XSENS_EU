@@ -14,7 +14,7 @@ pageextension 50001 "Company Information" extends "Company Information"
     {
         addlast(content)
         {
-            field("Sync with O365 Bus. profile"; Rec."Sync with O365 Bus. profile")
+            /*field("Sync with O365 Bus. profile"; Rec."Sync with O365 Bus. profile")
             {
                 ApplicationArea = Basic, Suite;
                 CaptionML = ENU = 'Synchronize with Office 365 Business Profile',
@@ -22,7 +22,7 @@ pageextension 50001 "Company Information" extends "Company Information"
                 Importance = Additional;
                 ToolTipML = ENU = 'Specifies that the profile will be synchronized with the one in Office 365.',
                                 NLD = 'Hiermee wordt opgegeven dat het profiel wordt gesynchroniseerd met het profiel in Office 365.';
-            }
+            }*/
         }
         addlast(Payments)
         {

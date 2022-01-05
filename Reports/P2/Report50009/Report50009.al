@@ -155,26 +155,24 @@ report 50009 "Prod. Order - Mat. Req.XSS DCR"
 
                     trigger OnAfterGetRecord();
                     begin
-                        with ReservationEntry do begin
-                            SETCURRENTKEY("Source ID", "Source Ref. No.", "Source Type", "Source Subtype");
-                            SETRANGE("Source Type", DATABASE::"Prod. Order Component");
-                            SETRANGE("Source ID", "Production Order"."No.");
-                            SETRANGE("Source Ref. No.", "Line No.");
-                            SETRANGE("Source Subtype", Status);
-                            SETRANGE("Source Batch Name", '');
-                            SETRANGE("Source Prod. Order Line", "Prod. Order Line No.");
-                            if FINDSET then begin
-                                RemainingQtyReserved := 0;
-                                repeat
-                                    if ReservationEntry2.GET("Entry No.", not Positive) then
-                                        if (ReservationEntry2."Source Type" = DATABASE::"Prod. Order Line") and
-                                           (ReservationEntry2."Source ID" = "Prod. Order Component"."Prod. Order No.")
-                                        then
-                                            RemainingQtyReserved += ReservationEntry2."Quantity (Base)";
-                                until NEXT = 0;
-                                if "Prod. Order Component"."Remaining Qty. (Base)" = RemainingQtyReserved then
-                                    CurrReport.SKIP;
-                            end;
+                        ReservationEntry.SETCURRENTKEY("Source ID", "Source Ref. No.", "Source Type", "Source Subtype");
+                        ReservationEntry.SETRANGE("Source Type", DATABASE::"Prod. Order Component");
+                        ReservationEntry.SETRANGE("Source ID", "Production Order"."No.");
+                        ReservationEntry.SETRANGE("Source Ref. No.", "Line No.");
+                        ReservationEntry.SETRANGE("Source Subtype", Status);
+                        ReservationEntry.SETRANGE("Source Batch Name", '');
+                        ReservationEntry.SETRANGE("Source Prod. Order Line", "Prod. Order Line No.");
+                        if ReservationEntry.FINDSET then begin
+                            RemainingQtyReserved := 0;
+                            repeat
+                                if ReservationEntry2.GET(ReservationEntry."Entry No.", not ReservationEntry.Positive) then
+                                    if (ReservationEntry2."Source Type" = DATABASE::"Prod. Order Line") and
+                                       (ReservationEntry2."Source ID" = "Prod. Order Component"."Prod. Order No.")
+                                    then
+                                        RemainingQtyReserved += ReservationEntry2."Quantity (Base)";
+                            until ReservationEntry.NEXT = 0;
+                            if "Prod. Order Component"."Remaining Qty. (Base)" = RemainingQtyReserved then
+                                CurrReport.SKIP;
                         end;
                     end;
 

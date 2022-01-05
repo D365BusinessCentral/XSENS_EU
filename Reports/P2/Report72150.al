@@ -998,7 +998,7 @@ report 72150 "Sales - PilotSalesInvoice DCR"
                 if wgShowLotSN then begin
                     wgCduItemTrackingDocMgt.SetRetrieveAsmItemTracking(true);
                     wgCduItemTrackingDocMgt.RetrieveDocumentItemTracking(TrackingSpec, SalesHdr."No.",
-                        DATABASE::"Sales Header", SalesHdr."Document Type");
+                        DATABASE::"Sales Header", SalesHdr."Document Type".AsInteger());
                 end;
 
                 //Set HideLineDiscount
@@ -1201,23 +1201,21 @@ report 72150 "Sales - PilotSalesInvoice DCR"
         // TEMPORARY
         // According "VAT Amount Line".DeductVATAmountLine wich is not available in NAVW1 CU1
         // Note: If available "VAT Amount Line".DeductVATAmountLine can be use instead
-        with VATAmounLine do begin
-            if FINDSET then
-                repeat
-                    VATAmountLineDeduct := VATAmounLine;
-                    if VATAmountLineDeduct.FIND then begin
-                        "VAT Base" -= VATAmountLineDeduct."VAT Base";
-                        "VAT Amount" -= VATAmountLineDeduct."VAT Amount";
-                        "Amount Including VAT" -= VATAmountLineDeduct."Amount Including VAT";
-                        "Line Amount" -= VATAmountLineDeduct."Line Amount";
-                        "Inv. Disc. Base Amount" -= VATAmountLineDeduct."Inv. Disc. Base Amount";
-                        "Invoice Discount Amount" -= VATAmountLineDeduct."Invoice Discount Amount";
-                        "Calculated VAT Amount" -= VATAmountLineDeduct."Calculated VAT Amount";
-                        "VAT Difference" -= VATAmountLineDeduct."VAT Difference";
-                        MODIFY;
-                    end;
-                until NEXT = 0;
-        end;
+        if VATAmounLine.FINDSET then
+            repeat
+                VATAmountLineDeduct := VATAmounLine;
+                if VATAmountLineDeduct.FIND then begin
+                    VATAmounLine."VAT Base" -= VATAmountLineDeduct."VAT Base";
+                    VATAmounLine."VAT Amount" -= VATAmountLineDeduct."VAT Amount";
+                    VATAmounLine."Amount Including VAT" -= VATAmountLineDeduct."Amount Including VAT";
+                    VATAmounLine."Line Amount" -= VATAmountLineDeduct."Line Amount";
+                    VATAmounLine."Inv. Disc. Base Amount" -= VATAmountLineDeduct."Inv. Disc. Base Amount";
+                    VATAmounLine."Invoice Discount Amount" -= VATAmountLineDeduct."Invoice Discount Amount";
+                    VATAmounLine."Calculated VAT Amount" -= VATAmountLineDeduct."Calculated VAT Amount";
+                    VATAmounLine."VAT Difference" -= VATAmountLineDeduct."VAT Difference";
+                    VATAmounLine.MODIFY;
+                end;
+            until VATAmounLine.NEXT = 0;
     end;
 
     local procedure wlFncFormatDocumentFields(pRecSalesHeader: Record "Sales Header");
@@ -1225,17 +1223,15 @@ report 72150 "Sales - PilotSalesInvoice DCR"
         wlSalesPersonText: Text[30];
         wlCurrencyCode: Code[10];
     begin
-        with pRecSalesHeader do begin
-            wlCurrencyCode := "Currency Code";
-            if wlCurrencyCode = '' then begin
-                wgRecGLSetup.TESTFIELD("LCY Code");
-                wlCurrencyCode := wgRecGLSetup."LCY Code";
-            end;
-            wgTotalText := STRSUBSTNO(Trl('Total%1'), wlCurrencyCode);
-            wgTotalInclVATText := STRSUBSTNO(Trl('Total%1InclVAT'), wlCurrencyCode);
-            wgTotalExclVATText := STRSUBSTNO(Trl('Total%1ExclVAT'), wlCurrencyCode);
-            wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, "Salesperson Code", wlSalesPersonText);
+        wlCurrencyCode := pRecSalesHeader."Currency Code";
+        if wlCurrencyCode = '' then begin
+            wgRecGLSetup.TESTFIELD("LCY Code");
+            wlCurrencyCode := wgRecGLSetup."LCY Code";
         end;
+        wgTotalText := STRSUBSTNO(Trl('Total%1'), wlCurrencyCode);
+        wgTotalInclVATText := STRSUBSTNO(Trl('Total%1InclVAT'), wlCurrencyCode);
+        wgTotalExclVATText := STRSUBSTNO(Trl('Total%1ExclVAT'), wlCurrencyCode);
+        wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, pRecSalesHeader."Salesperson Code", wlSalesPersonText);
     end;
 
     local procedure wlFncFormatAddressFields(var vRecSalesHeader: Record "Sales Header");

@@ -711,9 +711,7 @@ report 72104 "R208 Sales - Shipment DCR"
     var
         wlSalesPersonText: Text[30];
     begin
-        with pRecSalesShptHeader do begin
-            wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, "Salesperson Code", wlSalesPersonText);
-        end;
+        wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, pRecSalesShptHeader."Salesperson Code", wlSalesPersonText);
     end;
 
     local procedure wlFncFormatAddressFields(var vRecSalesShptHeader: Record "Sales Shipment Header");

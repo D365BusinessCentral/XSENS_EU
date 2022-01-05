@@ -669,7 +669,7 @@ report 72100 "R204 Sales - Quote DCR"
                         wgCopyText := Trl('Copy');
                         wgOutputNo += 1;
                     end;
-                    CurrReport.PAGENO := 1;
+                    //CurrReport.PAGENO := 1;
 
                     wgTotVALVATBaseLCY := 0;
                     wgTotVALVATAmountLCY := 0;
@@ -962,17 +962,15 @@ report 72100 "R204 Sales - Quote DCR"
         wlSalesPersonText: Text[30];
         wlCurrencyCode: Code[10];
     begin
-        with pRecSalesHeader do begin
-            wlCurrencyCode := "Currency Code";
-            if wlCurrencyCode = '' then begin
-                wgRecGLSetup.TESTFIELD("LCY Code");
-                wlCurrencyCode := wgRecGLSetup."LCY Code";
-            end;
-            wgTotalText := STRSUBSTNO(Trl('Total%1'), wlCurrencyCode);
-            wgTotalInclVATText := STRSUBSTNO(Trl('Total%1InclVAT'), wlCurrencyCode);
-            wgTotalExclVATText := STRSUBSTNO(Trl('Total%1ExclVAT'), wlCurrencyCode);
-            wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, "Salesperson Code", wlSalesPersonText);
+        wlCurrencyCode := pRecSalesHeader."Currency Code";
+        if wlCurrencyCode = '' then begin
+            wgRecGLSetup.TESTFIELD("LCY Code");
+            wlCurrencyCode := wgRecGLSetup."LCY Code";
         end;
+        wgTotalText := STRSUBSTNO(Trl('Total%1'), wlCurrencyCode);
+        wgTotalInclVATText := STRSUBSTNO(Trl('Total%1InclVAT'), wlCurrencyCode);
+        wgTotalExclVATText := STRSUBSTNO(Trl('Total%1ExclVAT'), wlCurrencyCode);
+        wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, pRecSalesHeader."Salesperson Code", wlSalesPersonText);
     end;
 
     local procedure wlFncFormatAddressFields(var vRecSalesHeader: Record "Sales Header");

@@ -1131,8 +1131,9 @@ page 50099 "Sales Order LT"
                     trigger OnAction()
                     var
                         WorkflowsEntriesBuffer: Record "Workflows Entries Buffer";
+                        ApprovalMgmt: Codeunit "Approvals Mgmt.";
                     begin
-                        WorkflowsEntriesBuffer.RunWorkflowEntriesPage(Rec.RecordId, DATABASE::"Sales Header", Rec."Document Type".AsInteger(), Rec."No.");
+                        ApprovalMgmt.RunWorkflowEntriesPage(Rec.RecordId, DATABASE::"Sales Header", Rec."Document Type", Rec."No.");
                     end;
                 }
                 action("Co&mments")

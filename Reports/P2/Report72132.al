@@ -576,9 +576,7 @@ report 72132 "R6646 Sales - RetReceipt DCR"
     var
         wlSalesPersonText: Text[30];
     begin
-        with pRecReturnRcptHeader do begin
-            wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, "Salesperson Code", wlSalesPersonText);
-        end;
+        wgCduFormatDoc.SetSalesPerson(wgRecSalesPurchPerson, pRecReturnRcptHeader."Salesperson Code", wlSalesPersonText);
     end;
 
     local procedure wlFncFormatAddressFields(var vRecReturnRcptHeader: Record "Return Receipt Header");

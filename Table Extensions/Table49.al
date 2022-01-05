@@ -1,4 +1,6 @@
+#pragma warning disable AL0432 // TODO - Will Remove in Next Update
 tableextension 50015 "Invoice Post. Buffer" extends "Invoice Post. Buffer"
+#pragma warning restore AL0432 // TODO - Will Remove in Next Update
 {
     fields
     {

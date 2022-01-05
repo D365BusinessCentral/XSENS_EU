@@ -158,7 +158,8 @@ codeunit 50000 Algemeen
         lCodArtikel: Code[20];
         lCduProdJournalMgt: Codeunit "Production Journal Mgt";
         lRecReservationEntry: Record "Reservation Entry";
-        lOptNewStatus: Option Quote,Planned,"Firm Planned",Released,Finished;
+        //lOptNewStatus: Option Quote,Planned,"Firm Planned",Released,Finished;
+        lOptNewStatus: Enum "Production Order Status";
         lDatNewPostingDate: Date;
         lBoolNewUpdateUnitCost: Boolean;
     begin
@@ -273,8 +274,10 @@ codeunit 50000 Algemeen
             lOptNewStatus := lOptNewStatus::Finished;
             lDatNewPostingDate := WORKDATE;
             lBoolNewUpdateUnitCost := false;
-            gCduProdOrderStatusManagement.ChangeStatusOnProdOrder(lRecProductionOrder, lOptNewStatus,
-                                                                    lDatNewPostingDate, lBoolNewUpdateUnitCost);
+            // gCduProdOrderStatusManagement.ChangeStatusOnProdOrder(lRecProductionOrder, lOptNewStatus,
+            //                                                         lDatNewPostingDate, lBoolNewUpdateUnitCost);
+            gCduProdOrderStatusManagement.ChangeProdOrderStatus(lRecProductionOrder, lOptNewStatus,
+                                                                  lDatNewPostingDate, lBoolNewUpdateUnitCost);
             COMMIT;
 
         end;
@@ -339,53 +342,46 @@ codeunit 50000 Algemeen
         ShowWarning: Boolean;
     begin
         /* fCheckBeforeFinishProdOrder */
+        PurchLine.SETCURRENTKEY("Document Type", Type, "Prod. Order No.", "Prod. Order Line No.", "Routing No.", "Operation No.");
+        PurchLine.SETRANGE("Document Type", PurchLine."Document Type"::Order);
+        PurchLine.SETRANGE(Type, PurchLine.Type::Item);
+        PurchLine.SETRANGE("Prod. Order No.", ProdOrder."No.");
+        PurchLine.SETFILTER("Outstanding Quantity", '<>%1', 0);
+        if PurchLine.FINDFIRST then
+            ERROR(Text008, ProdOrder.TABLECAPTION, ProdOrder."No.", PurchLine."Document No.");
 
-        with PurchLine do begin
-            SETCURRENTKEY("Document Type", Type, "Prod. Order No.", "Prod. Order Line No.", "Routing No.", "Operation No.");
-            SETRANGE("Document Type", "Document Type"::Order);
-            SETRANGE(Type, Type::Item);
-            SETRANGE("Prod. Order No.", ProdOrder."No.");
-            SETFILTER("Outstanding Quantity", '<>%1', 0);
-            if FINDFIRST then
-                ERROR(Text008, ProdOrder.TABLECAPTION, ProdOrder."No.", "Document No.");
-        end;
+        ProdOrderLine.SETRANGE(Status, ProdOrder.Status);
+        ProdOrderLine.SETRANGE("Prod. Order No.", ProdOrder."No.");
+        ProdOrderLine.SETFILTER("Remaining Quantity", '<>0');
+        if not ProdOrderLine.ISEMPTY then begin
+            ProdOrderRtngLine.SETRANGE(Status, ProdOrder.Status);
+            ProdOrderRtngLine.SETRANGE("Prod. Order No.", ProdOrder."No.");
+            ProdOrderRtngLine.SETRANGE("Next Operation No.", '');
+            if not ProdOrderRtngLine.ISEMPTY then begin
+                ProdOrderRtngLine.SETFILTER("Flushing Method", '<>%1', ProdOrderRtngLine."Flushing Method"::Backward);
+                ShowWarning := not ProdOrderRtngLine.ISEMPTY;
+            end else
+                ShowWarning := true;
 
-        with ProdOrderLine do begin
-            SETRANGE(Status, ProdOrder.Status);
-            SETRANGE("Prod. Order No.", ProdOrder."No.");
-            SETFILTER("Remaining Quantity", '<>0');
-            if not ISEMPTY then begin
-                ProdOrderRtngLine.SETRANGE(Status, ProdOrder.Status);
-                ProdOrderRtngLine.SETRANGE("Prod. Order No.", ProdOrder."No.");
-                ProdOrderRtngLine.SETRANGE("Next Operation No.", '');
-                if not ProdOrderRtngLine.ISEMPTY then begin
-                    ProdOrderRtngLine.SETFILTER("Flushing Method", '<>%1', ProdOrderRtngLine."Flushing Method"::Backward);
-                    ShowWarning := not ProdOrderRtngLine.ISEMPTY;
-                end else
-                    ShowWarning := true;
-
-                if ShowWarning then begin
-                    ;
-                    ERROR(Text004, ProdOrder.TABLECAPTION, ProdOrder."No.");
-                end;
+            if ShowWarning then begin
+                ;
+                ERROR(Text004, ProdOrder.TABLECAPTION, ProdOrder."No.");
             end;
         end;
 
-        with ProdOrderComp do begin
-            SETRANGE(Status, ProdOrder.Status);
-            SETRANGE("Prod. Order No.", ProdOrder."No.");
-            SETFILTER("Remaining Quantity", '<>0');
-            if FINDSET then
-                repeat
-                    if (("Flushing Method" <> "Flushing Method"::Backward) and
-                        ("Flushing Method" <> "Flushing Method"::"Pick + Backward") and
-                        ("Routing Link Code" = '')) or
-                       (("Routing Link Code" <> '') and not RtngWillFlushComp(ProdOrderComp))
-                    then begin
-                        ERROR(Text006, ProdOrder.TABLECAPTION, ProdOrder."No.");
-                    end;
-                until NEXT = 0;
-        end;
+        ProdOrderComp.SETRANGE(Status, ProdOrder.Status);
+        ProdOrderComp.SETRANGE("Prod. Order No.", ProdOrder."No.");
+        ProdOrderComp.SETFILTER("Remaining Quantity", '<>0');
+        if ProdOrderComp.FINDSET then
+            repeat
+                if ((ProdOrderComp."Flushing Method" <> ProdOrderComp."Flushing Method"::Backward) and
+                    (ProdOrderComp."Flushing Method" <> ProdOrderComp."Flushing Method"::"Pick + Backward") and
+                    (ProdOrderComp."Routing Link Code" = '')) or
+                   ((ProdOrderComp."Routing Link Code" <> '') and not RtngWillFlushComp(ProdOrderComp))
+                then begin
+                    ERROR(Text006, ProdOrder.TABLECAPTION, ProdOrder."No.");
+                end;
+            until ProdOrderComp.NEXT = 0;
 
     end;
 
@@ -397,19 +393,16 @@ codeunit 50000 Algemeen
         if ProdOrderComp."Routing Link Code" = '' then
             exit;
 
-        with ProdOrderComp do
-            ProdOrderLine.GET(Status, "Prod. Order No.", "Prod. Order Line No.");
+        ProdOrderLine.GET(ProdOrderComp.Status, ProdOrderComp."Prod. Order No.", ProdOrderComp."Prod. Order Line No.");
 
-        with ProdOrderRtngLine do begin
-            SETCURRENTKEY("Prod. Order No.", Status, "Flushing Method");
-            SETRANGE("Flushing Method", "Flushing Method"::Backward);
-            SETRANGE(Status, Status::Released);
-            SETRANGE("Prod. Order No.", ProdOrderComp."Prod. Order No.");
-            SETRANGE("Routing Link Code", ProdOrderComp."Routing Link Code");
-            SETRANGE("Routing No.", ProdOrderLine."Routing No.");
-            SETRANGE("Routing Reference No.", ProdOrderLine."Routing Reference No.");
-            exit(FINDFIRST);
-        end;
+        ProdOrderRtngLine.SETCURRENTKEY("Prod. Order No.", Status, "Flushing Method");
+        ProdOrderRtngLine.SETRANGE("Flushing Method", ProdOrderRtngLine."Flushing Method"::Backward);
+        ProdOrderRtngLine.SETRANGE(Status, ProdOrderRtngLine.Status::Released);
+        ProdOrderRtngLine.SETRANGE("Prod. Order No.", ProdOrderComp."Prod. Order No.");
+        ProdOrderRtngLine.SETRANGE("Routing Link Code", ProdOrderComp."Routing Link Code");
+        ProdOrderRtngLine.SETRANGE("Routing No.", ProdOrderLine."Routing No.");
+        ProdOrderRtngLine.SETRANGE("Routing Reference No.", ProdOrderLine."Routing Reference No.");
+        exit(ProdOrderRtngLine.FINDFIRST);
     end;
 
     procedure fRunSalesLabel(pRecSalesHeader: Record "Sales Header");
@@ -484,7 +477,7 @@ codeunit 50000 Algemeen
                                                    TIME)) then begin
                 lRecWijzigingslogDocumenten.INIT;
                 lRecWijzigingslogDocumenten."Document Soort" := lRecWijzigingslogDocumenten."Document Soort"::Verkoop;
-                lRecWijzigingslogDocumenten."Document Type" := pRecSalesHeader."Document Type";
+                lRecWijzigingslogDocumenten."Document Type" := pRecSalesHeader."Document Type".AsInteger();
                 lRecWijzigingslogDocumenten."Document Nummer" := pRecSalesHeader."No.";
                 lRecWijzigingslogDocumenten."Document Regel" := 0;
                 lRecWijzigingslogDocumenten.Datum := WORKDATE;
@@ -510,7 +503,7 @@ codeunit 50000 Algemeen
                                                    TIME)) then begin
                 lRecWijzigingslogDocumenten.INIT;
                 lRecWijzigingslogDocumenten."Document Soort" := lRecWijzigingslogDocumenten."Document Soort"::Inkoop;
-                lRecWijzigingslogDocumenten."Document Type" := pRecPurchaseHeader."Document Type";
+                lRecWijzigingslogDocumenten."Document Type" := pRecPurchaseHeader."Document Type".AsInteger();
                 lRecWijzigingslogDocumenten."Document Nummer" := pRecPurchaseHeader."No.";
                 lRecWijzigingslogDocumenten."Document Regel" := 0;
                 lRecWijzigingslogDocumenten.Datum := WORKDATE;

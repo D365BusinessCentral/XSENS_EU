@@ -16,45 +16,43 @@ codeunit 50010 "XSS Check Sales Force Order"
         lRecSalesLine: Record "Sales Line";
         lIntSortingNo: Integer;
     begin
-        with lRecSalesLine do begin
-            // Check the sorting number.
-            SETRANGE("Document Type", "Document Type"::Order);
-            SETRANGE("Document No.", SalesHeader."No.");
-            SETRANGE("Sorting No.", 0);
-            if FINDFIRST then begin
-                repeat
-                    if not "Checked by SalesForce" then begin
-                        repeat
-                            lIntSortingNo += 10;
-                        until CheckSortingOrder(lRecSalesLine, lIntSortingNo);
-                        "Sorting No." := lIntSortingNo;
-                        MODIFY(false);
-                    end;
-                until NEXT = 0;
-            end;
+        // Check the sorting number.
+        lRecSalesLine.SETRANGE("Document Type", lRecSalesLine."Document Type"::Order);
+        lRecSalesLine.SETRANGE("Document No.", SalesHeader."No.");
+        lRecSalesLine.SETRANGE("Sorting No.", 0);
+        if lRecSalesLine.FINDFIRST then begin
+            repeat
+                if not lRecSalesLine."Checked by SalesForce" then begin
+                    repeat
+                        lIntSortingNo += 10;
+                    until CheckSortingOrder(lRecSalesLine, lIntSortingNo);
+                    lRecSalesLine."Sorting No." := lIntSortingNo;
+                    lRecSalesLine.MODIFY(false);
+                end;
+            until lRecSalesLine.NEXT = 0;
+        end;
 
-            // Check the lines, for items and G/L accounts only.
-            RESET;
-            SETRANGE("Document Type", "Document Type"::Order);
-            SETRANGE("Document No.", SalesHeader."No.");
-            SETFILTER(Type, '%1|%2', Type::Item, Type::"G/L Account");
-            if FINDFIRST then begin
-                repeat
-                    if not "Checked by SalesForce" then
-                        CheckLine(SalesHeader, lRecSalesLine);
-                until NEXT = 0;
-            end;
+        // Check the lines, for items and G/L accounts only.
+        lRecSalesLine.RESET;
+        lRecSalesLine.SETRANGE("Document Type", lRecSalesLine."Document Type"::Order);
+        lRecSalesLine.SETRANGE("Document No.", SalesHeader."No.");
+        lRecSalesLine.SETFILTER(Type, '%1|%2', lRecSalesLine.Type::Item, lRecSalesLine.Type::"G/L Account");
+        if lRecSalesLine.FINDFIRST then begin
+            repeat
+                if not lRecSalesLine."Checked by SalesForce" then
+                    CheckLine(SalesHeader, lRecSalesLine);
+            until lRecSalesLine.NEXT = 0;
+        end;
 
-            //Update the SalesForce flag.
-            RESET;
-            SETRANGE("Document Type", "Document Type"::Order);
-            SETRANGE("Document No.", SalesHeader."No.");
-            if FINDSET(true) then begin
-                repeat
-                    "Checked by SalesForce" := true;
-                    MODIFY;
-                until NEXT = 0;
-            end;
+        //Update the SalesForce flag.
+        lRecSalesLine.RESET;
+        lRecSalesLine.SETRANGE("Document Type", lRecSalesLine."Document Type"::Order);
+        lRecSalesLine.SETRANGE("Document No.", SalesHeader."No.");
+        if lRecSalesLine.FINDSET(true) then begin
+            repeat
+                lRecSalesLine."Checked by SalesForce" := true;
+                lRecSalesLine.MODIFY;
+            until lRecSalesLine.NEXT = 0;
         end;
     end;
 
@@ -142,16 +140,14 @@ codeunit 50010 "XSS Check Sales Force Order"
         if pSortingNo = 0 then
             exit(true);
 
-        with lRecSalesLine do begin
-            SETCURRENTKEY("Document Type", "Document No.", "Sorting No.");
-            SETRANGE("Document Type", "Document Type"::Order);
-            SETRANGE("Document No.", pRecSalesLine."Document No.");
-            SETRANGE("Sorting No.", pSortingNo);
-            if lRecSalesLine.FINDFIRST then begin
-                exit(false);
-            end else
-                exit(true);
-        end;
+        lRecSalesLine.SETCURRENTKEY("Document Type", "Document No.", "Sorting No.");
+        lRecSalesLine.SETRANGE("Document Type", lRecSalesLine."Document Type"::Order);
+        lRecSalesLine.SETRANGE("Document No.", pRecSalesLine."Document No.");
+        lRecSalesLine.SETRANGE("Sorting No.", pSortingNo);
+        if lRecSalesLine.FINDFIRST then begin
+            exit(false);
+        end else
+            exit(true);
     end;
 }
 

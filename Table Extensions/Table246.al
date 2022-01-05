@@ -23,7 +23,7 @@ tableextension 50037 "Requisition Line" extends "Requisition Line"
             trigger OnLookup();
             var
                 ICGLAccount: Record "IC G/L Account";
-                ItemCrossReference: Record "Item Cross Reference";
+                ItemCrossReference: Record "Item Reference";
                 Item: Record Item;
             begin
                 if "No." <> '' then
@@ -43,14 +43,14 @@ tableextension 50037 "Requisition Line" extends "Requisition Line"
                         "IC Partner Ref. Type"::"Cross Reference":
                             begin
                                 ItemCrossReference.RESET;
-                                ItemCrossReference.SETCURRENTKEY("Cross-Reference Type", "Cross-Reference Type No.");
+                                ItemCrossReference.SETCURRENTKEY("Reference Type", "Reference Type No.");
                                 ItemCrossReference.SETFILTER(
-                                  "Cross-Reference Type", '%1|%2',
-                                  ItemCrossReference."Cross-Reference Type"::Customer,
-                                  ItemCrossReference."Cross-Reference Type"::" ");
-                                ItemCrossReference.SETFILTER("Cross-Reference Type No.", '%1|%2', "Sell-to Customer No.", '');
-                                if PAGE.RUNMODAL(PAGE::"Cross Reference List", ItemCrossReference) = ACTION::LookupOK then
-                                    VALIDATE("IC Partner Reference", ItemCrossReference."Cross-Reference No.");
+                                  "Reference Type", '%1|%2',
+                                  ItemCrossReference."Reference Type"::Customer,
+                                  ItemCrossReference."Reference Type"::" ");
+                                ItemCrossReference.SETFILTER("Reference Type No.", '%1|%2', "Sell-to Customer No.", '');
+                                if PAGE.RUNMODAL(PAGE::"Item Reference List", ItemCrossReference) = ACTION::LookupOK then
+                                    VALIDATE("IC Partner Reference", ItemCrossReference."Reference No.");
                             end;
                     end;
             end;

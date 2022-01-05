@@ -339,7 +339,7 @@ report 72110 "R117 Reminder DCR"
                 column(LineType; "Line Type")
                 {
                 }
-                column(LineTypeIx; "Line Type" + 0)
+                column(LineTypeIx; "Line Type".AsInteger() + 0)
                 {
                 }
                 column(NoOfReminders; "No. of Reminders")
@@ -811,22 +811,20 @@ report 72110 "R117 Reminder DCR"
     procedure wlFncCalcVATAmountLines(var vRecIssuedReminderLine: Record "Issued Reminder Line"; var vRecVATAmountLine: Record "VAT Amount Line");
     begin
         vRecVATAmountLine.DELETEALL;
-        with vRecIssuedReminderLine do begin
-            RESET;
-            if FINDSET then
-                repeat
-                    vRecVATAmountLine.INIT;
-                    vRecVATAmountLine."VAT Identifier" := "VAT Identifier";
-                    vRecVATAmountLine."VAT Calculation Type" := "VAT Calculation Type";
-                    vRecVATAmountLine."Tax Group Code" := "Tax Group Code";
-                    vRecVATAmountLine."VAT %" := "VAT %";
-                    vRecVATAmountLine."VAT Base" := Amount;
-                    vRecVATAmountLine."VAT Amount" := "VAT Amount";
-                    vRecVATAmountLine."Amount Including VAT" := Amount + "VAT Amount";
-                    vRecVATAmountLine."VAT Clause Code" := "VAT Clause Code";
-                    vRecVATAmountLine.InsertLine;
-                until NEXT = 0;
-        end;
+        vRecIssuedReminderLine.RESET;
+        if vRecIssuedReminderLine.FINDSET then
+            repeat
+                vRecVATAmountLine.INIT;
+                vRecVATAmountLine."VAT Identifier" := vRecIssuedReminderLine."VAT Identifier";
+                vRecVATAmountLine."VAT Calculation Type" := vRecIssuedReminderLine."VAT Calculation Type";
+                vRecVATAmountLine."Tax Group Code" := vRecIssuedReminderLine."Tax Group Code";
+                vRecVATAmountLine."VAT %" := vRecIssuedReminderLine."VAT %";
+                vRecVATAmountLine."VAT Base" := vRecIssuedReminderLine.Amount;
+                vRecVATAmountLine."VAT Amount" := vRecIssuedReminderLine."VAT Amount";
+                vRecVATAmountLine."Amount Including VAT" := vRecIssuedReminderLine.Amount + vRecIssuedReminderLine."VAT Amount";
+                vRecVATAmountLine."VAT Clause Code" := vRecIssuedReminderLine."VAT Clause Code";
+                vRecVATAmountLine.InsertLine;
+            until vRecIssuedReminderLine.NEXT = 0;
     end;
 
     local procedure wlFncGetReminderLevel(pReminderTermsCode: Code[10]; pReminderLevel: Integer);

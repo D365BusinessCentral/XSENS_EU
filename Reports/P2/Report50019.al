@@ -150,7 +150,7 @@ report 50019 "XSS - Reminder - North America"
                 column(CompanyAddr1; CompanyAddr[1])
                 {
                 }
-                column(CurrReportPageNo; STRSUBSTNO(Text002, CurrReport.PAGENO))
+                column(CurrReportPageNo; STRSUBSTNO(Text002, ''))// CurrReport.PAGENO))
                 {
                 }
                 column(TextPage; TextPageLbl)
@@ -411,7 +411,7 @@ report 50019 "XSS - Reminder - North America"
 
                         VATAmountLine.DELETEALL;
                         SETFILTER("Line No.", '<%1', EndLineNo);
-                        CurrReport.CREATETOTALS("Remaining Amount", "VAT Amount", ReminderInterestAmount);
+                        //CurrReport.CREATETOTALS("Remaining Amount", "VAT Amount", ReminderInterestAmount);
                     end;
                 }
                 dataitem(IssuedReminderLine2; "Issued Reminder Line")
@@ -538,7 +538,7 @@ report 50019 "XSS - Reminder - North America"
                     begin
                         CLEAR(VATClause);
                         SETRANGE(Number, 1, VATAmountLine.COUNT);
-                        CurrReport.CREATETOTALS(VATAmountLine."VAT Amount");
+                        //CurrReport.CREATETOTALS(VATAmountLine."VAT Amount");
                     end;
                 }
                 dataitem(VATCounterLCY; "Integer")
@@ -664,7 +664,7 @@ report 50019 "XSS - Reminder - North America"
                     TotalText := STRSUBSTNO(Text000, "Currency Code");
                     TotalInclVATText := STRSUBSTNO(Text001, "Currency Code");
                 end;
-                CurrReport.PAGENO := 1;
+                //CurrReport.PAGENO := 1;
                 if not CurrReport.PREVIEW then begin
                     if LogInteraction then
                         SegManagement.LogDocument(

@@ -25,10 +25,9 @@ codeunit 50014 "Sales Order Customization"
     var
         FormatAddressCUL: Codeunit "Format Address";
     begin
-        with CompanyInfo do
-            FormatAddressCUL.FormatAddr(
-             AddrArray, Name, "Name 2", '', Address, "Address 2",
-             City, "Post Code", County, "Country/Region Code");
+        FormatAddressCUL.FormatAddr(
+ AddrArray, CompanyInfo.Name, CompanyInfo."Name 2", '', CompanyInfo.Address, CompanyInfo."Address 2",
+ CompanyInfo.City, CompanyInfo."Post Code", CompanyInfo.County, CompanyInfo."Country/Region Code");
         IsHandled := true;
     end;
 }

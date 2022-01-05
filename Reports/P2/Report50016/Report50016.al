@@ -460,20 +460,18 @@ report 50016 "Aged Accounts Payable US"
 
     local procedure InsertTemp(var VendLedgEntry: Record "Vendor Ledger Entry");
     begin
-        with TempVendLedgEntry do begin
-            if GET(VendLedgEntry."Entry No.") then
-                exit;
-            TempVendLedgEntry := VendLedgEntry;
-            case AgingMethod of
-                AgingMethod::"Due Date":
-                    "Posting Date" := "Due Date";
-                AgingMethod::"Document Date":
-                    "Posting Date" := "Document Date";
-                AgingMethod::"Trans Date":
-                    "Posting Date" := "Posting Date";
-            end;
-            INSERT;
+        if TempVendLedgEntry.GET(VendLedgEntry."Entry No.") then
+            exit;
+        TempVendLedgEntry := VendLedgEntry;
+        case AgingMethod of
+            AgingMethod::"Due Date":
+                TempVendLedgEntry."Posting Date" := TempVendLedgEntry."Due Date";
+            AgingMethod::"Document Date":
+                TempVendLedgEntry."Posting Date" := TempVendLedgEntry."Document Date";
+            AgingMethod::"Trans Date":
+                TempVendLedgEntry."Posting Date" := TempVendLedgEntry."Posting Date";
         end;
+        TempVendLedgEntry.INSERT;
     end;
 
     local procedure GetCurrencyRecord(var Currency: Record Currency; CurrencyCode: Code[10]);

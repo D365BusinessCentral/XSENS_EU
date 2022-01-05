@@ -769,18 +769,17 @@ report 50006 "Bank Acc. Recon. - Test LT"
 
     local procedure SetupRecord()
     begin
-        with "Bank Acc. Reconciliation" do
-            CalcFields("Total Balance on Bank Account",
-              "Bank Account Balance (LCY)",
-              "Total Positive Adjustments",
-              "Total Negative Adjustments",
-              "Total Outstd Bank Transactions",
-              "Total Outstd Payments",
-              "Total Applied Amount",
-              "Total Applied Amount Payments",
-              "Total Unposted Applied Amount",
-              "Total Positive Difference",
-              "Total Negative Difference");
+        "Bank Acc. Reconciliation".CalcFields("Total Balance on Bank Account",
+  "Bank Account Balance (LCY)",
+  "Total Positive Adjustments",
+  "Total Negative Adjustments",
+  "Total Outstd Bank Transactions",
+  "Total Outstd Payments",
+  "Total Applied Amount",
+  "Total Applied Amount Payments",
+  "Total Unposted Applied Amount",
+  "Total Positive Difference",
+  "Total Negative Difference");
     end;
 
     procedure SetPrintOutstandingTransactions(PrintOutstandingTransactionsP: Boolean)
