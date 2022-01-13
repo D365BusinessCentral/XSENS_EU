@@ -29,5 +29,13 @@ pageextension 50009 "Sales Order Subform" extends "Sales Order Subform"
                 ApplicationArea = All;
             }
         }
+        modify("Line Discount %")
+        {
+            Visible = true;
+        }
+        modify("Line Discount Amount")
+        {
+            Visible = true;
+        }
     }
 }
