@@ -308,8 +308,12 @@ codeunit 50101 "Events"
         SalesLine."Sales Order No." := ICInboxSalesLine."Sales Order No.";
         SalesLine."Sales Order Line No." := ICInboxSalesLine."Sales Order Line No.";
         SalesLine."Shipment Date" := ICInboxSalesLine."Shipment Date";          // 20160510 KBG 06458
-        SalesLine."Sorting No." := ICInboxSalesLine.Sorting;                  // 20160510 KBG 06458
-                                                                              // NM_END 20100829 TG 23475
+        SalesLine."Sorting No." := ICInboxSalesLine.Sorting;
+        //Need to remove from live
+        //100% discount- flowing line discount % and Line discount amount
+        SalesLine.validate("Line Discount %", ICInboxSalesLine."Line Discount %");
+        SalesLine.Validate("Line Discount Amount", ICInboxSalesLine."Line Discount Amount");
+
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::ICInboxOutboxMgt, 'OnBeforeICInboxPurchLineInsert', '', false, false)]
@@ -370,8 +374,11 @@ codeunit 50101 "Events"
         //ICInboxSalesLine."Shortcut Dimension 1 Code" := ICOutboxPurchLine."Shortcut Dimension 1 Code";  // 20111207 GFR 27136
         //ICInboxSalesLine."Shortcut Dimension 2 Code" := ICOutboxPurchLine."Shortcut Dimension 2 Code";  // 20111207 GFR 27136
         ICInboxSalesLine."Shipment Date" := ICOutboxPurchaseLine."Shipment Date";              // 20160510 KBG 06458
-        ICInboxSalesLine.Sorting := ICOutboxPurchaseLine.Sorting;                      // 20160510 KBG 06458
-                                                                                       // NM_END 20100829 TG 23475
+        ICInboxSalesLine.Sorting := ICOutboxPurchaseLine.Sorting;
+        //Need to remove from live
+        //100% discount- flowing line discount % and Line discount amount
+        ICInboxSalesLine."Line Discount %" := ICOutboxPurchaseLine."Line Discount %";
+        ICInboxSalesLine."Line Discount Amount" := ICOutboxPurchaseLine."Line Discount Amount";
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnAfterInsertPurchOrderHeader', '', false, false)]
@@ -435,6 +442,11 @@ codeunit 50101 "Events"
             ICOutboxPurchaseLine."Shipment Date" := lRecSalesLine."Shipment Date";         // 20160510 KBG 06458
             ICOutboxPurchaseLine.Sorting := lRecSalesLine."Sorting No.";                 // 20160510 KBG 06458
         END;
+        //Need to remove from live
+        //100% discount- flowing line discount % and Line discount amount
+        ICOutboxPurchaseLine."Line Discount %" := PurchaseLine."Line Discount %";
+        ICOutboxPurchaseLine."Line Discount Amount" := PurchaseLine."Line Discount Amount";
+
         ICOutboxPurchaseLine.Modify();
         // NM_END 20100829 TG 23475
     end;

@@ -618,6 +618,12 @@ xmlport 50000 "IC Outbox Imp/Exp_Intwo"
                                 fieldattribute(LineAmount; ICOutBoxPurchLine."Line Amount")
                                 {
                                 }
+                                //Need to remove from live
+                                //100% discount code to flow disocunt in destination company
+                                fieldattribute(LineDiscountAmountPercentage; ICOutBoxPurchLine."Line Discount %")
+                                {
+                                    Occurrence = Optional;
+                                }
                                 fieldattribute(ICPartnerRefType; ICOutBoxPurchLine."IC Partner Ref. Type")
                                 {
                                 }
